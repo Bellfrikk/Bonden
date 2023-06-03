@@ -2,5 +2,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/example/public_html/bonden4/
+    - export DEPLOYPATH=/home/tlqplqif/repositories/Bonden4/
     - git pull
