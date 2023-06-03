@@ -3,4 +3,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/example/public_html/bonden4/
-    - /bin/cp $DEPLOYPATH
+    - git pull
