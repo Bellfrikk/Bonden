@@ -3,4 +3,11 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/tlqplqif/repositories/Bonden4/
-    - git pull
+    - /bin/cp -R bilde $DEPLOYPATH
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp hoved.js $DEPLOYPATH
+    - /bin/cp krasjTest.js $DEPLOYPATH
+    - /bin/cp landskap.js $DEPLOYPATH
+    - /bin/cp styring.js $DEPLOYPATH
+    - /bin/cp toppLinje.js $DEPLOYPATH
+    - /bin/cp fellesFunksjoner.js $DEPLOYPATH
