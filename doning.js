@@ -66,28 +66,24 @@ function nyTing(x) {
   // ------------------------------------------ flytt funkjson-----------------------------------------------
   if (this.type === 'doning') {
 
-    this.flytt = function flytt(framBak, sving, svingBilde) {
+    this.flytt = function flytt(sving) {
       nyRetningDoining(this, sving);
       if (this.kjøre !== 0) {
-        nyPosisjonDoningOgRedskap(this, framBak);
+        nyPosisjonDoningOgRedskap(this);
         if ((ting[aktiv.doning].aktivRedskap !== null) && (ting[aktiv.redskap].type === 'tilhengar') && sving !== 'beint') {
           if (krasjITilhengerTest() !== true) {
-            if (framBak === -1) {
               this.tmp.doning.retning = this.retning;
-              nyPosisjonDoningOgRedskap(this, framBak);
-            } else {
-
-            }
+              nyPosisjonDoningOgRedskap(this);
           }
         }
       }
-      const krasj = krasjtest(framBak);
+      const krasj = krasjtest();
       if (krasj) { lagreOppdaterteTingPosisjonar(this, this.tmp.doning); }
       if (krasj && this.aktivRedskap !== null) { lagreOppdaterteTingPosisjonar(ting[this.aktivRedskap], this.tmp.redskap); }
       if (krasj) { flyttKart(this); }
       if (this.aktivRedskap === null) { redskapKoblingSjekk(); }// Sjekker om doning kan koblast til redskap
       oppdaterAktivRute(this);// Oppdater aktiv rute 
-      oppdaterAnimasjon(this, svingBilde, krasj, framBak);
+      oppdaterAnimasjon(this, sving, krasj);
     }
   }
   this.tein = function tein() {
@@ -106,21 +102,20 @@ function flyttKart(denne) {   //flytt verden visst doning nærmar ser kanten
 
 //====================================================== oppdater animasjon ====================================================================== 
 
-function oppdaterAnimasjon(denne, svingBilde, krasj, framBak) {
-  denne.kjore = krasj ? framBak : 0; //oppdater kjøre status til animasjon
+function oppdaterAnimasjon(denne, sving, krasj) {
   // ------------------------------------------oppdater sving animasjon-------------------------------
-  if (svingBilde === 'beint') {
+  if (sving === 'beint') {
     denne.bildePosXsving = 0;//0 betyr beint
-  } else if (svingBilde === 'venstre') {
+  } else if (sving === 'venstre') {
     denne.bildePosXsving = 1;// 1 betyr venstre
-  } else if (svingBilde === 'hogre') {
+  } else if (sving === 'hogre') {
     denne.bildePosXsving = 2;//2 betyr hørge      
   }
   //---------------------------------------------- hjul animasjon ----------------------------------
-  if (denne.kjore !== 0) {//Roterer bildeanimasjon når doning kjøre 0 > 1 > 2
+  if (aktiv.fart !== 0) {//Roterer bildeanimasjon når doning kjøre 0 > 1 > 2
     denne.animasjonForsinkelse += denne.fart;
     if (denne.animasjonForsinkelse >= 10) {
-      denne.bildePosYanimasjon -= framBak;
+      denne.bildePosYanimasjon += aktiv.fart < 0 ? 1 : -1;
       if (denne.bildePosYanimasjon > denne.maksAnimasjon) {
         denne.bildePosYanimasjon = 0;
       } else if (denne.bildePosYanimasjon < 0) {
@@ -165,9 +160,9 @@ function nyRetningDoining(denne, sving) {
   }
 }
 //====================================================== ny Posisjon Doining og posisjon + retning redskap====================================================================== 
-function nyPosisjonDoningOgRedskap(denne, framBak) {// ny posiajonn doning
-  denne.tmp.doning.flyttX = (fart.aktiv * Math.cos(Math.PI / 180 * denne.tmp.doning.retning) * framBak);
-  denne.tmp.doning.flyttY = (fart.aktiv * Math.sin(Math.PI / 180 * denne.tmp.doning.retning) * framBak);
+function nyPosisjonDoningOgRedskap(denne) {// ny posiajonn doning
+  denne.tmp.doning.flyttX = (fart.aktiv * Math.cos(Math.PI / 180 * denne.tmp.doning.retning));
+  denne.tmp.doning.flyttY = (fart.aktiv * Math.sin(Math.PI / 180 * denne.tmp.doning.retning));
   denne.tmp.doning.pxX = denne.pxX - denne.tmp.doning.flyttX;
   denne.tmp.doning.pxY = denne.pxY - denne.tmp.doning.flyttY;
 

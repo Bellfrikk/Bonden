@@ -27,7 +27,7 @@ function oppdaterDrivstoff(hendelse) {
     denne.drivstoff = 0;
     oppdaterFart("tomTank");
   }
-  //oppdater nivå og farge på linje for drivstoff
+  //oppdater niva og farge pa linje for drivstoff
   niva.drivstoff = (denne.drivstoff / denne.drivstoffMaks) * nivaStrek.lengde;
   if (denne.drivstoff / denne.drivstoffMaks > 0.6) {
     nivaStrek.drivstoff = nivaStrek.gronn;
@@ -120,18 +120,7 @@ function oppdaterFart(hendelse, nyFart) {
         fart.aktiv = 1;
       } else {
         fart.aktiv = fart.doning + fart.redskap + fart.landskap + fart.arbeid;
-        console.log(
-          "fart: aktiv " +
-          fart.aktiv +
-          " doning: " +
-          fart.doning +
-          " redskap: " +
-          fart.redskap +
-          " landskap" +
-          fart.landskap +
-          " arbeid" +
-          fart.arbeid
-        );
+        console.log( "fart: aktiv " + fart.aktiv + " doning: " + fart.doning + " redskap: " + fart.redskap + " landskap" + fart.landskap + " arbeid" + fart.arbeid );
       }
       topplinje.tein();
     } else {
@@ -159,6 +148,7 @@ function oppdaterPeng(pris) {
 }
 
 //====================================================== sjekkOmByttaRute ======================================================================
+let aktivHandlingRute = {doning: null, redskap:null};
 function sjekkOmByttaRute() {
   let doning = ting[aktiv.doning];
   let doningLand = landskap[doning.aktivRute];

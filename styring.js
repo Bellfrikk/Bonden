@@ -1,10 +1,7 @@
 
 //====================================================== styring =================================================================
 // 𝘀𝘁𝘆𝗿𝗶𝗻𝗴​⁡
-let flytting = {};
 function styring() {
-  window.addEventListener('resize', oppsett() );
-
   document.addEventListener('keydown', function (knapp) {
     knapp.preventDefault();
     if (knapp.key === 'ArrowUp' || knapp.key === 'w') {
@@ -52,26 +49,4 @@ function styring() {
   document.querySelector('#styringHogre').addEventListener('touchstart', function skjermTrykkHogre(knapp) { knapp.preventDefault(); flytting['hogre'] = true; flytting['venstre'] = false; }, false);
   document.querySelector('#styringHogre').addEventListener('touchend', function skjermSleppHogre(knapp) { knapp.preventDefault(); flytting['hogre'] = false; }, false);
   kontroller()
-}
-
-//system lokke
-function kontroller() {//kjoring
-  if(flytting.venstre) { flytting.sving = 'venstre';}
-  else if(flytting.hogre) { flytting.sving = 'hogre';}
-  else { flytting.sving = 'beint';}
-
-  if (flytting.fram) { oppdaterFart( 'auk'); }
-  else if (flytting.bak) { oppdaterFart( 'mink')}
-  else { flytting.framBak = flytting.frambak < 0 ?  flytting.frambak -= flytting.friksjon : flytting.frambak += flytting.friksjon; }
-
-
-  flytt( flytting.framBak, flytting.sving);
-
-  window.requestAnimationFrame(kontroller);
-}
-
-function flytt(frambak, sving, svingBilde) {
-  ting[aktiv.doning].flytt(frambak, sving, svingBilde);
-  sjekkOmByttaRute();
-  oppdaterVerden();
 }

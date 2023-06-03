@@ -1,7 +1,7 @@
 //====================================================== krasjtest ======================================================================
 const sjekkAvstand = 40;
 
-function krasjtest(framBak) {
+function krasjtest() {
   //------------------------------------------sjekk om doning kjører ut av kart-------------------------------------------------------------
   if (ting[aktiv.doning].posX < 2 || ting[aktiv.doning].posX > (pixel.ruterX - 3) || ting[aktiv.doning].posY < 2 || ting[aktiv.doning].posY > (pixel.ruterY - 3)) {
     if (kantKrasjTest(framBak, pixel.venstre, pixel.hogre, pixel.top, pixel.botn) === false) {
@@ -19,7 +19,7 @@ function krasjtest(framBak) {
         }*/
 
       console.log('Krasjtest av ting: ' + tmpTing);
-      if ((tingKrasjTest(framBak, tmpTing)) === false) {
+      if ((tingKrasjTest(tmpTing)) === false) {
         return false;
       }
     }
@@ -28,8 +28,8 @@ function krasjtest(framBak) {
 }
 
 //--------------------------------------------- kant av verden kjasj test ------------------------------------------
-function kantKrasjTest(framBak, venstre, hogre, top, botn) {
-  if (framBak === -1) {
+function kantKrasjTest( venstre, hogre, top, botn ) {
+  if ( fart.aktiv > 0 ) {
     if (//Framover sjekk doning
       ting[aktiv.doning].tmp.doning.fvX < venstre || //sjekk om doning kjører utfor venstre
       ting[aktiv.doning].tmp.doning.fhX < venstre || //sjekk om doning kjører utfor venstre
@@ -43,7 +43,7 @@ function kantKrasjTest(framBak, venstre, hogre, top, botn) {
       return false;
       console.log('krasj framover mot vegg');
     }
-  } else if (framBak === 1) {
+  } else if ( fart.aktiv < 0 ) {
 
     if (//bakover sjekk doning uten redskap
       ting[aktiv.doning].tmp.doning.bvX < venstre || //sjekk om doning kjører utfor venstre
@@ -78,9 +78,9 @@ function kantKrasjTest(framBak, venstre, hogre, top, botn) {
 }
 
 //--------------------------------------------------- krasj i ting test -----------------------------------------
-function tingKrasjTest(framBak, denne) {
+function tingKrasjTest( denne ) {
   let A, B, C, D;
-  if (framBak === -1) {
+  if ( fart.aktiv < 0 ) {
     A = { x: ting[aktiv.doning].fvX, y: ting[aktiv.doning].fvY };
     B = { x: ting[aktiv.doning].fhX, y: ting[aktiv.doning].fhY };
   } else {

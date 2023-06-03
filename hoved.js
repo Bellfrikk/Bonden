@@ -1,18 +1,6 @@
 const toppLinjeHoyde = 40;
 const toppLinjeIkon = 30;
-const pixel = {
-  ruterX: 20,
-  ruterY: 19,
-  ruteLengde: 80,
-  top: 0,
-  venstre: 0,
-  hogre: 0,
-  botn: 0,
-  startX: 0,
-  startY: 0,
-  verdenX: 0,
-  verdenY: 0,
-};
+const pixel = { ruterX: 20, ruterY: 19, ruteLengde: 80, top: 0, venstre: 0, hogre: 0, botn: 0, startX: 0, startY: 0, verdenX: 0, verdenY: 0, };
 pixel.top = toppLinjeHoyde;
 pixel.hogre = pixel.ruteLengde * pixel.ruterX;
 pixel.botn = pixel.top + pixel.ruteLengde * pixel.ruterY;
@@ -20,9 +8,9 @@ let ting = { liste: [] };
 let aktiv = { doning: "traktor0", redskap: null };
 let landskap = { liste: [] };
 let fart = { aktiv: 2, doning: 2, redskap: 0, landskap: 0, arbeid: 0, tomTank: false };
+let flytting = {};
 
 const pris = { drivstoff: 1 };
-let aktivHandlingRute = {doning: null, redskap:null};
 const lerret = document.getElementById("verdenID");
 
 const verden = lerret.getContext("2d");
@@ -54,8 +42,8 @@ function lagVerden() {
 
 function oppdaterVerden() {
   //endre ystørrelse til 100% samtidig somd et tømmer lerretet
-  lerret.width = lerret.offsetWidth; 
-  lerret.height = lerret.offsetHeight; 
+  lerret.width = lerret.offsetWidth;
+  lerret.height = lerret.offsetHeight;
   // tein landskap
   for (nr = 0; nr < landskap.liste.length; nr++) {
     landskap[landskap.liste[nr]].tein();
@@ -67,3 +55,24 @@ function oppdaterVerden() {
   //tein topplinje
   topplinje.tein();
 }
+
+
+//system lokke
+function kontroller() {
+  //oppdater svingretning
+  if (flytting.venstre) { flytting.sving = 'venstre'; }
+  else if (flytting.hogre) { flytting.sving = 'hogre'; }
+  else { flytting.sving = 'beint'; }
+
+  if (flytting.fram) { oppdaterFart('auk'); }
+  else if (flytting.bak) { oppdaterFart('mink'); }
+  else { oppdaterFart('trill '); }
+
+  flytt(flytting.sving);
+  sjekkOmByttaRute();
+  oppdaterVerden();
+
+  window.requestAnimationFrame(kontroller);
+}
+
+
