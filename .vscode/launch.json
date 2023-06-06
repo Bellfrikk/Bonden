@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "file": "/workspaces/Bonden/index.html"
+            "file": "https://github.com/Bellfrikk/Bonden/blob/a8a752de427e773697271015d30eef4921e84216/index.html"
         }
     ]
 }
