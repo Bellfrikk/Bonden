@@ -85,7 +85,6 @@ function nyRuteType(rute, type, retning) {
 }
 
 
-
 //====================================================== tein Landskap ======================================================================
 function oppdaterLandskap() {
   landskap.ramme.height = skjerm.botn;
