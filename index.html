@@ -7,204 +7,104 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Bonden 4</title>
   <style>
-    #verdenID {
-      border: 1px solid #d3d3d3;
-      background-color: #333;
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      z-index: 0;
+    body {
+      margin:0px;
+      scroll-behavior: unset;
+    }
+    .lerret{
       width: 100vw;
-      height: 100vh;
+      height:100vh;
     }
-
-    img {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-    }
-
-    .styringFart,
-    .styringSving {
-      display: flex;
-      position: absolute;
-      z-index: 2;
-      bottom: 2vh;
-      border-radius: 100px;
-      background-color: #999;
-      opacity: 0.5;
-    }
-
-    .styringFart {
-      flex-direction: column;
-      left: 2vw;
-      width: 75px;
-      height: 150px;
-    }
-
-    .styringSving {
-      flex-direction: row;
-      right: 2vw;
-      width: 150px;
-      height: 75px;
-    }
-
-    .StyringsKnapp {
-      width: 75px;
-      height: 75px;
-    }
-
-    #styringVenstre {
-      border-right: 1px solid black;
-    }
-
-    #styringFram {
-      border-bottom: 1px solid black;
-    }
-  
-    .aktivKnapp {
-      position: absolute;
-      bottom: 2vh;
-      z-index: 2;
-      display: flex;
-      width: 55px;
-      height: 55px;
-      border-radius: 10px;
-      border: solid 3px #933;
-      background-color: #000;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center; 
-      background-size:45px 45px;
-      justify-content: center;
-      align-items: center;
-      font-size: 65px;
-      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-      color: #fff;
-    }
-
-    .passivKnapp {
+    img, #butikkID{
       display: none;
-    }
-    #redskapKoblingKnapp {
-      right: calc(2vw + 160px);
-      background-image: url('bilde/ikon/redskap.png');
-    }
-    #pumpeKnapp {
-      right: calc(2vw + 245px);
-      background-image: url('bilde/ikon/drivstoff.png');
-    }
-    #lastKnapp {
-      right: calc(2vw + 330px);
-      background-image: url('bilde/ikon/last.png');
-    }
-    @media screen and (hover: hover) and (min-width: 400px) {
-
-      /* .styring {
-          display: none;
-        }*/
     }
   </style>
 </head>
 
 <body>
-  <!--   Styreknappar   -->
-  <div class='styringFart'>
-    <div id='styringFram' class='StyringsKnapp'></div>
-    <div id='styringBak' class='StyringsKnapp'></div>
-  </div>
-  <div id='lastKnapp' class='passivKnapp'></div>
-  <div id='pumpeKnapp' class='passivKnapp'></div>
-  <div id='redskapKoblingKnapp' class='passivKnapp'></div>
-  <div class='styringSving'>
-    <div id='styringVenstre' class='StyringsKnapp'></div>
-    <div id='styringHogre' class='StyringsKnapp'></div>
-  </div>
+  <canvas class='lerret' id='skjermID'></canvas>
 
-  <canvas id='verdenID'></canvas>
-
-  <!--LAndskap-->
-  <img id='veiKryssNed' src='bilde/landskap/veiKryssNed.gif'>
-  <img id='veiSvingNedH' src='bilde/landskap/veiSvingNedH.gif'>
-  <img id='veiKryssOpp' src='bilde/landskap/veiKryssOpp.gif'>
-  <img id='veiKryssH' src='bilde/landskap/veiKryssH.gif'>
-  <img id='veiKryssV' src='bilde/landskap/veiKryssV.gif'>
-  <img id='veiSvingOppH' src='bilde/landskap/veiSvingOppH.gif'>
-  <img id='veiSvingOppV' src='bilde/landskap/veiSvingOppV.gif'>
-  <img id='veiSvingNedV' src='bilde/landskap/veiSvingNedV.gif'>
-  <img id='veiHorisontal' src='bilde/landskap/veiHorisontal.gif'>
-  <img id='veiVertikal' src='bilde/landskap/veiVertikal.gif'>
-  <img id='veiKryss' src='bilde/landskap/veiKryss.gif'>
-  <img id='grus' src='bilde/landskap/grus.gif'>
+  <!--Bonde-->
+  <img id='bonden' src='bilde/maskinar/bonden.png'>
+  <!--Landskap-->
+  <img id='veiVHN'   src='bilde/landskap/veiVHN.gif'>
+  <img id='veiHN'   src='bilde/landskap/veiHN.gif'>
+  <img id='veiVOH'   src='bilde/landskap/veiVOH.gif'>
+  <img id='veiOHN'   src='bilde/landskap/veiOHN.gif'>
+  <img id='veiVON'   src='bilde/landskap/veiVON.gif'>
+  <img id='veiOH'   src='bilde/landskap/veiOH.gif'>
+  <img id='veiVO'   src='bilde/landskap/veiVO.gif'>
+  <img id='veiVN'   src='bilde/landskap/veiVN.gif'>
+  <img id='veiVH'   src='bilde/landskap/veiVH.gif'>
+  <img id='veiON'   src='bilde/landskap/veiON.gif'>
+  <img id='veiVOHN'   src='bilde/landskap/veiVOHN.gif'>
+  <img id='grus'   src='bilde/landskap/grus.gif'>
+  <img id='skog'   src='bilde/landskap/skog.png'>
+  <img id='vatn'   src='bilde/landskap/vatn.gif'>
   <!--jorde-->
   <img id='eng0' src='bilde/jorde/eng0.gif'>
   <img id='eng1' src='bilde/jorde/eng1.gif'>
   <img id='eng2' src='bilde/jorde/eng2.gif'>
   <img id='eng3' src='bilde/jorde/eng3.gif'>
-  <img id='dyrke0' src='bilde/jorde/dyrke0.gif'>
-  <img id='dyrke1' src='bilde/jorde/dyrke1.gif'>
-  <img id='dyrke2' src='bilde/jorde/dyrke2.gif'>
-  <img id='dyrke3' src='bilde/jorde/dyrke3.gif'>
+  <img id='dyrka' src='bilde/jorde/dyrka.png'>
   <img id='kornDarlig' src='bilde/jorde/kornDarlig.gif'>
   <img id='kornHausta' src='bilde/jorde/kornHausta.gif'>
+  <img id='halm' src='bilde/jorde/halm.gif'>
   <img id='kornKlart' src='bilde/jorde/kornKlart.gif'>
   <img id='kornModent' src='bilde/jorde/kornModent.gif'>
-  <img id='kornSproytaHor' src='bilde/jorde/kornSproytaHor.gif'>
-  <img id='kornSproytaVer' src='bilde/jorde/kornSproytaVer.gif'>
+  <img id='kornSproyta' src='bilde/jorde/kornSproyta.gif'>
   <img id='kornSadd' src='bilde/jorde/kornSadd.gif'>
   <img id='kornVeks' src='bilde/jorde/kornVeks.gif'>
   <img id='grasball' src='bilde/jorde/grasball.gif'>
   <img id='grasHausta' src='bilde/jorde/grasHausta.gif'>
   <img id='grasKlart' src='bilde/jorde/grasKlart.gif'>
-  <img id='grasSlattHor' src='bilde/jorde/grasSlattHor.gif'>
-  <img id='grasSlattVer' src='bilde/jorde/grasSlattVer.gif'>
+  <img id='grasSlatt' src='bilde/jorde/grasSlatt.gif'>
   <img id='grasSadd' src='bilde/jorde/grasSadd.gif'>
   <img id='grasVeks' src='bilde/jorde/grasVeks.gif'>
   <img id='ployd' src='bilde/jorde/ployd.gif'>
   <!--Bygg-->
-  <img id='siloKorn' src='bilde/bygg/siloKorn.gif'>
-  <img id='siloGras' src='bilde/bygg/siloGras.gif'>
-  <img id='siloSkurtreskar' src='bilde/bygg/siloSkurtreskar.gif'>
-  <img id='bensinstasjon' src='bilde/bygg/bensinstasjon.gif'>
+  <img id='bensin' src='bilde/ting/bensin.png'>
   <img id='butikk' src='bilde/bygg/butikk.gif'>
-  <img id='siloSproyte' src='bilde/bygg/siloSproyte.gif'>
-  <img id='kyr' src='bilde/bygg/kyr1Passiv.gif'>
   <!--Ting-->
   <img id='froSekkGras' src='bilde/ting/froSekkGras.png'>
   <img id='froSekkKorn' src='bilde/ting/froSekkKorn.png'>
   <!--maskinar-->
-  <img id='plog0' src='bilde/maskinar/plog0.png'>
-  <img id='plog1' src='bilde/maskinar/plog1.png'>
-  <img id='plog2' src='bilde/maskinar/plog2.png'>
-  <img id='plog3' src='bilde/maskinar/plog3.png'>
-  <img id='samaskin0' src='bilde/maskinar/samaskin0.png'>
-  <img id='ballemaskin0' src='bilde/maskinar/ballemaskin0.png'>
-  <img id='ballemaskin1' src='bilde/maskinar/ballemaskin1.png'>
-  <img id='ballemaskin2' src='bilde/maskinar/ballemaskin2.png'>
-  <!--
-    <img id='samaskin1' src='bilde/samaskin1.png'>
-    <img id='samaskin2' src='bilde/samaskin2.png'>
-    <img id='samaskin3' src='bilde/samaskin3.png'>
- -->
-  <img id='traktor0' src='bilde/maskinar/traktor0.png'>
+  <img id='traktorar' src='bilde/maskinar/traktorar.png'>
+  <img id='skurtreskarar' src='bilde/maskinar/skurtreskarar.png'>
+  <img id='samaskinar' src='bilde/maskinar/samaskinar.png'>
+  <!--knappar-->
+  <img id='knappar' src='bilde/ikon/knappar.png'>
   <!--ikon-->
   <img id='ikonPeng' src='bilde/ikon/peng.png'>
   <img id='ikonDrivstoff' src='bilde/ikon/drivstoff.png'>
   <img id='ikonLast' src='bilde/ikon/last.png'>
+  <!--Butikk-doning-->
+  <img id='butikkTraktor0' src='bilde/butikk/traktor0.png'>
+  <img id='butikkTraktor1' src='bilde/butikk/traktor1.png'>
+  <img id='butikkSkurtreskar0' src='bilde/butikk/traktor2.png'>
+  <img id='butikkGravemaskin0' src='bilde/butikk/traktor2.png'>
+  <!--Butikk-redskap-->
+  <img id='butikkBallemaskin0' src='bilde/butikk/ballemaskin0.png'>
+  <img id='butikkPlog0' src='bilde/butikk/plog0.jpg'>
+  <img id='butikkSamaskin0' src='bilde/butikk/samaskin0.png'>
+  <!--Butikk-ting-->
+  <img id='butikkFroSekkGras' src='bilde/butikk/froSekkGras.jpg'>
+  <img id='butikkFroSekkKorn' src='bilde/butikk/froSekkKorn.jpg'>
 
-  <script defer src="hoved.js"></script>
+  <script defer src="data.js"></script>
   <script defer src="doning.js"></script>
+  <script defer src="ting.js"></script>
   <script defer src="landskap.js"></script>
-  <script defer src="styring.js"></script>
-  <script defer src="krasjTest.js"></script>
   <script defer src="toppLinje.js"></script>
   <script defer src="fellesFunksjoner.js"></script>
+  <script defer src="butikk.js"></script>
+  <script defer src="knappar.js"></script>
+  <script defer src="hoved.js"></script>
+
+
   <script>
   window.onload = () => {
-  
-    oppsett()
-    lagVerden()
-    styring()
+  lagVerden();
   }
   </script>
 </body>

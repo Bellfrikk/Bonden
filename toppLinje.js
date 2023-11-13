@@ -1,72 +1,88 @@
 
-//topplinje
-lastAktiv = false;
-const nivaStrek = {
-  lengde: 100,
-  hoyde: 20,
-  margin: 3,
-  drivstoff: "#008800",
-  last: "#880000",
-  gronn: "#008800",
-  gul: "#888800",
-  rod: "#880000",
-};
-let niva = { last: 0, drivstoff: 0 };
-let topplinje;
+"use strict";
 
-let peng = 10000;
-let lastType = "GRAS";
+let topplinje = {
+  ramme: document.createElement('canvas'), 
 
-function nyTopplinje() {
-  this.tein = () => {
-    //bakgrunn
-    verden.moveTo(0, 0);
-    verden.beginPath();
-    verden.rect(0, 0, pixel.verdenX, toppLinjeHoyde);
-    verden.fillStyle = '#000';
-    verden.fill();
-    //linje ting
-    verden.beginPath();
-    //peng
-    verden.drawImage(document.getElementById('ikonPeng'), 4, 5, toppLinjeIkon, toppLinjeIkon);
-    verden.font = "20px Comic Sans MS";
-    verden.fillStyle = '#FFF';
-    verden.fillText(peng, toppLinjeIkon + 10, 28);
-    //drivstoff
-    verden.beginPath();
-    verden.drawImage(document.getElementById('ikonDrivstoff'), 140, 5, toppLinjeIkon, toppLinjeIkon);
-    verden.fillStyle = '#FFF';
-    verden.rect(180 - 1, toppLinjeHoyde - nivaStrek.hoyde * 1.5 - 1, nivaStrek.lengde + 2, nivaStrek.hoyde + 2);
-    verden.fill();
-    //drivstoff strek
-    verden.beginPath();
-    verden.fillStyle = '#222';
-    verden.rect(180, toppLinjeHoyde - nivaStrek.hoyde * 1.5, nivaStrek.lengde, nivaStrek.hoyde);
-    verden.fill();
-    verden.beginPath();
-    verden.fillStyle = nivaStrek.drivstoff;
-    verden.rect(180, toppLinjeHoyde - nivaStrek.hoyde * 1.5, niva.drivstoff, nivaStrek.hoyde);
-    verden.fill();
-    //last
-    if ( lastAktiv ) {
-      verden.beginPath();
-      verden.drawImage(document.getElementById('ikonLast'), 300, 5, toppLinjeIkon, toppLinjeIkon);
-      verden.fillStyle = '#FFF';
-      verden.rect(340 - 1, toppLinjeHoyde - nivaStrek.hoyde * 1.5 - 1, nivaStrek.lengde + 2, nivaStrek.hoyde + 2);
-      verden.fill();
-      //last strek
-      verden.beginPath();
-      verden.fillStyle = '#222';
-      verden.rect(340, toppLinjeHoyde - nivaStrek.hoyde * 1.5, nivaStrek.lengde, nivaStrek.hoyde);
-      verden.fill();
-      verden.beginPath();
-      verden.fillStyle = nivaStrek.last;
-      verden.rect(340, toppLinjeHoyde - nivaStrek.hoyde * 1.5, niva.last, nivaStrek.hoyde);
-      verden.fill();
-      //last tekst
-      verden.font = "20px Comic Sans MS";
-      verden.fillStyle = '#FFF';
-      verden.fillText(lastType, 460, 28);
-    }
-  }
+  ikonStr: 30,
+  margin: 4,
+  delbredde: 0,
+  strek: [50, 12],
+  strekMargin: 1,
+  gronn: "#008800", gul: "#888800", rod: "#880000",
+  liste: ['peng', 'drivstoff', 'framLast', 'bakLast'],
+  peng: { aktiv: true, type: 'tekst', ikon: 'ikonPeng', niva: peng },
+  drivstoff: { aktiv: true, niva: 0, ikon: 'ikonDrivstoff' },
+  framLast: { aktiv: true, niva: 0, ikon: 'ikonLast' },
+  bakLast: { aktiv: true, niva: 0, ikon: 'ikonLast' }
+}  
+topplinje.lerret = topplinje.ramme.getContext("2d");
+
+
+function oppdaterTopplinje() {
+  topplinje.ramme.height = skjerm.hoydeTopplinje;
+  topplinje.ramme.width = skjerm.bredde;
+  topplinje.delbredde = topplinje.ramme.width / topplinje.liste.length;
+
+
+  //bakgrunn
+  topplinje.lerret.moveTo(0, 0);
+  topplinje.lerret.beginPath();
+  topplinje.lerret.rect(0, 0, skjerm.bredde, skjerm.hoydeTopplinje);
+  topplinje.lerret.fillStyle = '#000';
+  topplinje.lerret.fill();
+
+  teinNiva('peng', 0, peng)
+  if (doning.drivstoff.niva !== null) { teinNiva('drivstoff', 1, doning.drivstoff.niva) }
+  if (doning.redskap.fram !== null && doning.redskap.fram.last.niva !== null) { teinNiva('framLast', 2, doning.redskap.fram.last.niva) }
+  if (doning.redskap.bak !== null && doning.redskap.bak.last.niva !== null) { teinNiva('bakLast', 3, doning.redskap.bak.last.niva) }
 }
+
+function teinNiva(ting, nr, niva) {
+  //ikon
+  topplinje.lerret.beginPath();
+  topplinje.lerret.drawImage(document.getElementById(
+    topplinje[ting].ikon), //ikon
+    (topplinje.delbredde * nr) + topplinje.margin, //start X
+    topplinje.margin, //start Y
+    topplinje.ikonStr, //bredde
+    topplinje.ikonStr); // hoyde
+  //tekst
+  topplinje.lerret.font = "20px Comic Sans MS";
+  topplinje.lerret.fillStyle = '#FFF';
+  topplinje.lerret.fillText(
+      niva, //tekst
+    (topplinje.delbredde * nr) + topplinje.margin + topplinje.ikonStr + topplinje.margin, //start X
+    28);// start Y  
+}
+
+/*
+/---strek
+    } else if (topplinje[ting].type === 'strek') {
+      topplinje.lerret.beginPath();
+      topplinje.lerret.fillStyle = '#FFF';
+      topplinje.lerret.rect(
+        (topplinje.delbredde * nr) + topplinje.margin + topplinje.ikonStr + topplinje.margin - 1, //start X
+        skjerm.hoydeTopplinje - topplinje.strek[1] * 1.5 - 1, //start Y
+        topplinje.strek[0] + 2, // bredde
+        topplinje.strek[1] + 2);// hoyde
+        topplinje.lerret.fill();
+
+      topplinje.lerret.beginPath();
+      topplinje.lerret.fillStyle = '#222';
+      topplinje.lerret.rect(
+        (topplinje.delbredde * nr) + topplinje.margin + topplinje.ikonStr + topplinje.margin, // start X
+        skjerm.hoydeTopplinje - topplinje.strek[1] * 1.5, // stert Y
+        topplinje.strek[0], // bredde
+        topplinje.strek[1]);// hoyde
+        topplinje.lerret.fill();
+
+      topplinje.lerret.beginPath();
+      topplinje.lerret.fillStyle = '#722';
+      topplinje.lerret.rect(
+        (topplinje.delbredde * nr) + topplinje.margin + topplinje.ikonStr + topplinje.margin, // start X
+        skjerm.hoydeTopplinje - topplinje.strek[1] * 1.5, // stert Y
+        topplinje[ting].niva, // bredde
+        topplinje.strek[1]);// hoyde
+        topplinje.lerret.fill();
+    }*/

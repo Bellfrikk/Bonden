@@ -1,143 +1,129 @@
+"use strict";
+
 let drivstoffAutoFyllingLoop;
+let bensinsStasjonsRute;
 //====================================================== oppdaterDrivstoff ======================================================================
 function oppdaterDrivstoff(hendelse) {
-  var denne = ting[aktiv.doning];
-
+  if(doning.type === 'bonde') { return;}
   if (hendelse === "bruk") {
-    denne.drivstoff--;
-  } else if (hendelse === "aktiver") {
-    knapp('aktiver', 'pumpeKnapp', 'oppdaterDrivstoff("startFylling")', false);
+    doning.drivstoff.niva--;
   } else if (hendelse === "deaktiver") {
     oppdaterDrivstoff('stoppFylling')
-    knapp('deaktiver', 'pumpeKnapp', '', false);
   } else if (hendelse === "startFylling") {
-    knapp("aktiver", "pumpeKnapp", 'oppdaterDrivstoff("stoppFylling")', true);
-
+    bensinsStasjonsRute = doning.pos.rute;
     drivstoffAutoFyllingLoop = setInterval(drivstoffAutoFylling, 50);
   } else if (hendelse === "fylling") {
-    if (denne.drivstoff < denne.drivstoffMaks && oppdaterPeng(pris.drivstoff)) {
-      denne.drivstoff++;
+    if (doning.drivstoff.niva < doning.drivstoff.maks && oppdaterPeng(pris.drivstoff)) {
+      doning.drivstoff.niva++;
     }
   } else if (hendelse === "stoppFylling") {
-    knapp("aktiver", "pumpeKnapp", 'oppdaterDrivstoff("startFylling")', false);
     clearInterval(drivstoffAutoFyllingLoop);
+  } else {
+    console.log('FEIL FEIL FEIL Drivstoff - hendelse finst ikkje.');
   }
+
   //sjekk om tom for drivstof
-  if (denne.drivstoff <= 0) {
-    denne.drivstoff = 0;
-    oppdaterFart("tomTank");
+  if (doning.drivstoff.niva <= 0) {
+    doning.fart.aktiv = doning.fart.maks * 0.3;
   }
-  //oppdater niva og farge pa linje for drivstoff
-  niva.drivstoff = (denne.drivstoff / denne.drivstoffMaks) * nivaStrek.lengde;
-  if (denne.drivstoff / denne.drivstoffMaks > 0.6) {
+  /*
+  //oppdater nivå og farge på linje for drivstoff
+  niva.drivstoff = (doning.drivstoff.niva / doning.drivstoff.maks) * nivaStrek.lengde;
+  if (doning.drivstoff.niva / doning.drivstoff.maks > 0.6) {
     nivaStrek.drivstoff = nivaStrek.gronn;
-  } else if (denne.drivstoff / denne.drivstoffMaks > 0.3) {
+  } else if (doning.drivstoff.niva / doning.drivstoff.maks > 0.3) {
     nivaStrek.drivstoff = nivaStrek.gul;
   } else {
     nivaStrek.drivstoff = nivaStrek.rod;
-  }
-  topplinje.tein();
+  } */
+  flagg.topplinjeEndra = true;
 }
 function drivstoffAutoFylling() {
-  oppdaterDrivstoff("fylling");
+  const bensinpos = 0;// fiks
+  if ( doning.pos.rute[0] !== bensinsStasjonsRute[0] || doning.pos.rute[1] !== bensinsStasjonsRute[1] ) {
+    oppdaterDrivstoff( 'deaktiver');
+  }else {
+    oppdaterDrivstoff( "fylling");
+  }
 }
 
 let lastAutoFyllingLoop;
 //====================================================== oppdaterLast ======================================================================
-function oppdaterLast(hendelse) {
-  var denne = ting[aktiv.redskap];
+function oppdaterLast(denne, hendelse, lastFra) {
 
-  if (hendelse === "lastNivaPa") {
-    if (denne.lastMaks !== null) {
-      lastAktiv = true;
-    }
-  } else if (hendelse === "lastNivaAv") {
-    lastAktiv = false;
-  } else if (hendelse === "bruk") {
-    denne.last--;
-  } else if (hendelse === "aktiver") {
-    knapp('aktiver', 'lastKnapp', 'oppdaterLast("startFylling")', false);
-  } else if (hendelse === "deaktiver") {
-    oppdaterLast('stoppFylling')
-    knapp('deaktiver', 'lastKnapp', '', false);
+  if (hendelse === "bruk") {
+    denne.last.niva--;
+    if(denne.last.niva === 0) {denne.last.type = null;}
+    oppdaterLastAnimasjon(denne);
+  } else if (hendelse === "haust") {
+      if(denne.last.niva + 1 >= denne.last.maks) { 
+       return false 
+      } else {
+        denne.last.niva++;
+        oppdaterLastAnimasjon(denne);
+        return true;
+      }
   } else if (hendelse === "startFylling") {
-    knapp("aktiver", "lastKnapp", 'oppdaterLast("stoppFylling")', true);
-
-    lastAutoFyllingLoop = setInterval(lastAutoFylling, 50);
+    if(denne.last.mottar.includes(lastFra.last.type) && ///kva for redskap gjelder dette
+    (denne.last.type === lastFra.last.type || denne.last.type === null)) {
+      lastAutoFyllingLoop = setInterval(lastAutoFylling(denne, lastFra), 50);
+      denne.last.type = lastFra.last.type;
+    }
   } else if (hendelse === "fylling") {
-    if (denne.last < denne.lastMaks) {
-      denne.last++;
+    if ((denne.last.niva < denne.last.maks) && (lastFra.last.niva > 0)) {
+      denne.last.niva++;
+      lastFra.last.niva--;
+      oppdaterLastAnimasjon(denne);
     }
   } else if (hendelse === "stoppFylling") {
-    knapp("aktiver", "lastKnapp", 'oppdaterLast("startFylling")', false);
     clearInterval(drivstoffAutoFyllingLoop);
+    return;
   }
-  //sjekk om tom for drivstof
-  // if (denne.last <= 0) {
-  //   denne.last = 0;
-  //   console.log('tom last');
-  // }
-  //oppdater nivå og farge på linje for drivstoff
-  if (aktiv.redskap !== null) {
-    niva.last = (denne.last / denne.lastMaks) * nivaStrek.lengde;
-    if (denne.last / denne.lastMaks > 0.6) {
-      nivaStrek.last = nivaStrek.gronn;
-    } else if (denne.last / denne.lastMaks > 0.3) {
-      nivaStrek.last = nivaStrek.gul;
-    } else {
-      nivaStrek.last = nivaStrek.rod;
-    }
-    topplinje.tein();
-  }
+
+flagg.topplinjeEndra = true;  
 }
-function lastAutoFylling() {
-  oppdaterLast("fylling");
+function lastAutoFylling(denne, lastFra) {
+  oppdaterLast(denne, "fylling", lastFra);
+  oppdaterLastAnimasjon(denne);
 }
 //====================================================== oppdaterFart ======================================================================
-function oppdaterFart(hendelse, nyFart) {
-
-  if (flytting.fram) { flytting.framBak = flytting.framBak < flytting.toppfart ? flytting.framBak += flytting.akselerasjon : flytting.maksfart; }
-  else if (flytting.bak) { flytting.framBak = flytting.framBak < flytting.toppfart*-1 ? flytting.framBak -= flytting.akselerasjon : flytting.maksfart*-1; }
-  else { flytting.framBak = flytting.frambak < 0 ?  flytting.frambak -= flytting.friksjon : flytting.frambak += flytting.friksjon; }
-
-
-  if (typeof nyFart == 'number') {
-    if (typeof hendelse == 'string') {
-      if (hendelse === "tomTank") {
-        fart.tomTank = true;
-      } else if (hendelse === "ikkjeTomTank") {
-        fart.tomTank = false;
-      } else if (hendelse === "landskap") {
-        fart.landskap = nyFart;
-      } else if (hendelse === "doning") {
-        fart.doning = nyFart;
-      } else if (hendelse === "redskap") {
-        fart.redskap = nyFart;
-      } else if (hendelse === "arbeid") {
-        fart.arbeid = nyFart;
-      }
-      if (fart.tomTank) {
-        fart.aktiv = 1;
-      } else {
-        fart.aktiv = fart.doning + fart.redskap + fart.landskap + fart.arbeid;
-        console.log( "fart: aktiv " + fart.aktiv + " doning: " + fart.doning + " redskap: " + fart.redskap + " landskap" + fart.landskap + " arbeid" + fart.arbeid );
-      }
-      topplinje.tein();
-    } else {
-      console.log('FEIL FEIL FEIL: oppdaterFart - hendelse er ikkje gyldig string. ntfart:' + nyFart);
+// doning fart = aks - landskap friksjon og redskap friksjon
+function oppdaterFart( hendelse) {
+    //----justering av fart----
+  if ( hendelse === "framKnapp") { 
+    doning.fart.aktiv +=  doning.fart.aks; 
+  }else if (hendelse === "bakKnapp" ) { 
+    doning.fart.aktiv -= doning.fart.aks; 
+  }else if (hendelse === "trill" ) { 
+    doning.fart.aktiv += doning.fart.aktiv > 0 ? -doning.fart.friksjon : doning.fart.friksjon; 
+    //----oppdatering av fart----
+  }else if (hendelse === "landskap" ) {
+  doning.fart.landskap = (landskap['x' + doning.pos.rute[0] + 'y' + doning.pos.rute[1]].fart);//friksjon fra landskap
+  }else if (hendelse === "arbeid" ) {
+    doning.fart.arbeid = 0;
+    if(doning.redskap.fram !== null) {doning.fart.arbeid += doning.redskap.fram.arbeid.aktiv  ? doning.redskap.fram.fart.arbeid : doning.redskap.fram.fart.vanlig;}
+    if(doning.redskap.bak !== null) {doning.fart.arbeid += doning.redskap.bak.arbeid.aktiv  ? doning.redskap.bak.fart.arbeid : doning.redskap.bak.fart.vanlig;}
+    //----hent fart----
+  }else if (hendelse === "hentFart" ) {
+    //sjekk at farten ikke er over maks
+    let samlaFart = doning.fart.maks + doning.fart.landskap + doning.fart.arbeid;
+    if (doning.fart.aktiv > samlaFart) {
+      doning.fart.aktiv = samlaFart;
+    }else if (doning.fart.aktiv < -samlaFart) {
+      doning.fart.aktiv = -samlaFart;
     }
-  } else {
-    console.log('FEIL FEIL FEIL: oppdaterFart - nyFart er ikkje gyldig nummer. Hendelse:' + hendelse);
+    // sett fart til null ved låge verdiar
+    if (doning.fart.aktiv <= doning.fart.friksjon && doning.fart.aktiv >=  -doning.fart.friksjon) {
+      doning.fart.aktiv = 0;
+    }
+    return doning.fart.aktiv;
   }
-}
-
-//====================================================== oppdaterArbeid ======================================================================
-function oppdaterArbeid() {
-  console.log("oppdatere arbeid");
 }
 
 //====================================================== oppdaterPeng ======================================================================
 function oppdaterPeng(pris) {
+
+//test
   if (pris > peng) {
     alert("For lite mengar");
     return false;
@@ -145,79 +131,47 @@ function oppdaterPeng(pris) {
     peng -= pris;
     return true;
   }
+  flagg.topplinjeEndra = true;
 }
 
-//====================================================== sjekkOmByttaRute ======================================================================
-let aktivHandlingRute = {doning: null, redskap:null};
-function sjekkOmByttaRute() {
-  let doning = ting[aktiv.doning];
-  let doningLand = landskap[doning.aktivRute];
-  // legg inn verdi om den er tom som ved oppstart
-  if (aktivHandlingRute.doning === null) {
-    aktivHandlingRute.doning = doning.aktivRute;
-  }
-  //sjekk om doning er på ny rute
-  if (aktivHandlingRute.doning !== doning.aktivRute) {
-    oppdaterDrivstoff("bruk");
-
-    //stopp bensinfylling om doning var på bensinstasjonen før flytting
-    if (landskap[aktivHandlingRute.doning].navn === 'bensinstasjon') {
-      oppdaterDrivstoff('deaktiver')
-    }
-    //sjekk om doning er på ny type rute
-    if (
-      landskap[aktivHandlingRute.doning].navn !==
-      doningLand.navn) {
-      oppdaterFart('landskap', orginalLandskap[doningLand.navn].fart);
-      if (doningLand.navn === 'bensinstasjon') {
-        oppdaterDrivstoff('aktiver');
-      }
-    }
-    aktivHandlingRute.doning = doning.aktivRute;//oppdater aktiv rute
-  }
-
-  //sjekk om det finnst redskap
-  if (doning.aktivRedskap !== null) {
-    let redskap = ting[aktiv.redskap];
-    let redskapLand = orginalLandskap[landskap[redskap.aktivRute].navn];
-
-    // legg inn verdi om den er tom som ved oppstart
-    if (aktivHandlingRute.redskap === null) {
-      aktivHandlingRute.redskap = redskap.aktivRute;
-    }
-    //sjekk om redskap er på ny rute
-    if (aktivHandlingRute.redskap !== redskap.aktivRute) {
-      //sjekk om redskap er på ny type rute
-      // if (landskap[aktivHandlingRute.redskap].navn !== redskapLand.navn) {
-      //rask type handling
-      if (redskapLand.handling === 'rask') {
-        if (redskapLand.aktivertAv === redskap.arbeid) {
-          //aktiv redskap matcher med jorde
-          oppdaterFart('arbeid', redskap.fartArbeid);
-          nyRuteType(landskap[redskap.aktivRute], redskapLand.bliTil);
-          console.log('raskt arbeid');
-        } else {
-          oppdaterFart('arbeid', 0);
-        }
-      }
-    }
-    aktivHandlingRute.redskap = redskap.aktivRute;//oppdater aktiv rute
-    // }
-  }
-}
 //====================================================== knapp ======================================================================
 
-function knapp(hendelse, knapp, klikkFunksjon, aktiv) {
-  if (hendelse === "aktiver") {
-    document.getElementById(knapp).setAttribute("class", "aktivKnapp");
-    document.getElementById(knapp).setAttribute("onclick", klikkFunksjon);
-  } else if (hendelse === "deaktiver") {
-    document.getElementById(knapp).setAttribute("class", "passivKnapp");
-    document.getElementById(knapp).removeAttribute("onclick");
+function endreKnapp(hendelse, knapp) {
+
+  if (hendelse === "vis") {
+    knappar[knapp].vis = true;  
+  } else if (hendelse === "fjern") {
+    knappar[knapp].vis = false;  
+
+  } else if (hendelse === "visAktiv") {
+    knappar[knapp].visAktiv = true;  
+  } else if (hendelse === "visPassiv") {
+    knappar[knapp].visAktiv = false;  
   }
-  if (aktiv === true) {
-    document.getElementById(knapp).style.borderColor = "#2d2";
-  } else if (aktiv === false) {
-    document.getElementById(knapp).style.borderColor = "#933";
-  }
+
+}
+//====================================================== Zoom ======================================================================
+
+function oppdaterZoom(denne) {
+}
+//-------vassLoddRett--------returnerer 0 eller 90 basert på retning variabel
+function vassLoddRett(retning) {
+  if((retning >= 0 && retning < 45)   ||
+     (retning > 135 && retning < 225) ||
+     (retning > 315 && retning <= 360)) {
+      return 0;
+     } else {
+      return 90;
+     }
+}
+//====================================================== lerretStorleik ======================================================================
+
+function lerretStorleik(ramme, topp, botn, venstre, hogre, bredde, hoyde) {
+  ramme.style.position = 'absolute';
+  if (topp !== null) { ramme.style.top = topp + 'px'; }
+  if (botn !== null) { ramme.style.bottom = botn + 'px'; }
+  if (venstre !== null) { ramme.style.left = venstre + 'px'; }
+  if (hogre !== null) { ramme.style.right = hogre + 'px'; }
+  if (bredde !== null) { ramme.style.width = bredde + 'px'; }
+  if (hoyde !== null) { ramme.style.height = hoyde + 'px'; }
 }
