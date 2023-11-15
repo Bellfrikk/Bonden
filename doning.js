@@ -17,10 +17,10 @@ function nyMaskin(x, id) {
   this.kjopt = true;
   this.id = id;
   this.navn = orginalMaskin[x].navn;
+  this.rute = orginalMaskin[x].rute;
+  this.grafikk = orginalMaskin[x].grafikk;
   this.pos = orginalMaskin[x].pos;
-  this.teinData = orginalMaskin[x].teinData;
-  this.bildeData = orginalMaskin[x].bildeData;
-  this.punkt = orginalMaskin[x].punkt;
+  this.krasj = orginalMaskin[x].krasj;
   this.type = orginalMaskin[x].type;
   this.sving = orginalMaskin[x].sving;
   this.fart = orginalMaskin[x].fart;
@@ -28,8 +28,8 @@ function nyMaskin(x, id) {
   this.last = orginalMaskin[x].last;
   this.arbeid = orginalMaskin[x].arbeid;
   //oppdater posisjon fra rutekoordinat til pixel
-  this.pos.px[0] = this.pos.rute[0] * pixel.ruteLengde;
-  this.pos.px[1] = this.pos.rute[1] * pixel.ruteLengde;
+  this.pos.midt.x = this.rute.x* pixel.ruteLengde;
+  this.pos.midt.y = this.rute.y* pixel.ruteLengde;
   // lag variablar
   this.animasjon = { forsinkelse: 0, sekvens: 0 };
   this.redskap = { fram: null, bak: null };
@@ -64,21 +64,21 @@ function flyttKart(flytt) {
   //flytt verden visst doning nærmar ser kanten
   if (
     !(
-      doning.pos.px[0] < skjerm.bredde / 2 ||
-      doning.pos.px[0] > skjerm.hogre - skjerm.bredde / 2
+      doning.pos.midt.x < skjerm.bredde / 2 ||
+      doning.pos.midt.x > skjerm.hogre - skjerm.bredde / 2
     )
   ) {
-    pixel.start[0] -= flytt[0];
+    pixel.start.x -= pos.midt.fx;
     landskap.erEndra = true;
   }
   if (
     !(
-      doning.pos.px[1] < skjerm.hoydeLandskap / 2 ||
-      doning.pos.px[1] >
+      doning.pos.midt.y < skjerm.hoydeLandskap / 2 ||
+      doning.pos.midt.y >
         skjerm.botn - skjerm.hoydeKnappar - skjerm.hoydeLandskap / 2
     )
   ) {
-    pixel.start[1] -= flytt[1];
+    pixel.start.y -= pos.midt.fy;
     landskap.erEndra = true;
   }
 }
@@ -113,19 +113,10 @@ function oppdaterSvingAnimasjon() {
   flagg.animasjon = true;
 }
 // ------------------------------------------oppdater sving animasjon-------------------------------
-functi -------jobbe her on oppdaterLastAnimasjon(denne) {
-  if (
-    denne === null ||
-    denne.last.type === null ||
-    denne.bilde.lastMaksAnim === 0
-  ) {
-    return;
-  } //sjekk om redskap og last og animasjon finns
+function oppdaterLastAnimasjon(denne) {
+  if ( denne === null || denne.last.type === null ||d enne.bilde.lastMaksAnim === 0 ) { return;  } //sjekk om redskap og last og animasjon finns
   //Roter last animasjon likt som svinganimasjon. Rekn ut kor mange "prosent" av last igjen og juster animasjon der etter.
-  denne.bilde.svingAnim =
-    denne.bilde.startLastAnim[denne.last.type] +
-    Math.floor(
-      (denne.last.niva *
+  denne.bilde.svingAnim = denne.bilde.startLastAnim[denne.last.type] +  Math.floor( (denne.last.niva *
         (denne.bilde.maksLastAnim[denne.last.type] -
           denne.bilde.startLastAnim[denne.last.type])) /
         denne.last.maks +
@@ -137,17 +128,17 @@ functi -------jobbe her on oppdaterLastAnimasjon(denne) {
 //====================================================== erDoningPaNyRute ======================================================================
 // ------------------------------------------oppdaterDoningRute-------------------------------
 function erDoningPaNyRute() {
-  let tmpRute = [...doning.pos.rute];
-  doning.pos.rute[0] = Math.floor(doning.pos.px[0] / pixel.ruteLengde);
-  doning.pos.rute[1] = Math.floor(doning.pos.px[1] / pixel.ruteLengde);
-  if (doning.pos.rute[0] < 0 || doning.pos.rute[1] < 0) {
+  let tmpRute = {x:doning.rute.x, y:doning.rute.y}
+  doning.rute.x = Math.floor(doning.pos.midt.x / pixel.ruteLengde);
+  doning.rute.y = Math.floor(doning.pos.midt.y / pixel.ruteLengde);
+  if (doning.rute.x < 0 || doning.rute.y< 0) {
     console.log("FEIL FEIL FEIL - rutnenummer er for lågt");
     return;
   }
 
-  if (tmpRute[0] !== doning.pos.rute[0] || tmpRute[1] !== doning.pos.rute[1]) {
+  if (tmpRute.x!== doning.rute.x|| tmpRute.y !== doning.pos.rute[1]) {
     if (
-      landskap["x" + doning.pos.rute[0] + "y" + doning.pos.rute[1]].navn !==
+      landskap["x" + doning.rute.x+ "y" + doning.pos.rute[1]].navn !==
       landskap["x" + tmpRute[0] + "y" + tmpRute[1]].navn
     ) {
       flagg.nyRute = true;
@@ -206,8 +197,8 @@ function nyPosisjonDoningOgRedskap() {
   doning.tmp.pos.flytt[1] =
     -fart * Math.sin((Math.PI / 180) * doning.tmp.pos.retning);
   doning.tmp.pos.px = [
-    doning.pos.px[0] - doning.tmp.pos.flytt[0],
-    doning.pos.px[1] - doning.tmp.pos.flytt[1],
+    doning.pos.midt.x - doning.tmp.pos.flytt[0],
+    doning.pos.midt.y - doning.tmp.pos.flytt[1],
   ]; //Må ver sånn
 
   // finn hjørene og krok punkt doning
@@ -225,8 +216,8 @@ function nyPosisjonDoningOgRedskap() {
         denneRedskap.tmp.pos.retning = doning.tmp.pos.retning;
       } else if (denneRedskap.type === "tilhengar") {
         //ny retning tilhenger redskap
-        let xx = denneKrok[0] - denneRedskap.pos.px[0];
-        let yy = denneKrok[1] - denneRedskap.pos.px[1];
+        let xx = denneKrok[0] - denneRedskap.pos.midt.x;
+        let yy = denneKrok[1] - denneRedskap.pos.midt.y;
         denneRedskap.tmp.pos.retning = (Math.atan2(yy, xx) * 180) / Math.PI; // gir ein vinkel frå 0 til 180 til -180 til -0
         if (denneRedskap.tmp.pos.retning < 0) {
           denneRedskap.tmp.pos.retning =
@@ -242,12 +233,12 @@ function nyPosisjonDoningOgRedskap() {
         denneRedskap.tmp.pos.px = [...denneTmpKrok];
       } else if (doning.redskap.bak.type === "tilhengar") {
         //ny posisjon tilhenger redskap
-        denneRedskap.tmp.pos.px[0] =
+        denneRedskap.tmp.pos.midt.x =
           denneTmpKrok[0] +
           denneRedskap.bilde.pxFram *
             -1 *
             Math.cos((Math.PI / 180) * denneRedskap.tmp.pos.retning); // + (Math.sin(Math.PI / 180 * doning.redskap.tmp.retning));
-        denneRedskap.tmp.pos.px[1] =
+        denneRedskap.tmp.pos.midt.y =
           denneTmpKrok[1] +
           denneRedskap.bilde.pxFram *
             -1 *
@@ -274,10 +265,10 @@ function oppdaterRuterTilSjekk() {
   }
   function sjekkRute(tmpTing) {
     if (
-      tmpTing.pos.rute[0] >= doning.pos.rute[0] - 3 &&
-      tmpTing.pos.rute[0] <= doning.pos.rute[0] + 3 &&
-      tmpTing.pos.rute[1] >= doning.pos.rute[1] - 3 &&
-      tmpTing.pos.rute[1] <= doning.pos.rute[1] + 3
+      tmpTing.rute.x>= doning.rute.x- 3 &&
+      tmpTing.rute.x<= doning.rute.x+ 3 &&
+      tmpTing.rute.y>= doning.rute.y- 3 &&
+      tmpTing.rute.y<= doning.rute.y+ 3
     ) {
       aktiv.rute.push(tmpTing);
     }
@@ -408,8 +399,8 @@ function teinMaskin(denne) {
     //sjekker at bilde er tilgjendelig
     // lage eit midpunkt ved omderiningspunktet på doning
     let midtpunkt = [];
-    midtpunkt[0] = denne.pos.px[0];
-    midtpunkt[1] = denne.pos.px[1];
+    midtpunkt[0] = denne.pos.midt.x;
+    midtpunkt[1] = denne.pos.midt.y;
     maskinar.lerret.translate(midtpunkt[0], midtpunkt[1]); //flytt fokus tilmidtpunkt
     maskinar.lerret.rotate((denne.pos.retning * Math.PI) / 180); //roter verden liks som doning
     maskinar.lerret.translate(midtpunkt[0] * -1, midtpunkt[1] * -1); //flytt fokus til start
@@ -445,47 +436,47 @@ function oppdaterTingPoisjonar(denne, denneTmp, type) {
   let pxH = type === "maskin" ? denne.bilde.pxH : denne.pos.hoyde / 2; // maskin eller ting?
 
   denneTmp.pos.fv[0] =
-    denneTmp.pos.px[0] +
+    denneTmp.pos.midt.x +
     pxFram * Math.cos((Math.PI / 180) * denneTmp.pos.retning) +
     pxV * Math.sin((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.fv[1] =
-    denneTmp.pos.px[1] +
+    denneTmp.pos.midt.y +
     pxFram * Math.sin((Math.PI / 180) * denneTmp.pos.retning) +
     pxV * -1 * Math.cos((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.fh[0] =
-    denneTmp.pos.px[0] +
+    denneTmp.pos.midt.x +
     pxFram * Math.cos((Math.PI / 180) * denneTmp.pos.retning) +
     pxH * -1 * Math.sin((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.fh[1] =
-    denneTmp.pos.px[1] +
+    denneTmp.pos.midt.y +
     pxFram * Math.sin((Math.PI / 180) * denneTmp.pos.retning) +
     pxH * Math.cos((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.bh[0] =
-    denneTmp.pos.px[0] +
+    denneTmp.pos.midt.x +
     pxBak * -1 * Math.cos((Math.PI / 180) * denneTmp.pos.retning) +
     pxH * -1 * Math.sin((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.bh[1] =
-    denneTmp.pos.px[1] +
+    denneTmp.pos.midt.y +
     pxBak * -1 * Math.sin((Math.PI / 180) * denneTmp.pos.retning) +
     pxH * Math.cos((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.bv[0] =
-    denneTmp.pos.px[0] +
+    denneTmp.pos.midt.x +
     pxBak * -1 * Math.cos((Math.PI / 180) * denneTmp.pos.retning) +
     pxV * Math.sin((Math.PI / 180) * denneTmp.pos.retning);
   denneTmp.pos.bv[1] =
-    denneTmp.pos.px[1] +
+    denneTmp.pos.midt.y +
     pxBak * -1 * Math.sin((Math.PI / 180) * denneTmp.pos.retning) +
     pxV * -1 * Math.cos((Math.PI / 180) * denneTmp.pos.retning);
   if (type === "maskin") {
     denneTmp.pos.framKrok[0] =
-      denneTmp.pos.px[0] +
+      denneTmp.pos.midt.x +
       denne.bilde.pxFramKrok[0] *
         -1 *
         Math.cos((Math.PI / 180) * denneTmp.pos.retning) +
       denne.bilde.pxFramKrok[1] *
         Math.sin((Math.PI / 180) * denneTmp.pos.retning);
     denneTmp.pos.framKrok[1] =
-      denneTmp.pos.px[1] +
+      denneTmp.pos.midt.y +
       denne.bilde.pxFramKrok[0] *
         -1 *
         Math.sin((Math.PI / 180) * denneTmp.pos.retning) +
@@ -493,14 +484,14 @@ function oppdaterTingPoisjonar(denne, denneTmp, type) {
         -1 *
         Math.cos((Math.PI / 180) * denneTmp.pos.retning);
     denneTmp.pos.bakKrok[0] =
-      denneTmp.pos.px[0] +
+      denneTmp.pos.midt.x +
       denne.bilde.pxBakKrok[0] *
         -1 *
         Math.cos((Math.PI / 180) * denneTmp.pos.retning) +
       denne.bilde.pxBakKrok[1] *
         Math.sin((Math.PI / 180) * denneTmp.pos.retning);
     denneTmp.pos.bakKrok[1] =
-      denneTmp.pos.px[1] +
+      denneTmp.pos.midt.y +
       denne.bilde.pxBakKrok[0] *
         -1 *
         Math.sin((Math.PI / 180) * denneTmp.pos.retning) +
@@ -578,11 +569,11 @@ function redskapKobling(denne) {
   }
   doning.redskap[denne].arbeid.aktiv = false;
   //oppdater rutenr til redskap
-  doning.redskap[denne].pos.rute[0] = Math.floor(
-    doning.redskap[denne].pos.px[0] / pixel.ruteLengde
+  doning.redskap[denne].rute.x= Math.floor(
+    doning.redskap[denne].pos.midt.x / pixel.ruteLengde
   );
-  doning.redskap[denne].pos.rute[1] = Math.floor(
-    doning.redskap[denne].pos.px[1] / pixel.ruteLengde
+  doning.redskap[denne].rute.y= Math.floor(
+    doning.redskap[denne].pos.midt.y / pixel.ruteLengde
   );
 
   koblingskarantene.sett(doning.redskap[denne]); // gjer at den ikkje kobler seg rett på igjen
@@ -625,18 +616,18 @@ function utAvDoning() {
   if (doning !== maskinar["ting0"]) {
     koblingskarantene.sett(doning);
     maskinar["ting0"].pos.px = [
-      doning.pos.px[0] +
+      doning.pos.midt.x +
         doning.bilde.pxDor[0] * Math.cos((Math.PI / 180) * doning.pos.retning) +
         doning.bilde.pxDor[1] * Math.sin((Math.PI / 180) * doning.pos.retning),
-      doning.pos.px[1] +
+      doning.pos.midt.y +
         doning.bilde.pxDor[0] * Math.sin((Math.PI / 180) * doning.pos.retning) +
         doning.bilde.pxDor[1] *
           -1 *
           Math.cos((Math.PI / 180) * doning.pos.retning),
     ];
     let tmpFlytt = [
-      maskinar["ting0"].pos.px[0] - doning.pos.px[0],
-      maskinar["ting0"].pos.px[1] - doning.pos.px[1],
+      maskinar["ting0"].pos.midt.x - doning.pos.midt.x,
+      maskinar["ting0"].pos.midt.y - doning.pos.midt.y,
     ];
     doning = maskinar["ting0"];
     flyttKart(tmpFlytt);
