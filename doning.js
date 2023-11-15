@@ -114,7 +114,7 @@ function oppdaterSvingAnimasjon() {
 }
 // ------------------------------------------oppdater sving animasjon-------------------------------
 function oppdaterLastAnimasjon(denne) {
-  if ( denne === null || denne.last.type === null ||d enne.bilde.lastMaksAnim === 0 ) { return;  } //sjekk om redskap og last og animasjon finns
+  if ( denne === null || denne.last.type === null ||denne.bilde.lastMaksAnim === 0 ) { return;  } //sjekk om redskap og last og animasjon finns
   //Roter last animasjon likt som svinganimasjon. Rekn ut kor mange "prosent" av last igjen og juster animasjon der etter.
   denne.bilde.svingAnim = denne.bilde.startLastAnim[denne.last.type] +  Math.floor( (denne.last.niva *
         (denne.bilde.maksLastAnim[denne.last.type] -
@@ -136,10 +136,10 @@ function erDoningPaNyRute() {
     return;
   }
 
-  if (tmpRute.x!== doning.rute.x|| tmpRute.y !== doning.pos.rute[1]) {
+  if (tmpRute.x !== doning.rute.x || tmpRute.y !== doning.rute.y){
     if (
-      landskap["x" + doning.rute.x+ "y" + doning.pos.rute[1]].navn !==
-      landskap["x" + tmpRute[0] + "y" + tmpRute[1]].navn
+      landskap["x" + doning.rute.x+ "y" + doning.rute.y].navn !==
+      landskap["x" + tmpRute[0] + "y" + tmpRute.x].navn
     ) {
       flagg.nyRute = true;
       flagg.nyRutetype = true;
@@ -157,33 +157,27 @@ function nyRetningDoning(sving) {
     return;
   } // ikkje sving om du krasje i tilhengaren
 
-  doning.tmp.pos.retning = doning.pos.retning;
+  doning.retnig.tmp = doning.retnig.aktiv;
   //sjekk om redskap er aktivert
-  let tmpSving =
-    doning.sving.fart === "fart"
-      ? Math.abs(doning.fart.aktiv) * 0.6
-      : doning.sving.fart; // bruk fast sving fart eller fart som svingfart
+  let tmpSving = doning.sving.fart === "fart" ? Math.abs(doning.fart.aktiv) * 0.6 : doning.sving.fart; // bruk fast sving fart eller fart som svingfart
   if (doning.redskap.fram !== null && doning.redskap.fram.arbeid.aktiv) {
     // bruk redskap i arbeid svingfart om redskap er aktivert
     tmpSving = doning.redskap.fram.sving.fart;
   }
   if (doning.redskap.bak !== null && doning.redskap.bak.arbeid.aktiv) {
-    tmpSving =
-      tmpSving > doning.redskap.bak.sving.fart
-        ? doning.redskap.bak.sving.fart
-        : tmpSving; // overskriv frarten om denne farten er mindre
+    tmpSving = tmpSving > doning.redskap.bak.sving.fart ? doning.redskap.bak.sving.fart : tmpSving; // overskriv frarten om denne farten er mindre
   }
 
   //## Ny retning doning
   if (sving === "venstre") {
-    doning.tmp.pos.retning -= tmpSving;
-    if (doning.pos.retning < 0) {
-      doning.tmp.pos.retning += 360;
+    doning.retnig.tmp -= tmpSving;
+    if (doning.retnig.aktiv < 0) {
+      doning.retnig.tmp += 360;
     }
   } else if (sving === "hogre") {
-    doning.tmp.pos.retning += tmpSving;
-    if (doning.pos.retning > 359) {
-      doning.tmp.pos.retning -= 360;
+    doning.retnig.tmp += tmpSving;
+    if (doning.retnig.aktiv > 359) {
+      doning.retnig.tmp -= 360;
     }
   }
 }
@@ -192,13 +186,13 @@ function nyRetningDoning(sving) {
 function nyPosisjonDoningOgRedskap() {
   // ny posiajonn doning
   let fart = oppdaterFart("hentFart", 0);
-  doning.tmp.pos.flytt[0] =
-    -fart * Math.cos((Math.PI / 180) * doning.tmp.pos.retning);
-  doning.tmp.pos.flytt[1] =
-    -fart * Math.sin((Math.PI / 180) * doning.tmp.pos.retning);
+  doning.rmidt.fx =
+    -fart * Math.cos((Math.PI / 180) * doning.retnig.tmp);
+  doning.rmidt.fy =
+    -fart * Math.sin((Math.PI / 180) * doning.retnig.tmp);
   doning.tmp.pos.px = [
-    doning.pos.midt.x - doning.tmp.pos.flytt[0],
-    doning.pos.midt.y - doning.tmp.pos.flytt[1],
+    doning.pos.midt.x - doning.rmidt.fx,
+    doning.pos.midt.y - doning.rmidt.fy,
   ]; //Må ver sånn
 
   // finn hjørene og krok punkt doning
@@ -213,7 +207,7 @@ function nyPosisjonDoningOgRedskap() {
         denneRedskap.type === "bakFeste" ||
         denneRedskap.type === "framFeste"
       ) {
-        denneRedskap.tmp.pos.retning = doning.tmp.pos.retning;
+        denneRedskap.tmp.pos.retning = doning.retnig.tmp;
       } else if (denneRedskap.type === "tilhengar") {
         //ny retning tilhenger redskap
         let xx = denneKrok[0] - denneRedskap.pos.midt.x;
@@ -371,7 +365,7 @@ function tingKrasjTest(fart, tmpTing) {
 function krasjITilhengerTest() {
   if (doning.redskap.bak !== null && doning.redskap.bak.type === "tilhengar") {
     let aktuellRadius = Math.abs(
-      doning.tmp.pos.retning - doning.redskap.bak.tmp.pos.retning
+      doning.retnig.tmp - doning.redskap.bak.tmp.pos.retning
     );
     if (
       aktuellRadius > maksTilhengerSving &&
@@ -617,13 +611,13 @@ function utAvDoning() {
     koblingskarantene.sett(doning);
     maskinar["ting0"].pos.px = [
       doning.pos.midt.x +
-        doning.bilde.pxDor[0] * Math.cos((Math.PI / 180) * doning.pos.retning) +
-        doning.bilde.pxDor[1] * Math.sin((Math.PI / 180) * doning.pos.retning),
+        doning.bilde.pxDor[0] * Math.cos((Math.PI / 180) * doning.retnig.aktiv) +
+        doning.bilde.pxDor[1] * Math.sin((Math.PI / 180) * doning.retnig.aktiv),
       doning.pos.midt.y +
-        doning.bilde.pxDor[0] * Math.sin((Math.PI / 180) * doning.pos.retning) +
+        doning.bilde.pxDor[0] * Math.sin((Math.PI / 180) * doning.retnig.aktiv) +
         doning.bilde.pxDor[1] *
           -1 *
-          Math.cos((Math.PI / 180) * doning.pos.retning),
+          Math.cos((Math.PI / 180) * doning.retnig.aktiv),
     ];
     let tmpFlytt = [
       maskinar["ting0"].pos.midt.x - doning.pos.midt.x,
