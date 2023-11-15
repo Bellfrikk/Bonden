@@ -341,9 +341,7 @@ function tingKrasjTest(fart, tmpTing) {
 //-------------------------------------------sjekk om traktor svinger for kraftig og krasjer i tilhenger--------------------------------------------
 function krasjITilhengerTest() {
   if (doning.redskap.bak !== null && doning.redskap.bak.type === "tilhengar") {
-    let aktuellRadius = Math.abs(
-      doning.retnig.tmp - doning.redskap.bak.tmp.pos.retning
-    );
+    let aktuellRadius = Math.abs(doning.retnig.tmp - doning.redskap.bak.retning.tmp);
     if (
       aktuellRadius > maksTilhengerSving &&
       aktuellRadius < 360 - maksTilhengerSving
@@ -366,36 +364,29 @@ function teinAlleMaskinar() {
   }
 }
 function teinMaskin(denne) {
-  if (document.getElementById(denne.navn) instanceof HTMLImageElement) {
-    //sjekker at bilde er tilgjendelig
-    // lage eit midpunkt ved omderiningspunktet på doning
-    let midtpunkt = [];
-    midtpunkt[0] = denne.pos.midt.x;
-    midtpunkt[1] = denne.pos.midt.y;
-    maskinar.lerret.translate(midtpunkt[0], midtpunkt[1]); //flytt fokus tilmidtpunkt
-    maskinar.lerret.rotate((denne.pos.retning * Math.PI) / 180); //roter verden liks som doning
-    maskinar.lerret.translate(midtpunkt[0] * -1, midtpunkt[1] * -1); //flytt fokus til start
-
-    //teiner doning
-    maskinar.lerret.drawImage(
-      document.getElementById(denne.navn),
-      denne.bilde.svingAnim * denne.bilde.bredde,
-      denne.bilde.kjoreAnim * denne.bilde.hoyde, // velg utsnitt av doningtegning alt etter sving og animasjon
-      denne.bilde.bredde,
-      denne.bilde.hoyde, //bredde og høyde på utsnitt
-      midtpunkt[0] - denne.bilde.pxBak,
-      midtpunkt[1] - denne.bilde.pxV, //posisjon av tegning
-      denne.bilde.pxFram + denne.bilde.pxBak,
-      denne.bilde.pxV + denne.bilde.pxH
-    ); // bredde og høyde på tegning
-    maskinar.lerret.translate(midtpunkt[0], midtpunkt[1]); //flytt fokus tilmidtpunkt
-    maskinar.lerret.rotate(((denne.pos.retning * Math.PI) / 180) * -1); // roter verden tilbake
-    maskinar.lerret.translate(midtpunkt[0] * -1, midtpunkt[1] * -1); //flytt fokus til start
-
-    oppdaterTingPoisjonar(denne, denne, "maskin");
-  } else {
+  if (document.getElementById(denne.grafikk.fil) instanceof HTMLImageElement === false) {  //sjekker at bilde er tilgjendelig
     console.error(denne.navn + " har ikkje bilde: " + denne.aktivBakgrunn);
   }
+  //flytt fokus til midt av maskin og roter riktig
+  maskinar.lerret.translate(denne.pos.midt.x, denne.pos.midt.y); //flytt fokus tilmidtpunkt
+  maskinar.lerret.rotate(denne.retning.aktiv * Math.PI / 180); //roter verden liks som doning
+  //teiner doning
+  denne.grafikk.aktivListe.forEach( del => {
+    maskinar.lerret.translate(denne.grafikk[del].pos.x, denne.grafikk[del].pos.y); //flytt fokus tilmidtpunkt av del
+    maskinar.lerret.rotate((denne.grafikk[del].animasjon.retning * Math.PI) / 180); //roter verden liks som doning
+    maskinar.lerret.drawImage(
+      document.getElementById(denne.grafikk.fil),// velg bildefil
+      denne.grafikk[del].kippPos[denne.grafikk[del].animasjon.aktiv].x, denne.grafikk[del].kippPos[denne.grafikk[del].animasjon.aktiv].y, // velg utsnitt av doningtegning alt etter sving og animasjon
+      denne.grafikk[del].str.x,  denne.grafikk[del].str.y, //bredde og høyde på utsnitt
+      -denne.grafikk[del].str.x/2, -denne.grafikk[del].str.y/2, //posisjon av tegning
+      denne.grafikk[del].str.x, denne.grafikk[del].str.y,// bredde og høyde på tegning
+      ); 
+      maskinar.lerret.translate(-denne.grafikk[del].pos.x, -denne.grafikk[del].pos.y); //flytt fokus talbake fra del
+      maskinar.lerret.rotate((-denne.grafikk[del].animasjon.retning * Math.PI) / 180); //roter verden liks som del
+
+    maskinar.lerret.rotate((denne.retning.aktiv * Math.PI / 180) * -1);   //flytt fokus tilbake
+    maskinar.lerret.translate(-denne.pos.midt.x, -denne.pos.midt.y); //roter tilbake 
+  });
 }
 //====================================================== oppdaterTingPoisjonar ======================================================================
 
@@ -474,7 +465,7 @@ function oppdaterTingPoisjonar(denne, denneTmp, type) {
 //====================================================== lagreOppdaterTingPoisjonar ======================================================================
 
 function lagreOppdaterteTingPosisjonar(denne, denneTmp) {
-  denne.pos.retning = denneTmp.pos.retning;
+  denne.retning.aktiv = denneTmp.pos.retning;
   denne.pos.px = denneTmp.pos.px;
   denne.pos.fv = denneTmp.pos.fv;
   denne.pos.fh = denneTmp.pos.fh;
