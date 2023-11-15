@@ -294,50 +294,27 @@ function krasjtest() {
 
 //--------------------------------------------------- krasj i ting test -----------------------------------------
 function tingKrasjTest(fart, tmpTing) {
-  let A, B, C, D;
-  if (fart > 0) {
-    //kjøre fram, sjekk front
-    if (doning.redskap.fram === null) {
-      A = doning.pos.fv;
-      B = doning.pos.fh;
-    } else {
-      A = doning.redskap.fram.pos.fv;
-      B = doning.redskap.fram.pos.fh;
-    }
-  } else {
-    //kjøre bak, sjekk bak
-    if (doning.redskap.bak === null) {
-      A = doning.pos.bv;
-      B = doning.pos.bh;
-    } else {
-      A = doning.redskap.bak.pos.bv;
-      B = doning.redskap.bak.pos.bh;
-    }
-  } //kjasj mot front?
-  C = tmpTing.pos.fv;
-  D = tmpTing.pos.fh;
-  if (linjeSjekk(A, B, C, D)) {
-    return "krasj";
-  }
-  //krasj mot bak?
-  C = tmpTing.pos.bv;
-  D = tmpTing.pos.bh;
-  if (linjeSjekk(A, B, C, D)) {
-    return "krasj";
-  }
-  // kjasj mot venstre?
-  C = tmpTing.pos.fv;
-  D = tmpTing.pos.bv;
-  if (linjeSjekk(A, B, C, D)) {
-    return "krasj";
-  }
-  //krasj mot hogre ?
-  C = tmpTing.pos.fh;
-  D = tmpTing.pos.bh;
-  if (linjeSjekk(A, B, C, D)) {
-    return "krasj";
-  }
+  let A, B, C, D, krasjSide;
+  if (fart > 0 && doning.redskap.fram === null) { krasjSide = doning.krasj.sider.framSider;}
+  else if(fart > 0 && doning.redskap.fram !== null) { krasjSide = doning.redskap.fram.krasj.sider.framSider;}
+  if (fart < 0 && doning.redskap.bak === null) { krasjSide = doning.krasj.sider.bakSider;}
+  else if(fart < 0 && doning.redskap.bak !== null) { krasjSide = doning.redskap.bak.krasj.sider.bakSider;}
 
+  
+  krasjSide.forEach(side => {
+    A = doning.krasj.punkt[side[0]];
+    B = doning.krasj.punkt[side[1]];
+    Object.keys(tmpTing.krasj.sider).forEach(sideType => {
+      doning.krasj.sider[sideType].forEach(side => {
+        C = doning.krasj.punkt[side[0]];
+        D = doning.krasj.punkt[side[1]];
+        if (linjeSjekk(A, B, C, D)) {
+          return "krasj";
+        }
+      });
+    });
+  });
+  
   // const M ={
   //   x: linjeKryss(A[0], B[0], t),
   //   y: linjeKryss(A[1], B[1], t)
@@ -347,9 +324,9 @@ function tingKrasjTest(fart, tmpTing) {
     return A + (B - A) * t;
   }
   function linjeSjekk(A, B, C, D) {
-    const tTopp = (D[0] - C[0]) * (A[1] - C[1]) - (D[1] - C[1]) * (A[0] - C[0]);
-    const uTopp = (C[1] - A[1]) * (A[0] - B[0]) - (C[0] - A[0]) * (A[1] - B[1]);
-    const botn = (D[1] - C[1]) * (B[0] - A[0]) - (D[0] - C[0]) * (B[1] - A[1]);
+    const tTopp = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x);
+    const uTopp = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y);
+    const botn = (D.y - C.y) * (B.x - A.x) - (D.x - C.x) * (B.y - A.y);
 
     if (botn !== 0) {
       let t = tTopp / botn;
