@@ -210,12 +210,11 @@ function nyPosisjonDoningOgRedskap() {
         denneRedskap.tmp.pos.retning = doning.retnig.tmp;
       } else if (denneRedskap.type === "tilhengar") {
         //ny retning tilhenger redskap
-        let xx = denneKrok[0] - denneRedskap.pos.midt.x;
-        let yy = denneKrok[1] - denneRedskap.pos.midt.y;
+        let xx = denneKrok.x - denneRedskap.pos.midt.x;
+        let yy = denneKrok.y - denneRedskap.pos.midt.y;
         denneRedskap.tmp.pos.retning = (Math.atan2(yy, xx) * 180) / Math.PI; // gir ein vinkel frå 0 til 180 til -180 til -0
-        if (denneRedskap.tmp.pos.retning < 0) {
-          denneRedskap.tmp.pos.retning =
-            360 - denneRedskap.tmp.pos.retning * -1; // konverterer negatin vinkel til 180 -360
+        if (denneRedskap.retning.tmp < 0) {
+          denneRedskap.retning.tmp = 360 - denneRedskap.tmp.pos.retning * -1; // konverterer negatin vinkel til 180 -360
         }
       }
 
@@ -224,11 +223,12 @@ function nyPosisjonDoningOgRedskap() {
         denneRedskap.type === "framFeste"
       ) {
         // ny posisjon trepunkts redskap
-        denneRedskap.tmp.pos.px = [...denneTmpKrok];
+        denneRedskap.pos.midt.x = denneTmpKrok.x;
+        denneRedskap.pos.midt.y = denneTmpKrok.y;
       } else if (doning.redskap.bak.type === "tilhengar") {
         //ny posisjon tilhenger redskap
         denneRedskap.tmp.pos.midt.x =
-          denneTmpKrok[0] +
+          denneTmpKrok.x +
           denneRedskap.bilde.pxFram *
             -1 *
             Math.cos((Math.PI / 180) * denneRedskap.tmp.pos.retning); // + (Math.sin(Math.PI / 180 * doning.redskap.tmp.retning));
