@@ -294,7 +294,7 @@ const orginalTing = {
   butikk : {
     navn: 'butikk' , 
     pos: {midt: {dx:0,dy:0,x:3,y:3}},
-    retning: {aktiv:90, tmp:o},
+    retning: {aktiv:90},
     rute:{x:3,y:3},  
     grafikk:{    
       fil:'butikk',
