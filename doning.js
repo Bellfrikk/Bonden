@@ -157,7 +157,7 @@ function nyRetningDoning(sving) {
     return;
   } // ikkje sving om du krasje i tilhengaren
 
-  doning.retnig.tmp = doning.retnig.aktiv;
+  doning.retning.tmp = doning.retning.aktiv;
   //sjekk om redskap er aktivert
   let tmpSving = doning.sving.fart === "fart" ? Math.abs(doning.fart.aktiv) * 0.6 : doning.sving.fart; // bruk fast sving fart eller fart som svingfart
   if (doning.redskap.fram !== null && doning.redskap.fram.arbeid.aktiv) {
@@ -170,14 +170,14 @@ function nyRetningDoning(sving) {
 
   //## Ny retning doning
   if (sving === "venstre") {
-    doning.retnig.tmp -= tmpSving;
-    if (doning.retnig.aktiv < 0) {
-      doning.retnig.tmp += 360;
+    doning.retning.tmp -= tmpSving;
+    if (doning.retning.aktiv < 0) {
+      doning.retning.tmp += 360;
     }
   } else if (sving === "hogre") {
-    doning.retnig.tmp += tmpSving;
-    if (doning.retnig.aktiv > 359) {
-      doning.retnig.tmp -= 360;
+    doning.retning.tmp += tmpSving;
+    if (doning.retning.aktiv > 359) {
+      doning.retning.tmp -= 360;
     }
   }
 }
@@ -187,9 +187,9 @@ function nyPosisjonDoningOgRedskap() {
   // ny posiajonn doning
   let fart = oppdaterFart("hentFart", 0);
   doning.rmidt.fx =
-    -fart * Math.cos((Math.PI / 180) * doning.retnig.tmp);
+    -fart * Math.cos((Math.PI / 180) * doning.retning.tmp);
   doning.rmidt.fy =
-    -fart * Math.sin((Math.PI / 180) * doning.retnig.tmp);
+    -fart * Math.sin((Math.PI / 180) * doning.retning.tmp);
   doning.tmp.pos.px = [
     doning.pos.midt.x - doning.rmidt.fx,
     doning.pos.midt.y - doning.rmidt.fy,
@@ -207,7 +207,7 @@ function nyPosisjonDoningOgRedskap() {
         denneRedskap.type === "bakFeste" ||
         denneRedskap.type === "framFeste"
       ) {
-        denneRedskap.tmp.pos.retning = doning.retnig.tmp;
+        denneRedskap.tmp.pos.retning = doning.retning.tmp;
       } else if (denneRedskap.type === "tilhengar") {
         //ny retning tilhenger redskap
         let xx = denneKrok.x - denneRedskap.pos.midt.x;
@@ -341,7 +341,7 @@ function tingKrasjTest(fart, tmpTing) {
 //-------------------------------------------sjekk om traktor svinger for kraftig og krasjer i tilhenger--------------------------------------------
 function krasjITilhengerTest() {
   if (doning.redskap.bak !== null && doning.redskap.bak.type === "tilhengar") {
-    let aktuellRadius = Math.abs(doning.retnig.tmp - doning.redskap.bak.retning.tmp);
+    let aktuellRadius = Math.abs(doning.retning.tmp - doning.redskap.bak.retning.tmp);
     if (
       aktuellRadius > maksTilhengerSving &&
       aktuellRadius < 360 - maksTilhengerSving
@@ -579,13 +579,13 @@ function utAvDoning() {
     koblingskarantene.sett(doning);
     maskinar["ting0"].pos.px = [
       doning.pos.midt.x +
-        doning.bilde.pxDor[0] * Math.cos((Math.PI / 180) * doning.retnig.aktiv) +
-        doning.bilde.pxDor[1] * Math.sin((Math.PI / 180) * doning.retnig.aktiv),
+        doning.bilde.pxDor[0] * Math.cos((Math.PI / 180) * doning.retning.aktiv) +
+        doning.bilde.pxDor[1] * Math.sin((Math.PI / 180) * doning.retning.aktiv),
       doning.pos.midt.y +
-        doning.bilde.pxDor[0] * Math.sin((Math.PI / 180) * doning.retnig.aktiv) +
+        doning.bilde.pxDor[0] * Math.sin((Math.PI / 180) * doning.retning.aktiv) +
         doning.bilde.pxDor[1] *
           -1 *
-          Math.cos((Math.PI / 180) * doning.retnig.aktiv),
+          Math.cos((Math.PI / 180) * doning.retning.aktiv),
     ];
     let tmpFlytt = [
       maskinar["ting0"].pos.midt.x - doning.pos.midt.x,
