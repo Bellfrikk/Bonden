@@ -20,6 +20,7 @@ function nyTing(x, id) {
   this.krasj = orginalTing[x].krasj;
   this.type = orginalTing[x].type;
   this.last = orginalTing[x].last;
+  this.butikk = orginalTing[x].butikk;
   this.fart = orginalTing[x].fart;
   this.sving = orginalTing[x].sving;
   //oppdater posisjon fra rutekoordinat til pixel

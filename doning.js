@@ -17,16 +17,18 @@ function nyMaskin(x, id) {
   this.kjopt = true;
   this.id = id;
   this.navn = orginalMaskin[x].navn;
+  this.type = orginalMaskin[x].type;
+  this.retning = orginalMaskin[x].retning;
   this.rute = orginalMaskin[x].rute;
-  this.grafikk = orginalMaskin[x].grafikk;
   this.pos = orginalMaskin[x].pos;
   this.krasj = orginalMaskin[x].krasj;
-  this.type = orginalMaskin[x].type;
-  this.sving = orginalMaskin[x].sving;
+  this.grafikk = orginalMaskin[x].grafikk;
   this.fart = orginalMaskin[x].fart;
+  this.sving = orginalMaskin[x].sving;
   this.drivstoff = orginalMaskin[x].drivstoff;
   this.last = orginalMaskin[x].last;
   this.arbeid = orginalMaskin[x].arbeid;
+  this.butikk = orginalMaskin[x].butikk;
   //oppdater posisjon fra rutekoordinat til pixel
   this.pos.midt.x = this.rute.x* pixel.ruteLengde;
   this.pos.midt.y = this.rute.y* pixel.ruteLengde;
@@ -34,7 +36,6 @@ function nyMaskin(x, id) {
   this.animasjon = { forsinkelse: 0, sekvens: 0 };
   this.redskap = { fram: null, bak: null };
   this.klarTilKoblingRedskap = { fram: null, bak: null };
-  this.tmp = { pos: { ...this.pos, flytt: [0, 0] } };
 }
 //====================================================== flytting av doning ======================================================================
 
