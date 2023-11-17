@@ -186,14 +186,10 @@ function nyRetningDoning(sving) {
 function nyPosisjonDoningOgRedskap() {
   // ny posiajonn doning
   let fart = oppdaterFart("hentFart", 0);
-  doning.rmidt.fx =
-    -fart * Math.cos((Math.PI / 180) * doning.retning.tmp);
-  doning.rmidt.fy =
-    -fart * Math.sin((Math.PI / 180) * doning.retning.tmp);
-  doning.tmp.pos.px = [
-    doning.pos.midt.x - doning.rmidt.fx,
-    doning.pos.midt.y - doning.rmidt.fy,
-  ]; //Må ver sånn
+  doning.midt.fx =  -fart * Math.cos((Math.PI / 180) * doning.retning.tmp);
+  doning.midt.fy =  -fart * Math.sin((Math.PI / 180) * doning.retning.tmp);
+  doning.pos.midt.x = doning.pos.midt.x - doning.midt.fx,  
+  doning.pos.midt.y = doning.pos.midt.y - doning.midt.fy; 
 
   // finn hjørene og krok punkt doning
   oppdaterTingPoisjonar(doning, doning.tmp, "maskin");
@@ -466,7 +462,7 @@ function oppdaterTingPoisjonar(denne, denneTmp, type) {
 
 function lagreOppdaterteTingPosisjonar(denne, denneTmp) {
   denne.retning.aktiv = denneTmp.pos.retning;
-  denne.pos.px = denneTmp.pos.px;
+  denne.pos.px = dennepos.midt.x;
   denne.pos.fv = denneTmp.pos.fv;
   denne.pos.fh = denneTmp.pos.fh;
   denne.pos.bh = denneTmp.pos.bh;
