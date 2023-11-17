@@ -20,7 +20,6 @@ let doning = {};
 let aktiv = { rute: [] };
 let krasjTingen = '';
 let krasjRetning = '';
-console.log('H23');
 let aktivSkjerm = { verden: true, butikk: false };
 
 skjerm.bredde = Math.abs(document.body.getBoundingClientRect().width)+1;

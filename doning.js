@@ -44,17 +44,16 @@ function kanDoningFlyttast(sving) {
   if (doning.fart.aktiv <= 0 && krasjITilhengerTest() === "krasj") {
     return doning.redskap.bak;
   }
-
   return krasjtest();
 }
 
 function flyttDoning() {
-  lagreOppdaterteTingPosisjonar(doning, doning.tmp);
+  lagreOppdaterteTingPosisjonar(doning);
   if (doning.redskap.fram !== null) {
-    lagreOppdaterteTingPosisjonar(doning.redskap.fram, doning.redskap.fram.tmp);
+    lagreOppdaterteTingPosisjonar(doning.redskap.fram, doning);
   }
   if (doning.redskap.bak !== null) {
-    lagreOppdaterteTingPosisjonar(doning.redskap.bak, doning.redskap.bak.tmp);
+    lagreOppdaterteTingPosisjonar(doning.redskap.bak);
   }
   flagg.doningFlytta = true;
   return true;
@@ -63,21 +62,9 @@ function flyttDoning() {
 function flyttKart(flytt) {
   //flytt verden visst doning nærmar ser kanten
   if (
-    !(
-      doning.pos.midt.x < skjerm.bredde / 2 ||
-      doning.pos.midt.x > skjerm.hogre - skjerm.bredde / 2
-    )
-  ) {
-    pixel.start.x -= pos.midt.fx;
-    landskap.erEndra = true;
-  }
+    !( doning.pos.midt.x < skjerm.bredde / 2 || doning.pos.midt.x > skjerm.hogre - skjerm.bredde / 2 )  ) {  pixel.start.x -= pos.midt.fx; landskap.erEndra = true;  }
   if (
-    !(
-      doning.pos.midt.y < skjerm.hoydeLandskap / 2 ||
-      doning.pos.midt.y >
-        skjerm.botn - skjerm.hoydeKnappar - skjerm.hoydeLandskap / 2
-    )
-  ) {
+    !( doning.pos.midt.y < skjerm.hoydeLandskap / 2 ||  doning.pos.midt.y >  skjerm.botn - skjerm.hoydeKnappar - skjerm.hoydeLandskap / 2 ) ) {
     pixel.start.y -= pos.midt.fy;
     landskap.erEndra = true;
   }
