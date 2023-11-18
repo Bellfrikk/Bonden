@@ -360,7 +360,7 @@ function teinMaskin(denne) {
     maskinar.lerret.rotate((denne.grafikk[del].animasjon.retning * Math.PI) / 180); //roter verden liks som doning
     maskinar.lerret.drawImage(
       document.getElementById(denne.grafikk.fil),// velg bildefil
-      denne.grafikk[del].kippPos[denne.grafikk[del].animasjon.aktiv].x, denne.grafikk[del].kippPos[denne.grafikk[del].animasjon.aktiv].y, // velg utsnitt av doningtegning alt etter sving og animasjon
+      denne.grafikk[del].klippPos[denne.grafikk[del].animasjon.aktiv].x, denne.grafikk[del].kippPos[denne.grafikk[del].animasjon.aktiv].y, // velg utsnitt av doningtegning alt etter sving og animasjon
       denne.grafikk[del].str.x,  denne.grafikk[del].str.y, //bredde og høyde på utsnitt
       -denne.grafikk[del].str.x/2, -denne.grafikk[del].str.y/2, //posisjon av tegning
       denne.grafikk[del].str.x, denne.grafikk[del].str.y,// bredde og høyde på tegning
