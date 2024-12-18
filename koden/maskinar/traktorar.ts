@@ -10,6 +10,7 @@ class Traktor extends MaskinKjoretoyMal {
       karosseri : GrafikkDelBase,
   }
 
+  
   constructor (ny:TraktorData, rute:Posisjon){
     super(ny, rute)
     this.grafikk = {
