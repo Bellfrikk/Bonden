@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang='no'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Bonden 4</title>
+  <style>
+    body {
+      margin:0px;
+      scroll-behavior: unset;
+      width: 100vw;
+      height:100vh;
+      overflow:hidden;
+    }
+    .lerret{
+      width: 100vw;
+      height:100vh;
+    }
+    img, #butikkID{
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas class='lerret' id='skjermID'></canvas>
+  <img id='ferrari' src='bilde/ferrari.png'>
+
+  <img id='maskinar' src='bilde/maskinar.png'>
+  <img id='landskap' src='bilde/landskap.png'>
+  <img id='knappar' src='bilde/ikon/knappar.png'>
+  <img id='bildeTing' src='bilde/ting.png'>
+  <img id='jorde' src='bilde/jorde.png'>
+
+  <!--knappar-->
+  <!--ikon-->
+  <img id='ikonPeng' src='bilde/ikon/peng.png'>
+  <img id='ikonDrivstoff' src='bilde/ikon/drivstoff.png'>
+  <img id='ikonLast' src='bilde/ikon/last.png'>
+  <!--Butikk-doning-->
+  <img id='butikkTraktor0' src='bilde/butikk/traktor0.png'>
+  <img id='butikkTraktor1' src='bilde/butikk/traktor1.png'>
+  <img id='butikkSkurtreskar0' src='bilde/butikk/traktor2.png'>
+  <img id='butikkGravemaskin0' src='bilde/butikk/traktor2.png'>
+  <!--Butikk-redskap-->
+  <img id='butikkBallemaskin0' src='bilde/butikk/ballemaskin0.png'>
+  <img id='butikkPlog0' src='bilde/butikk/plog0.jpg'>
+  <img id='butikkSamaskin0' src='bilde/butikk/samaskin0.png'>
+  <!--Butikk-ting-->
+  <img id='butikkFroSekkGras' src='bilde/butikk/froSekkGras.jpg'>
+  <img id='butikkFroSekkKorn' src='bilde/butikk/froSekkKorn.jpg'>
+  
+  <script defer src="felles/animasjon.js"></script>
+  <script defer src="felles/fellesFunksjoner.js"></script>
+  <script defer src="felles/fellesMaskinTingLandskap.js"></script>
+  <script defer src="felles/last.js"></script>
+
+  <script defer src="maskinar/maskinFelles.js"></script>
+  <script defer src="maskinar/maskinar.js"></script>
+  <script defer src="maskinar/bonde.js"></script>
+  <script defer src="maskinar/plogar.js"></script>
+  <script defer src="maskinar/tilhengar.js"></script>
+  <script defer src="maskinar/traktorar.js"></script>
+  <script defer src="maskinar/samaskin.js"></script>
+  <script defer src="maskinar/slamaskin.js"></script>
+
+
+
+  <script defer src="ting/tingFelles.js"></script>
+  <script defer src="ting/ting.js"></script>
+  <script defer src="ting/bygg.js"></script>
+  <script defer src="ting/lastTing.js"></script>
+
+  <script defer src="kart/fellesKart.js"></script>
+  <script defer src="kart/kart1.js"></script>
+
+  <!--<script defer src="butikk.js"></script>-->
+  <script defer src="hovedKlassar.js"></script>
+  <script defer src="landskapData.js"></script>
+  <script defer src="hovedData.js"></script>
+  <script defer src="landskap.js"></script>
+  <script defer src="toppLinje.js"></script>
+  <script defer src="hoved.js"></script>
+  <script defer src="knappar.js"></script>
+
+
+  <script>
+  window.onload = () => {
+  start();
+  }
+  </script>
+</body>
+
+</html>
