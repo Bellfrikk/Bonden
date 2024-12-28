@@ -57,7 +57,10 @@ class BaseMal {
             this.last.valgtLast = this.last.laster[ny.last.valgtLast];
         }
         this.butikk = ny.butikk;
-        this.funksjonane = ny.funksjonane;
+        this.funksjonane = {};
+        for (let key in ny.funksjonane) {
+            this.funksjonane[key] = ny.funksjonane[key];
+        }
     }
 }
 function teinTingEllerMaskin(detteLerret, bilde, denne, tmpDel) {

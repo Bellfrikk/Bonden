@@ -78,7 +78,7 @@ const samaskin0:SamaskinData = {
       fro:{
         niva:50, maks:500, visNiva:true, lastTilDoning: false,
         mottak:  {plass:'lossePlass', mengde:1, evigLager:false},
-        levering:{punkt:null, mengde:0, evigLager:false}
+        levering:{plass:'', mengde:0, evigLager:false}
       }
     } 
   },

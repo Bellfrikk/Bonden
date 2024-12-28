@@ -71,6 +71,9 @@ function lagKrasjSider(data: string[][], krasjPunkt: KrasjPunkt): PosisjonMal[][
   return data.map(denne => [krasjPunkt[denne[0]], krasjPunkt[denne[1]]]);
 }
 
+type EinFunksjon = (denne: Maskin|Ting, data:any) => void;
+
+
 
 class BaseMal {
   navn: string; 
@@ -86,7 +89,7 @@ class BaseMal {
   };
   krasj: KrasjMal;
   last:LastMal;
-  funksjonane: [string,(denne: Maskin,data:any) => void][];
+  funksjonane: Record<string, null|EinFunksjon>;
   butikk: { type:'ingen'|'kjoretoy'|'redskap'|'ting', bilde: string, tittel: string, pris: number }
 
   constructor (ny:BaseMalData, rute:Posisjon){
@@ -126,7 +129,10 @@ class BaseMal {
     } 
     if(ny.last.valgtLast !== null) {this.last.valgtLast = this.last.laster[ny.last.valgtLast];}
     this.butikk = ny.butikk;
-    this.funksjonane = ny.funksjonane;
+    this.funksjonane = {};
+    for (let key in ny.funksjonane) {
+      this.funksjonane[key] = ny.funksjonane[key];
+    } 
   }
 }
 
@@ -149,9 +155,8 @@ interface BaseMalData {
     };
     last: lasterMal,
     butikk: { type: 'ingen'|'kjoretoy'|'redskap'|'ting', bilde: string, tittel: string, pris: number },
-    funksjonane: [string,(denne: any, data:any) => void][];      
+    funksjonane: Record<string, EinFunksjon>;    
   }
-  
 
 function teinTingEllerMaskin(detteLerret:CanvasRenderingContext2D,bilde:HTMLCanvasElement, denne:Maskin|Ting,tmpDel:GrafikkDelBase) {
   //flytt fokus til midt av maskin og roter riktig

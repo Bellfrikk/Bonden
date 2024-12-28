@@ -224,10 +224,9 @@ function aktiverDoningFunksjonane( flagg:string ) {
  * @description Aktiverer eventuelle funksjonar i doning som har dette flagg
  */
 function aktiverDenneFunksjonane(flagg:string, denne:Maskin|Ting, data?:any):void{
-  if(denne.funksjonane === null){ return; }
-  denne.funksjonane.forEach(funksjon => {
-    if(funksjon[0] === flagg){ funksjon[1](denne, data) };
-  });
+  if(denne.funksjonane.flagg){
+    denne.funksjonane.flagg(denne, data);
+  }
 }
 //===================================================== velgSkjerm
 function velgSkjerm(valgtSkjerm:'butikk'|'verden') {

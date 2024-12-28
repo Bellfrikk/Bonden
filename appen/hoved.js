@@ -242,15 +242,9 @@ function aktiverDoningFunksjonane(flagg) {
  * @description Aktiverer eventuelle funksjonar i doning som har dette flagg
  */
 function aktiverDenneFunksjonane(flagg, denne, data) {
-    if (denne.funksjonane === null) {
-        return;
+    if (denne.funksjonane.flagg) {
+        denne.funksjonane.flagg(denne, data);
     }
-    denne.funksjonane.forEach(funksjon => {
-        if (funksjon[0] === flagg) {
-            funksjon[1](denne, data);
-        }
-        ;
-    });
 }
 //===================================================== velgSkjerm
 function velgSkjerm(valgtSkjerm) {

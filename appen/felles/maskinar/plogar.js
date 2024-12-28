@@ -58,10 +58,12 @@ const plogKverneland = {
     fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: -0.7, krasj: 0, tyngde: 1.5 },
     svingFartVedArbeid: 0.5,
     butikk: { type: 'redskap', bilde: 'butikkPlog0', tittel: 'MULD 0', pris: 20000 },
-    funksjonane: [
-        ['redskapBakAktivert', function (denne) {
-                denne.grafikk.skjerAktiv.skalVise = denne.arbeid.aktiv ? true : false;
-                denne.grafikk.skjerPassiv.skalVise = denne.arbeid.aktiv ? false : true;
-            }]
-    ],
+    funksjonane: {
+        redskapBakAktivert: (denne) => {
+            if (denne.type !== 'plog')
+                return;
+            denne.grafikk.skjerAktiv.skalVise = denne.arbeid.aktiv ? true : false;
+            denne.grafikk.skjerPassiv.skalVise = denne.arbeid.aktiv ? false : true;
+        },
+    },
 };

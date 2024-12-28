@@ -20,6 +20,7 @@ class Traktor extends MaskinKjoretoyMal {
         dekkHF : ny.grafikk.dekkHF,
         karosseri : ny.grafikk.karosseri,
     }
+    this.last.laster.drivstoff.niva = ny.last.laster.drivstoff.maks;
   }
 }
 
@@ -62,7 +63,9 @@ const traktorDexta: TraktorData = {
   sving: { fart: 'fart'},
   last: {
     valgtLast: 'drivstoff',mottar: ['drivstoff'], leverer:['drivstoff'],
-    laster: {drivstoff: { niva: 300, maks: 300,visNiva: true, lastTilDoning:false, mottak: { plass: 'drivstoff', losserFra: null, mengde: 1, evigLager:false}, levering: { punkt: null, losserTil: null, mengde: 1, evigLager:false} } }
+    laster: {drivstoff: { maks: 300,visNiva: true, lastTilDoning:false, 
+      mottak: { plass: 'drivstoff', mengde: 1, evigLager:false}, 
+      levering: { punkt: '', mengde: 1, evigLager:false} } }
   },
   arbeid: {
     type: 'traktor',
@@ -71,20 +74,26 @@ const traktorDexta: TraktorData = {
     type2: null
   },
   butikk: { type: 'kjoretoy', bilde: 'butikkTraktor0', tittel: 'BLÅTASS GL2', pris: 20000 },
-  funksjonane: [
-    ['doningFlytta', function (denne:Traktor) {
-      animerDekk(denne.grafikk['dekkVB'].animasjonDekk, denne.grafikk['dekkVB'].klippPos, denne.pos.midt);
-      animerDekk(denne.grafikk['dekkHB'].animasjonDekk, denne.grafikk['dekkHB'].klippPos, denne.pos.midt);
-      animerDekk(denne.grafikk['dekkVF'].animasjonDekk, denne.grafikk['dekkVF'].klippPos, denne.pos.midt);
-      animerDekk(denne.grafikk['dekkHF'].animasjonDekk, denne.grafikk['dekkHF'].klippPos, denne.pos.midt);
-    }],
-    ['sving', function (denne:Traktor) {
-      animerSving( denne.sving.fram,denne.grafikk.dekkVF);
-      animerSving( denne.sving.fram,denne.grafikk.dekkHF);
-        flagg.push('teinMaskinar');
-    }],
-    ['drivstoffMottaking', function (denne:Traktor) {
+  funksjonane: {
+    doningFlytta:
+      (denne:any) => {
+        if(denne.type !== 'traktor') return;
+        animerDekk(denne.grafikk['dekkVB'].animasjonDekk, denne.grafikk['dekkVB'].klippPos, denne.pos.midt);
+        animerDekk(denne.grafikk['dekkHB'].animasjonDekk, denne.grafikk['dekkHB'].klippPos, denne.pos.midt);
+        animerDekk(denne.grafikk['dekkVF'].animasjonDekk, denne.grafikk['dekkVF'].klippPos, denne.pos.midt);
+        animerDekk(denne.grafikk['dekkHF'].animasjonDekk, denne.grafikk['dekkHF'].klippPos, denne.pos.midt);
+      },
+    sving:
+      (denne:any) => {
+        if(denne.type !== 'traktor') return;
+        animerSving( denne.sving.fram,denne.grafikk.dekkVF);
+        animerSving( denne.sving.fram,denne.grafikk.dekkHF);
+          flagg.push('teinMaskinar');
+      },
+    drivstoffMottaking: 
+    (denne:any) => {
+      if(denne.type !== 'traktor') return
       fyllDrivstoff(denne, denne.last.laster.drivstoff.mottak.mengde)
-    }]
-  ]
+    }
+  }
 }

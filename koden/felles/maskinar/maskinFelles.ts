@@ -9,7 +9,7 @@ const listerMaskin = {
 
 type Maskin = Kjoretoy|Redskap;
 type Kjoretoy = Bonde|Traktor;
-type Redskap = Tilhengar|Plog|Samaskin;//|Slamaskin|TreskeSkjer|BalleMaskin;
+type Redskap = Plog|Samaskin|Tilhengar;//|Slamaskin|TreskeSkjer|BalleMaskin;
 
 
 

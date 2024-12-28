@@ -3,11 +3,13 @@ class Bygg extends TingMal {
   constructor(ny:ByggData, rute:Posisjon) {
     super(ny,rute);
     this.grafikk = ny.grafikk;
+    this.retning.aktiv = ny.retning.aktiv;
   }
 }
 
 interface ByggData extends TingDataMal {
   grafikk: Record<string, GrafikkDelBase >;
+  retning: { aktiv: number };
 }
 
 
@@ -15,7 +17,8 @@ const butikkBygg:ByggData = {
   navn: 'butikk',
   type: 'bygg',
   retning: { aktiv: 180 },
-  pos: { midt: { dx: 0, dy: 0},    lossePunkt:{} },
+  pos: { bakKrok:{ dx: 0, dy: 0 }, framKrok:{ dx: 0, dy: 0 }, dor:{ dx: 0, dy: 0 },
+       lossePunkt:{} },
   fart: { krasj: 0, friksjon: 0.5, tyngde:1000 },
   krasj: {
     framSider: [], bakSider: [], andreSider: [['nv', 'ov'], ['ov', 'oh'], ['oh', 'nh'], ['utstikkh', 'utstikkv']], losseSider:null,
@@ -33,14 +36,15 @@ const butikkBygg:ByggData = {
   },
   last: { valgtLast:null, mottar:[], leverer:[], laster:{} },
   butikk: { type: "ingen", bilde: "", tittel: "", pris: 0 },
-  funksjonane: []
+  funksjonane: {},
 }
 
 const bensinstasjon:ByggData = {
     navn: 'BenzStasjon',
     type: 'bygg',
     retning: { aktiv: 0},
-    pos: { midt: { dx: 0, dy: 0},    lossePunkt:{} },
+    pos: { bakKrok:{ dx: 0, dy: 0 }, framKrok:{ dx: 0, dy: 0 }, dor:{ dx: 0, dy: 0 },
+        lossePunkt:{} },
     fart: { krasj: 0, friksjon: 10, tyngde:1000 },
     krasj: {
       framSider: [], bakSider: [], andreSider: [['nv', 'ov'], ['ov', 'oh'], ['oh', 'nh']], losseSider:null,
@@ -63,7 +67,7 @@ const bensinstasjon:ByggData = {
     }
   } },
     butikk: { type: "ingen", bilde: "", tittel: "", pris: 0 },
-    funksjonane: []
+    funksjonane: {}
 }
 
 
@@ -71,7 +75,7 @@ const kornSilo:ByggData = {
   navn: 'kornSilo',
   type: 'bygg',
   retning: { aktiv: 0 },
-  pos: { midt: { dx: 0, dy: 0 }, lossePunkt: {} },
+  pos: { bakKrok: { dx: 0, dy: 0 }, framKrok: { dx: 0, dy: 0 }, dor: { dx: 0, dy: 0 },  lossePunkt: {} },
   fart: { krasj: 0, friksjon: 10, tyngde: 1000 },
   krasj: {
     framSider: [], bakSider: [], andreSider: [['nv', 'ov'], ['ov', 'oh'], ['oh', 'nh']],
@@ -99,7 +103,7 @@ const kornSilo:ByggData = {
       }
     }
   },
-  funksjonane: [],
+  funksjonane: {},
   butikk: {
     type: "ingen",
     bilde: "",
@@ -112,7 +116,7 @@ const tre:ByggData = {
   navn: 'tre',
   type: 'bygg',
   retning: { aktiv: 0 },
-  pos: { midt: { dx: 0, dy: 0 }, lossePunkt: {} },
+  pos: { bakKrok: { dx: 0, dy: 0 }, framKrok: { dx: 0, dy: 0 }, dor: { dx: 0, dy: 0 }, lossePunkt: {} },
   fart: { krasj: 0, friksjon: 10, tyngde: 1000 },
   krasj: {
     framSider: [], bakSider: [], andreSider: [['nv', 'ov'], ['ov', 'oh'], ['oh', 'nh']],
@@ -136,7 +140,7 @@ const tre:ByggData = {
       }
     }
   },
-  funksjonane: [],
+  funksjonane:{},
   butikk: {
     type: "ingen",
     bilde: "",

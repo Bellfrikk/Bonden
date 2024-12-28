@@ -89,9 +89,9 @@ ferrari: {
     tyngde: 4,
     last: {
       valgtLast: 'gras', lossePlass: null, lossePunkter: ['gras'],
-      gras: { lastPlassering: 'denne', visNiva: false, niva: 0, maks: 300, lossePunkt: null, mengde: 1, lossePunktAktiv: false, aktivLossePlass: null },
-      presseBall: { lastPlassering: 'denne', visNiva: false, niva: 0, maks: 1, lossePunkt: null, mengde: -1, lossePunktAktiv: false, aktivLossePlass: null },
-      pakkeBall: { lastPlassering: 'denne', visNiva: false, niva: 0, maks: 1, lossePunkt: null, mengde: -1, lossePunktAktiv: false, aktivLossePlass: null },
+      gras: { lastPlassering: 'denne', visNiva: false, maks: 300, lossePunkt: null, mengde: 1, lossePunktAktiv: false, aktivLossePlass: null },
+      presseBall: { lastPlassering: 'denne', visNiva: false, maks: 1, lossePunkt: null, mengde: -1, lossePunktAktiv: false, aktivLossePlass: null },
+      pakkeBall: { lastPlassering: 'denne', visNiva: false, maks: 1, lossePunkt: null, mengde: -1, lossePunktAktiv: false, aktivLossePlass: null },
     },
     arbeid: {
       type: 'ballemaskin', aktiv: false,

@@ -38,19 +38,21 @@ const fro = {
             }
         }
     },
-    funksjonane: [
-        ['lastAnimasjon', function (denne) {
-                let sekkar = Math.ceil(denne.last.laster.fro.niva * 4 / denne.last.laster.fro.maks);
-                if (denne.last.laster.fro.niva === 0) {
-                    slettTing(denne); //slette tingen si den er tom
-                    denne.grafikk.sekk0.skalVise = (sekkar > 0) ? true : false;
-                    denne.grafikk.sekk1.skalVise = (sekkar > 1) ? true : false;
-                    denne.grafikk.sekk2.skalVise = (sekkar > 2) ? true : false;
-                    denne.grafikk.sekk3.skalVise = (sekkar > 3) ? true : false;
-                }
-                flagg.push('teinTing');
-            }],
-    ],
+    funksjonane: {
+        lastAnimasjon: (denne) => {
+            if (denne.type !== 'last')
+                return;
+            let sekkar = Math.ceil(denne.last.laster.fro.niva * 4 / denne.last.laster.fro.maks);
+            if (denne.last.laster.fro.niva === 0) {
+                slettTing(denne); //slette tingen si den er tom
+                denne.grafikk.sekk0.skalVise = (sekkar > 0) ? true : false;
+                denne.grafikk.sekk1.skalVise = (sekkar > 1) ? true : false;
+                denne.grafikk.sekk2.skalVise = (sekkar > 2) ? true : false;
+                denne.grafikk.sekk3.skalVise = (sekkar > 3) ? true : false;
+            }
+            flagg.push('teinTing');
+        },
+    },
     butikk: {
         type: "ingen",
         bilde: "",

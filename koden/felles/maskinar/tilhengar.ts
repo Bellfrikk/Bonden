@@ -8,9 +8,7 @@ class Tilhengar extends MaskinRedskapMal {
     //dekkVF?: GrafikkDelDekk,
     //dekkHF?: GrafikkDelDekk,
     kornLast: GrafikkDelLast
-  
-  };
-
+  }
   constructor (ny:TilhengarData, rute:Posisjon){
     super(ny, rute)
     this.grafikk = {
@@ -69,21 +67,22 @@ const tilhengarBekkEikeland: TilhengarData = {
   last: {
     valgtLast:null, mottar: ['korn', 'palle', 'grasball'], leverer:[],
     laster:{
-      korn:     { niva: 0, maks: 300, lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
-      palle:    { niva: 0, maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
-      grasball: { niva: 0, maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}}
+      korn:     { maks: 300, lastTilDoning:false, visNiva: true, mottak: {plass:'', mengde:1, evigLager:false}, levering:{ punkt:'', mengde:1, evigLager:false}},
+      palle:    { maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:'', mengde:1, evigLager:false}, levering:{ punkt:'', mengde:1, evigLager:false}},
+      grasball: { maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:'', mengde:1, evigLager:false}, levering:{ punkt:'', mengde:1, evigLager:false}}
     }
   },
   svingFartVedArbeid:0,//arbeider aldri
   butikk: { type: 'redskap', bilde: 'butikkPlog0', tittel: 'MULD 0', pris: 20000 },
-  funksjonane: [
-    ['ting', function ( denne: Tilhengar){
+  funksjonane: {
+    ting: ( denne: any) => {
+      if(denne.type !== 'tilhengar') return;
       animerDekk(denne.grafikk.dekkHB.animasjonDekk,
         denne.grafikk.dekkHB.klippPos,
         denne.pos.midt
       )
-    }]
-  ]
+    }
+  }
 }
 
 
@@ -123,17 +122,18 @@ const tilhengarFossEikeland:TilhengarData = {
   last: {
     valgtLast:null, mottar: ['korn', 'palle', 'grasball'], leverer:[],
     laster:{
-      korn:     { niva: 0, maks: 500, lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
-      palle:    { niva: 0, maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
-      grasball: { niva: 0, maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}}
+      korn:     { maks: 500, lastTilDoning:false, visNiva: true, mottak: {plass:'', mengde:1, evigLager:false}, levering:{ punkt:'', mengde:1, evigLager:false}},
+      palle:    { maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:'', mengde:1, evigLager:false}, levering:{ punkt:'', mengde:1, evigLager:false}},
+      grasball: { maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:'', mengde:1, evigLager:false}, levering:{ punkt:'', mengde:1, evigLager:false}}
     }
   },
   svingFartVedArbeid:0,
   butikk: { type: 'redskap', bilde: 'butikkPlog0', tittel: 'MULD 0', pris: 20000 },
-  funksjonane:[
-    ['doningFlytta', function(denne:Tilhengar) {
+  funksjonane:{
+    doningFlytta: (denne:any) => {
+      if(denne.type !== 'tilhengar') return;
       animerDekk(denne.grafikk.dekkHB.animasjonDekk, denne.grafikk.dekkHB.klippPos, denne.pos.midt);
       animerDekk(denne.grafikk.dekkVB.animasjonDekk, denne.grafikk.dekkVB.klippPos, denne.pos.midt)
-    }]  
-  ]
+    },
+  },
 }

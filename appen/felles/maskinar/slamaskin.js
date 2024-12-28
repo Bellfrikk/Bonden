@@ -61,32 +61,32 @@ const slamaskin3bak = {
     last: {
         valgtLast: null, mottar: [], leverer: [], laster: {
             gras: {
-                niva: 0, maks: 100, visNiva: false, lastTilDoning: false,
-                mottak: { plass: '', mengde: 1, losserFra: null, evigLager: false },
+                maks: 100, visNiva: false, lastTilDoning: false,
+                mottak: { plass: '', mengde: 1, evigLager: false },
                 levering: { punkt: '', mengde: 1, evigLager: false }
             }
         }
     },
     butikk: { type: 'redskap', bilde: 'butikkSlamaskin3bak', tittel: 'SÅMASKIN R', pris: 20000 },
-    funksjonane: [
-        [
-            'redskapFramAktivert', function (denne) {
-                if (animerStorrelse(denne.grafikk.karosseri, denne.grafikk.karosseri.animasjonStrY, 'y', (denne.arbeid.aktiv ? 1 : -1), true)) {
-                    flagg.push('aktivertRedskapbak');
-                }
-                if (denne.arbeid.aktiv) {
-                    denne.krasj.framSider = lagKrasjSider([['afv', 'afh']], denne.krasj.punkt);
-                    denne.krasj.bakSider = lagKrasjSider(([['abhh', 'abhv'], ['abhv', 'abm'], ['abm', 'abvh'], ['abvh', 'abvv']]), denne.krasj.punkt);
-                    denne.krasj.andreSider = lagKrasjSider(([['abhh', 'afh'], ['abvv', 'afv']]), denne.krasj.punkt);
-                }
-                else {
-                    denne.krasj.framSider = [];
-                    denne.krasj.bakSider = lagKrasjSider(([['vbh', 'vbm'], ['vbm', 'vbv']]), denne.krasj.punkt);
-                    denne.krasj.andreSider = lagKrasjSider(([['vfv', 'vfh'], ['vbh', 'vfh'], ['vbv', 'vfv']]), denne.krasj.punkt);
-                }
+    funksjonane: {
+        redskapFramAktivert: (denne) => {
+            if (denne.type !== 'slamaskin')
+                return;
+            if (animerStorrelse(denne.grafikk.karosseri, denne.grafikk.karosseri.animasjonStrY, 'y', (denne.arbeid.aktiv ? 1 : -1), true)) {
+                flagg.push('aktivertRedskapbak');
             }
-        ]
-    ],
+            if (denne.arbeid.aktiv) {
+                denne.krasj.framSider = lagKrasjSider([['afv', 'afh']], denne.krasj.punkt);
+                denne.krasj.bakSider = lagKrasjSider(([['abhh', 'abhv'], ['abhv', 'abm'], ['abm', 'abvh'], ['abvh', 'abvv']]), denne.krasj.punkt);
+                denne.krasj.andreSider = lagKrasjSider(([['abhh', 'afh'], ['abvv', 'afv']]), denne.krasj.punkt);
+            }
+            else {
+                denne.krasj.framSider = [];
+                denne.krasj.bakSider = lagKrasjSider(([['vbh', 'vbm'], ['vbm', 'vbv']]), denne.krasj.punkt);
+                denne.krasj.andreSider = lagKrasjSider(([['vfv', 'vfh'], ['vbh', 'vfh'], ['vbv', 'vfv']]), denne.krasj.punkt);
+            }
+        },
+    },
 };
 //______________________Slåmaskin 3fram
 const slamaskin3fram = {
@@ -132,12 +132,12 @@ const slamaskin3fram = {
     last: {
         valgtLast: null, mottar: [], leverer: [], laster: {
             gras: {
-                niva: 0, maks: 100, visNiva: false, lastTilDoning: false,
-                mottak: { plass: null, mengde: 1, losserFra: null, evigLager: false },
-                levering: { punkt: null, mengde: 1, evigLager: false }
+                maks: 100, visNiva: false, lastTilDoning: false,
+                mottak: { plass: '', mengde: 1, evigLager: false },
+                levering: { punkt: '', mengde: 1, evigLager: false }
             }
         }
     },
     butikk: { type: 'redskap', bilde: 'butikkSlamaskin3bak', tittel: 'SÅMASKIN R', pris: 20000 },
-    funksjonane: [],
+    funksjonane: {},
 };
