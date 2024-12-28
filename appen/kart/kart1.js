@@ -61,5 +61,6 @@ const kart1 = {
         [Samaskin, samaskin0, { x: 4, y: 12 }],
         [Slamaskin, slamaskin3fram, { x: 4, y: 14 }],
         [Slamaskin, slamaskin3bak, { x: 4, y: 16 }],
+        [Ballemaskin, ballemaskin1, { x: 4, y: 18 }],
     ]
 };

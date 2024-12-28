@@ -28,7 +28,7 @@ type PosisjonMidtMal = { x: number, y: number, tx: number, ty: number, fx: numbe
 type PosisjonMal = { x: number, y: number, tx: number, ty: number, dx: number, dy: number };
 type Tilsjekk = Maskin|Ting;
 type Rute = {tilSjekk:Tilsjekk[], x:number, y:number};
-type ArbeidsTypar = 'ingen'|'traktor'|'skurteskar'|'plog'|'samaskin'|'slamaskin';
+type ArbeidsTypar = 'ingen'|'traktor'|'skurteskar'|'plog'|'samaskin'|'slamaskin'|'ballemaskin';
 
 type GrafikkDelBase = {
   skalVise:boolean,
