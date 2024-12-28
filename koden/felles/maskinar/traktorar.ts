@@ -62,7 +62,7 @@ const traktorDexta: TraktorData = {
   sving: { fart: 'fart'},
   last: {
     valgtLast: 'drivstoff',mottar: ['drivstoff'], leverer:['drivstoff'],
-    lastData: {drivstoff: { niva: 300, maks: 300,visNiva: true, lastTilDoning:false, mottak: { plass: 'drivstoff', losserFra: null, mengde: 1, evigLager:false}, levering: { punkt: null, losserTil: null, mengde: 1, evigLager:false} } }
+    laster: {drivstoff: { niva: 300, maks: 300,visNiva: true, lastTilDoning:false, mottak: { plass: 'drivstoff', losserFra: null, mengde: 1, evigLager:false}, levering: { punkt: null, losserTil: null, mengde: 1, evigLager:false} } }
   },
   arbeid: {
     type: 'traktor',
@@ -84,7 +84,7 @@ const traktorDexta: TraktorData = {
         flagg.push('teinMaskinar');
     }],
     ['drivstoffMottaking', function (denne:Traktor) {
-      fyllDrivstoff(denne, denne.last.lastData.drivstoff.mottak.mengde)
+      fyllDrivstoff(denne, denne.last.laster.drivstoff.mottak.mengde)
     }]
   ]
 }

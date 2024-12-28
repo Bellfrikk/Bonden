@@ -74,7 +74,7 @@ const samaskin0:SamaskinData = {
   sving: {fart: 0.5,},
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: -0.5, krasj: 0, tyngde: 1} ,
   last: {
-    valgtLast:'fro', mottar:['fro'], leverer:[], lastData: {
+    valgtLast:'fro', mottar:['fro'], leverer:[], laster: {
       fro:{
         niva:50, maks:500, visNiva:true, lastTilDoning: false,
         mottak:  {plass:'lossePlass', mengde:1, evigLager:false},
@@ -94,11 +94,11 @@ const samaskin0:SamaskinData = {
       }
     }],
     ['froLevering', function (denne:Samaskin) {
-      if(denne.last.lastData.fro === null){return}
-      if (denne.last.lastData.fro.mottak.losserFra !== null && 
-        denne.last.lastData.fro.mottak.plass !== null && 
-        denne.last.lastData.fro.niva >= 0) {
-        if (oppdaterLast(denne, denne.last.lastData.fro.mottak.plass, 'fro', 2)) {
+      if(denne.last.laster.fro === null){return}
+      if (denne.last.laster.fro.mottak.losserFra !== null && 
+        denne.last.laster.fro.mottak.plass !== null && 
+        denne.last.laster.fro.niva >= 0) {
+        if (oppdaterLast(denne, denne.last.laster.fro.mottak.plass, 'fro', 2)) {
           flagg.push('froLevering');
         }
       }

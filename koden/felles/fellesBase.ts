@@ -1,14 +1,27 @@
 type ArbeidsPunktMal = { x: number, y: number, type: 'type1'|'type2' };
 type ArbeidsTypeMal = { blirTil: JordeVeksType|JordeIkkjeVeksType, last: { type: LastTypar|null, mengde: number } };
-type LastMal = { valgtLast:null|EiLast, mottar:LastTypar[], leverer:LastTypar[], lastData: Record<string,EiLast> }
-type LastDataMal = { valgtLast:null|LastTypar, mottar:LastTypar[], leverer:LastTypar[], lastData: Record<string,EiLast> }
+type LastMal = { valgtLast:null|EiLast, mottar:LastTypar[], leverer:LastTypar[], laster: Record<string,EiLast> }
+type lasterMal = { valgtLast:null|LastTypar, mottar:LastTypar[], leverer:LastTypar[], laster: Record<string,EiLastData> }
 
 type EiLast = {
   niva:number, maks:number, visNiva:boolean, lastTilDoning: boolean,
-  mottak:  {plass:Maskin|Ting|null, losserFra:Maskin|Ting|null, mengde:number, evigLager:boolean},
-  levering:{punkt:Maskin|Ting|null, losserTil:Maskin|Ting|null, mengde:number, evigLager:boolean}
+  mottak:  {plass:PosisjonMal[][]|null, losserFra:Maskin|Ting|null, mengde:number, evigLager:boolean},
+  levering:{punkt:PosisjonMal|null, losserTil:Maskin|Ting|null, mengde:number, evigLager:boolean}
+};
+type EiLastData = { maks:number, visNiva:boolean, lastTilDoning: boolean,
+  mottak:  {plass:string, mengde:number, evigLager:boolean},
+  levering:{punkt:string, mengde:number, evigLager:boolean}
 };
 type LastTypar = 'drivstoff'|'gras'|'korn'|'fro'|'ball'|'palle'|'grasball';
+
+function lagEiLast(krasj: KrasjMal, data:EiLastData,):EiLast {
+  return {
+    niva:0, maks:data.maks, visNiva:data.visNiva, lastTilDoning: data.lastTilDoning,
+    mottak: {plass:data.mottak.plass === null ? null : krasj.losseSider , losserFra:null, mengde:0, evigLager:false},
+    levering:{punkt:data.mottak.plass === null ? null : krasj.punkt[data.levering.punkt] , losserTil:null, mengde:0, evigLager:false}
+  }
+}
+
 
 type Posisjon = { x: number, y: number };
 type PosisjonMidtMal = { x: number, y: number, tx: number, ty: number, fx: number, fy: number };
@@ -54,9 +67,91 @@ type KrasjMal = {
   losseSider: PosisjonMal[][]|null,
   punkt: KrasjPunkt;
 };
+function lagKrasjSider(data: string[][], krasjPunkt: KrasjPunkt): PosisjonMal[][] {
+  return data.map(denne => [krasjPunkt[denne[0]], krasjPunkt[denne[1]]]);
+}
 
 
+class BaseMal {
+  navn: string; 
+  type: string;
+  retning: {aktiv:number, tmp:number}; 
+  rute: Rute; 
+  pos: {
+    midt: PosisjonMidtMal;
+    bakKrok: PosisjonMal;
+    framKrok: PosisjonMal;
+    dor: PosisjonMal;
+    lossePunkt:Record<string,PosisjonMal>;
+  };
+  krasj: KrasjMal;
+  last:LastMal;
+  funksjonane: [string,(denne: Maskin,data:any) => void][];
+  butikk: { type:'ingen'|'kjoretoy'|'redskap'|'ting', bilde: string, tittel: string, pris: number }
 
+  constructor (ny:BaseMalData, rute:Posisjon){
+    this.navn = ny.navn;
+    this.type = ny.type;
+    this.retning = { aktiv: 0, tmp: 0 };
+    this.rute = { tilSjekk: [], x: rute.x, y: rute.y };
+    this.pos = { 
+      midt: {x: rute.x * pixel.ruteLengde, y: rute.y * pixel.ruteLengde,tx: rute.x * pixel.ruteLengde,ty: rute.y * pixel.ruteLengde,fx:0,fy:0},
+      framKrok:{x:0,y:0,tx:0,ty:0,dx:ny.pos.framKrok.dx,dy:ny.pos.framKrok.dy},
+      bakKrok: {x:0,y:0,tx:0,ty:0,dx:ny.pos.bakKrok.dx,dy:ny.pos.bakKrok.dy},
+      dor:     {x:0,y:0,tx:0,ty:0,dx:ny.pos.dor.dx,dy:ny.pos.dor.dy},
+      lossePunkt: {}
+    };
+    for (let key in ny.pos.lossePunkt) {
+      this.pos.lossePunkt[key] = { x: 0, y: 0, tx: 0, ty: 0, dx: ny.pos.lossePunkt[key].dx, dy: ny.pos.lossePunkt[key].dy };
+    }   
+
+    this.krasj = {
+      framSider:  [],
+      bakSider:   [],
+      andreSider: [],
+      losseSider: [],
+      punkt:{}
+    };
+    for (let key in ny.krasj.punkt) {
+      this.krasj.punkt[key] = { x: 0, y: 0, tx: 0, ty: 0, dx: ny.krasj.punkt[key].dx, dy: ny.krasj.punkt[key].dy };
+    }  
+    this.krasj.framSider = lagKrasjSider(ny.krasj.framSider, this.krasj.punkt);
+    this.krasj.bakSider = lagKrasjSider(ny.krasj.bakSider, this.krasj.punkt);
+    this.krasj.andreSider = lagKrasjSider(ny.krasj.andreSider, this.krasj.punkt);
+    this.krasj.losseSider = ny.krasj.losseSider === null ? null : lagKrasjSider(ny.krasj.losseSider, this.krasj.punkt);
+
+    this.last = { valgtLast:null, mottar:ny.last.mottar,leverer:ny.last.leverer, laster:{}}
+    for (let key in ny.last.laster) {
+      this.last.laster[key] = lagEiLast(this.krasj, ny.last.laster[key]);
+    } 
+    if(ny.last.valgtLast !== null) {this.last.valgtLast = this.last.laster[ny.last.valgtLast];}
+    this.butikk = ny.butikk;
+    this.funksjonane = ny.funksjonane;
+  }
+}
+
+
+interface BaseMalData {
+  navn: string; 
+    type: string;
+    pos: {
+      bakKrok: { dx: number, dy: number };
+      framKrok:{ dx: number, dy: number };
+      dor: { dx: number, dy: number };
+      lossePunkt: null|Record<string,{dx:number,dy:number}>
+    };
+    krasj: {
+      framSider: string[][], 
+      bakSider: string[][], 
+      andreSider: string[][],
+      losseSider: string[][]|null,
+      punkt: Record<string,{dx:number,dy:number}>
+    };
+    last: lasterMal,
+    butikk: { type: 'ingen'|'kjoretoy'|'redskap'|'ting', bilde: string, tittel: string, pris: number },
+    funksjonane: [string,(denne: any, data:any) => void][];      
+  }
+  
 
 function teinTingEllerMaskin(detteLerret:CanvasRenderingContext2D,bilde:HTMLCanvasElement, denne:Maskin|Ting,tmpDel:GrafikkDelBase) {
   //flytt fokus til midt av maskin og roter riktig

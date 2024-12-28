@@ -48,17 +48,22 @@ const bondeMann: BondeData = {
   fart: { aktiv: 0, maks: 1, friksjon: 0.2, aks: 0.5, landskap: 0, arbeid: 0, krasj: 0, tyngde: 1 }, // aks må ver større enn friksjon
   sving: { fart: 4 },
   arbeid: { type: "ingen", punkt: [], type1: null, type2: null },
-  last: { mottar:[], leverer:[], valgtLast: null, lastData:{mat:{niva:0, maks:5, visNiva:false, lastTilDoning:false,mottak:{plass:'munn', mengde:1, losserFra:null, evigLager:false}, levering:{punkt:null, mengde:1, losserTil:null, evigLager:false}}}},
+  last: { mottar:[], leverer:[], valgtLast: null, laster:{
+    mat:{maks:5, visNiva:false, lastTilDoning:false,
+      mottak:{plass:'munn', mengde:1, evigLager:false}, 
+      levering:{punkt:'', mengde:1, evigLager:false}}
+    }
+  },
   butikk: { type: 'ingen', bilde: '', tittel: '', pris: 0 },
-  funksjonane: [
-    ['doningFlytta',
-      function (denne: any) {
+  funksjonane:[
+    ['doningFlytta', 
+      function (denne: Bonde) {
         denne.grafikk.bonden.animasjonBevegelse.flytt += Math.abs(Math.hypot(denne.pos.midt.fx, denne.pos.midt.fy));
         if (denne.grafikk.bonden.animasjonBevegelse.flytt > 13) {
           denne.grafikk.bonden.klippPos.x = (denne.grafikk.bonden.klippPos.x >= denne.grafikk.bonden.animasjonBevegelse.maksX) ? 0 : denne.grafikk.bonden.klippPos.x + 26;
           denne.grafikk.bonden.animasjonBevegelse.flytt -= 13;
         }
       }
-    ]
+    ],
   ],
 };

@@ -25,7 +25,7 @@ function oppdaterTopplinje() {
     lerret.topplinje.fill();
     teinNiva('peng', 0, peng);
     if (doning.last.mottar.includes('drivstoff')) {
-        teinNiva('drivstoff', 1, doning.last.lastData.drivstoff.niva);
+        teinNiva('drivstoff', 1, doning.last.laster.drivstoff.niva);
     }
     if (doning.redskap.fram !== null && doning.redskap.fram.last.valgtLast !== null && doning.redskap.fram.last.valgtLast.visNiva) {
         teinNiva('framLast', 2, doning.redskap.fram.last.valgtLast.niva);
@@ -47,7 +47,11 @@ function teinNiva(ting, nr, niva) {
     topplinje.ikonStr); // hoyde
     //tekst
     lerret.topplinje.font = "20px Rubik Mono One";
-    lerret.topplinje.fillStyle = '#FFF';
+    let farge = '#FFF';
+    if (ting === 'drivstoff' && niva < 20) {
+        farge = '#F00';
+    }
+    lerret.topplinje.fillStyle = farge;
     lerret.topplinje.fillText(Math.floor(niva), //tekst
     (topplinje.delbredde * nr) + topplinje.margin + topplinje.ikonStr + topplinje.margin, //start X
     28); // start Y  

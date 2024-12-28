@@ -66,8 +66,8 @@ const plogKverneland:PlogData = {
     type2: null,
   },
   last:{valgtLast:null, mottar:[],leverer:[],
-    lastData:{
-      tull:{niva:0,maks:0,visNiva:false,lastTilDoning:false,mottak:{ plass:null, losserFra:null, mengde:0, evigLager:false},levering:{punkt:null, losserTil:null, mengde:0, evigLager:false}}
+    laster:{
+      tull:{maks:0,visNiva:false,lastTilDoning:false,mottak:{ plass:'', mengde:0, evigLager:false},levering:{punkt:'', mengde:0, evigLager:false}}
     },
   },
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: -0.7, krasj: 0,tyngde:1.5 },

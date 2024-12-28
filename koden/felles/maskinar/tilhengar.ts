@@ -68,10 +68,10 @@ const tilhengarBekkEikeland: TilhengarData = {
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: 0, krasj: 0, tyngde:1},
   last: {
     valgtLast:null, mottar: ['korn', 'palle', 'grasball'], leverer:[],
-    lastData:{
-      korn:     { niva: 0, maks: 300, lastTilDoning:false, visNiva: true, mottak: {plass:null, losserFra:null, mengde:1, evigLager:false}, levering:{ punkt:null, losserTil:null, mengde:1, evigLager:false}},
-      palle:    { niva: 0, maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:null, losserFra:null, mengde:1, evigLager:false}, levering:{ punkt:null, losserTil:null, mengde:1, evigLager:false}},
-      grasball: { niva: 0, maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:null, losserFra:null, mengde:1, evigLager:false}, levering:{ punkt:null, losserTil:null, mengde:1, evigLager:false}}
+    laster:{
+      korn:     { niva: 0, maks: 300, lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
+      palle:    { niva: 0, maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
+      grasball: { niva: 0, maks: 1,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}}
     }
   },
   svingFartVedArbeid:0,//arbeider aldri
@@ -122,10 +122,10 @@ const tilhengarFossEikeland:TilhengarData = {
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: 0, krasj: 0 ,tyngde:1},
   last: {
     valgtLast:null, mottar: ['korn', 'palle', 'grasball'], leverer:[],
-    lastData:{
-      korn:     { niva: 0, maks: 500, lastTilDoning:false, visNiva: true, mottak: {plass:null, losserFra:null, mengde:1, evigLager:false}, levering:{ punkt:null, losserTil:null, mengde:1, evigLager:false}},
-      palle:    { niva: 0, maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:null, losserFra:null, mengde:1, evigLager:false}, levering:{ punkt:null, losserTil:null, mengde:1, evigLager:false}},
-      grasball: { niva: 0, maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:null, losserFra:null, mengde:1, evigLager:false}, levering:{ punkt:null, losserTil:null, mengde:1, evigLager:false}}
+    laster:{
+      korn:     { niva: 0, maks: 500, lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
+      palle:    { niva: 0, maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}},
+      grasball: { niva: 0, maks: 2,   lastTilDoning:false, visNiva: true, mottak: {plass:null, lastermengde:1, evigLager:false}, levering:{ punkt:null, lastermengde:1, evigLager:false}}
     }
   },
   svingFartVedArbeid:0,

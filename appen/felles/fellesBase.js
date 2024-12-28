@@ -1,4 +1,11 @@
 "use strict";
+function lagEiLast(krasj, data) {
+    return {
+        niva: 0, maks: data.maks, visNiva: data.visNiva, lastTilDoning: data.lastTilDoning,
+        mottak: { plass: data.mottak.plass === null ? null : krasj.losseSider, losserFra: null, mengde: 0, evigLager: false },
+        levering: { punkt: data.mottak.plass === null ? null : krasj.punkt[data.levering.punkt], losserTil: null, mengde: 0, evigLager: false }
+    };
+}
 ;
 ;
 ;
@@ -42,9 +49,12 @@ class BaseMal {
         this.krasj.bakSider = lagKrasjSider(ny.krasj.bakSider, this.krasj.punkt);
         this.krasj.andreSider = lagKrasjSider(ny.krasj.andreSider, this.krasj.punkt);
         this.krasj.losseSider = ny.krasj.losseSider === null ? null : lagKrasjSider(ny.krasj.losseSider, this.krasj.punkt);
-        this.last = { valgtLast: null, mottar: ny.last.mottar, leverer: ny.last.leverer, lastData: ny.last.lastData };
+        this.last = { valgtLast: null, mottar: ny.last.mottar, leverer: ny.last.leverer, laster: {} };
+        for (let key in ny.last.laster) {
+            this.last.laster[key] = lagEiLast(this.krasj, ny.last.laster[key]);
+        }
         if (ny.last.valgtLast !== null) {
-            this.last.valgtLast = this.last.lastData[ny.last.valgtLast];
+            this.last.valgtLast = this.last.laster[ny.last.valgtLast];
         }
         this.butikk = ny.butikk;
         this.funksjonane = ny.funksjonane;

@@ -71,11 +71,11 @@ const slamaskin3bak:SlamaskinData = {
   svingFartVedArbeid: 0.5,
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: -0.2, krasj: 0, tyngde: 1.5},
   last: {
-    valgtLast: null, mottar:[], leverer: [],lastData: {
+    valgtLast: null, mottar:[], leverer: [],laster: {
       gras: { 
         niva: 0, maks: 100, visNiva: false, lastTilDoning:false,
-        mottak:{ plass: null, mengde: 1, losserFra: null, evigLager: false },
-        levering:{ punkt: null, mengde: 1, losserTil:null, evigLager: false }
+        mottak:{ plass: '', mengde: 1, losserFra: null, evigLager: false },
+        levering:{ punkt: '', mengde: 1, evigLager: false }
       }
     }
   },
@@ -141,11 +141,11 @@ const slamaskin3fram:SlamaskinData = {
   svingFartVedArbeid: 0.5,
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: -0.2, krasj: 0, tyngde: 1},
   last: {
-    valgtLast: null, mottar:[], leverer: [],lastData: {
+    valgtLast: null, mottar:[], leverer: [],laster: {
       gras: { 
         niva: 0, maks: 100, visNiva: false, lastTilDoning:false,
         mottak:{ plass: null, mengde: 1, losserFra: null, evigLager: false },
-        levering:{ punkt: null, mengde: 1, losserTil:null, evigLager: false }
+        levering:{ punkt: null, mengde: 1, evigLager: false }
       }
     }
   },

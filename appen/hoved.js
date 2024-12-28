@@ -95,10 +95,6 @@ function bevegelse() {
             if (redskapKoblingSjekk(krasjTingen)) {
                 return;
             }
-            if (krasjTingen.navn === 'butikk') {
-                velgSkjerm('butikk');
-                return;
-            }
             //--Flytting av Krasjting
             //flyttKrasjTingen(krasjTingen);
         }
@@ -178,7 +174,7 @@ function sjekkFlagg() {
     if (flaggTMP.includes('nyRute')) {
         oppdaterRuterTilSjekk(doning);
         if (doning.last.leverer.includes('drivstoff')) {
-            doning.last.lastData.drivstoff.niva--;
+            doning.last.laster.drivstoff.niva--;
         }
         flagg.push('topplinjeEndra');
     }

@@ -44,7 +44,7 @@ function hentFart ():number {
     doning.fart.aktiv = 0;
     doning.fart.krasj = 0;
   }// sjekk om tom for bensin
-  if (doning.last.leverer.includes('drivstoff') && doning.last.lastData.drivstoff.niva > 0) {
+  if (doning.last.leverer.includes('drivstoff') && doning.last.laster.drivstoff.niva > 0) {
     return doning.fart.aktiv;
   } else {
     return doning.fart.aktiv;

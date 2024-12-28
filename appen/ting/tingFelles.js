@@ -25,17 +25,14 @@ class TingMal {
         for (let key in ny.krasj.punkt) {
             this.krasj.punkt[key] = { x: 0, y: 0, tx: 0, ty: 0, dx: ny.krasj.punkt[key].dx, dy: ny.krasj.punkt[key].dy };
         }
-        function lagKrasjSider(data, krasjPunkt) {
-            return data.map(pos => [krasjPunkt[pos[0]], krasjPunkt[pos[1]]]);
-        }
         this.krasj.framSider = lagKrasjSider(ny.krasj.framSider, this.krasj.punkt);
         this.krasj.bakSider = lagKrasjSider(ny.krasj.bakSider, this.krasj.punkt);
         this.krasj.andreSider = lagKrasjSider(ny.krasj.andreSider, this.krasj.punkt);
         this.krasj.losseSider = ny.krasj.losseSider === null ? null : lagKrasjSider(ny.krasj.losseSider, this.krasj.punkt);
         this.fart = ny.fart;
-        this.last = { valgtLast: null, mottar: ny.last.mottar, leverer: ny.last.leverer, lastData: ny.last.lastData };
+        this.last = { valgtLast: null, mottar: ny.last.mottar, leverer: ny.last.leverer, laster: ny.last.laster };
         if (ny.last.valgtLast !== null) {
-            this.last.valgtLast = this.last.lastData[ny.last.valgtLast];
+            this.last.valgtLast = this.last.laster[ny.last.valgtLast];
         }
         this.butikk = ny.butikk;
         this.funksjonane = ny.funksjonane;

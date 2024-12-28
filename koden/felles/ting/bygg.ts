@@ -31,7 +31,7 @@ const butikkBygg:ByggData = {
   grafikk: {
       butikken: { skalVise:true, tegneRekkefolge: 'under', midt: { x: 0.5, y: 0.5 }, pos: { x: 0, y: 0 }, str: { x: 87, y: 75 }, retning:0, klippPos: { x: 0, y: 42 } },
   },
-  last: { valgtLast:null, mottar:[], leverer:[], lastData:{} },
+  last: { valgtLast:null, mottar:[], leverer:[], laster:{} },
   butikk: { type: "ingen", bilde: "", tittel: "", pris: 0 },
   funksjonane: []
 }
@@ -55,11 +55,11 @@ const bensinstasjon:ByggData = {
     grafikk: {
       pumpe: { skalVise:true, tegneRekkefolge: 'under', midt: { x: 0.5, y: 0.5 }, pos: { x: 0, y: 0 }, str: { x: 32, y: 16 }, retning:0, klippPos: { x: 0, y: 25 } },
   },
-  last: { valgtLast:null, mottar:[], leverer:[], lastData:{
+  last: { valgtLast:null, mottar:[], leverer:[], laster:{
     drivstoff:{
-      niva:1, maks:2, visNiva:false, lastTilDoning: false,
-      mottak:  {plass:null, losserFra:null, mengde:0, evigLager:false},
-      levering:{punkt:'pumpe', losserTil:null, mengde:1, evigLager:true}
+      maks:2, visNiva:false, lastTilDoning: false,
+      mottak:  {plass:'',  mengde:0, evigLager:false},
+      levering:{punkt:'pumpe', mengde:1, evigLager:true}
     }
   } },
     butikk: { type: "ingen", bilde: "", tittel: "", pris: 0 },
@@ -91,11 +91,11 @@ const kornSilo:ByggData = {
       silo: { skalVise:true, tegneRekkefolge: 'under', midt: { x: 0.5, y: 0.5 }, pos: { x: 0, y: 0 }, str: { x: 53, y: 34 }, retning: 0, klippPos: { x: 36, y: 0 } },
   },
   last: {
-    valgtLast: 'korn', mottar: ['korn'], leverer: [], lastData: {
+    valgtLast: 'korn', mottar: ['korn'], leverer: [], laster: {
       korn: {
-        niva: 0, maks: 0, visNiva: false, lastTilDoning: false,
-        mottak: { plass: 'losseSider', losserFra: null, mengde: 1, evigLager: true },
-        levering: { punkt: null, losserTil: null, mengde: 1, evigLager: false }
+        maks: 0, visNiva: false, lastTilDoning: false,
+        mottak: { plass: 'losseSider', mengde: 1, evigLager: true },
+        levering: { punkt: '', mengde: 1, evigLager: false }
       }
     }
   },
@@ -128,11 +128,11 @@ const tre:ByggData = {
       tre: {skalVise:true, tegneRekkefolge: 'under',  midt: { x: 0.5, y: 0.5 }, pos: { x: 0, y: 0 }, str: { x: 20, y: 20 }, retning: 0, klippPos: { x: 86, y: 0 } },
   },
   last: {
-    valgtLast: null, mottar: [], leverer: [], lastData: {
+    valgtLast: null, mottar: [], leverer: [], laster: {
       korn: {
-        niva: 0, maks: 0, visNiva: false, lastTilDoning: false,
-        mottak: { plass: null, losserFra: null, mengde: 1, evigLager: true },
-        levering: { punkt: null, losserTil: null, mengde: 1, evigLager: false }
+        maks: 0, visNiva: false, lastTilDoning: false,
+        mottak: { plass: '', mengde: 1, evigLager: true },
+        levering: { punkt: '', mengde: 1, evigLager: false }
       }
     }
   },

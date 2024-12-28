@@ -14,9 +14,8 @@ interface LastData extends TingDataMal {
 const fro:LastData = {
   navn: 'fro',
   type: 'last',
-  retning: { aktiv: 0 },
   pos: {
-    midt: { dx: 0, dy: 0 },
+    bakKrok: { dx: 0, dy: 0 },framKrok: { dx: 0, dy: 0 },dor: { dx: 0, dy: 0 },
     lossePunkt: { fro: { dx: 0, dy: 0 } }
   },
   fart: { krasj: 0, friksjon: 0.5, tyngde: 0.1 },
@@ -37,18 +36,18 @@ const fro:LastData = {
       sekk3: { skalVise:true, tegneRekkefolge: 'under', midt: { x: 0.5, y: 0.5 }, pos: { x: -6, y: 5 }, str: { x: 12, y: 8 }, retning: 0, klippPos: { x: 15, y: 11 } }, //bare sekk
   },
   last: {
-    valgtLast: 'fro', mottar: [], leverer: ['fro'], lastData: {
+    valgtLast: 'fro', mottar: [], leverer: ['fro'], laster: {
       fro: {
-        niva: 3000, maks: 3000, visNiva: false, lastTilDoning: false,
-        mottak: { plass: null, losserFra: null, mengde: 1, evigLager: false },
-        levering: { punkt: 'fro', losserTil: null, mengde: 1, evigLager: false }
+        maks: 3000, visNiva: false, lastTilDoning: false,
+        mottak: { plass: '', mengde: 1, evigLager: false },
+        levering: { punkt: 'fro', mengde: 1, evigLager: false }
       }
     }
   },
   funksjonane: [
     ['lastAnimasjon', function (denne: Last) {
-        let sekkar = Math.ceil(denne.last.lastData.fro.niva * 4 / denne.last.lastData.fro.maks);
-        if (denne.last.lastData.fro.niva === 0) { slettTing(denne); //slette tingen si den er tom
+        let sekkar = Math.ceil(denne.last.laster.fro.niva * 4 / denne.last.laster.fro.maks);
+        if (denne.last.laster.fro.niva === 0) { slettTing(denne); //slette tingen si den er tom
         denne.grafikk.sekk0.skalVise = (sekkar > 0) ? true : false;
         denne.grafikk.sekk1.skalVise = (sekkar > 1) ? true : false;
         denne.grafikk.sekk2.skalVise = (sekkar > 2) ? true : false;

@@ -85,7 +85,6 @@ function bevegelse() {
       krasjTingen = svar[1]; 
       if(doningBytteSjekk(krasjTingen as Kjoretoy)){return;}   //sjekk om bonde skal gå inn i doning
       if(redskapKoblingSjekk(krasjTingen as Redskap)){return;} 
-      if (krasjTingen.navn === 'butikk') { velgSkjerm('butikk'); return; }
       //--Flytting av Krasjting
       //flyttKrasjTingen(krasjTingen);
     }
@@ -164,7 +163,7 @@ function sjekkFlagg() {
   }
   if (flaggTMP.includes('nyRute')) {
     oppdaterRuterTilSjekk(doning);
-    if(doning.last.leverer.includes('drivstoff')) { doning.last.lastData.drivstoff.niva-- ; }
+    if(doning.last.leverer.includes('drivstoff')) { doning.last.laster.drivstoff.niva-- ; }
     flagg.push('topplinjeEndra');
   }
   if (flaggTMP.includes('nyRutetype')) {
