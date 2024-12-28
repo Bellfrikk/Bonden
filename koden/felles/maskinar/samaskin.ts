@@ -30,7 +30,6 @@ interface SamaskinData extends MaskinRedskapData {
 const samaskin0:SamaskinData = {
   navn: 'Somento-EX',
   type: 'bakFeste',
-  startRute: { x: 2, y: 2 },
   pos: {
     dor: { dx: 0, dy: 0},
     framKrok: { dx: 0, dy: 0},
@@ -70,30 +69,34 @@ const samaskin0:SamaskinData = {
     type1: {
       blirTil: 'kornSadd', last: { type: 'fro', mengde: -1 },
     },
+    type2: null,
   },
-  sving: {fart: 0.5,},
+  svingFartVedArbeid: 0.5,
   fart: { aktiv: 0, maks: 0, friksjon: 0, aks: 0, landskap: 0, arbeid: -0.5, krasj: 0, tyngde: 1} ,
   last: {
     valgtLast:'fro', mottar:['fro'], leverer:[], laster: {
       fro:{
-        niva:50, maks:500, visNiva:true, lastTilDoning: false,
+        maks:500, visNiva:true, lastTilDoning: false,
         mottak:  {plass:'lossePlass', mengde:1, evigLager:false},
-        levering:{plass:'', mengde:0, evigLager:false}
+        levering:{punkt:'', mengde:0, evigLager:false}
       }
     } 
   },
   butikk: { type: 'redskap', bilde: 'butikkSamaskin0', tittel: 'SÅMASKIN R', pris: 20000 },
-  funksjonane: [
-    ['doningFlytta', function(denne:Samaskin):void {
+  funksjonane: {
+    doningFlytta: (denne:any) => {
+      if(denne.type !== 'samaskin') return;   
       animerDekk(denne.grafikk.dekk.animasjonDekk, denne.grafikk.dekk.klippPos, denne.pos.midt)
-    }],
-    ['lastAnimasjonLoop', function (denne:Samaskin, lastType:LastTypar) {
+    },
+    lastAnimasjonLoop: (denne:any, lastType:LastTypar) => {
+      if(denne.type !== 'samaskin') return;   
       if(denne.last.valgtLast !== null){
         oppdaterLastStrAnimasjon(denne, denne.grafikk.lastVenstre, denne.last.valgtLast)
         oppdaterLastStrAnimasjon(denne, denne.grafikk.lastHogre, denne.last.valgtLast)
       }
-    }],
-    ['froLevering', function (denne:Samaskin) {
+    },
+    froLevering: (denne:any) => {
+      if(denne.type !== 'samaskin') return;
       if(denne.last.laster.fro === null){return}
       if (denne.last.laster.fro.mottak.losserFra !== null && 
         denne.last.laster.fro.mottak.plass !== null && 
@@ -102,21 +105,19 @@ const samaskin0:SamaskinData = {
           flagg.push('froLevering');
         }
       }
-    }
-    ],
-    ['velgFro',
-      function (denne:Samaskin) {
-        if(denne.arbeid.type1 === null){return};
-        if(denne.arbeid.type1.blirTil === 'kornSadd') {
-          denne.arbeid.type1.blirTil = 'grasSadd';
-          denne.grafikk.lastVenstre.klippPos.y = 141;
-          denne.grafikk.lastHogre.klippPos.y = 141;
-        } else {
-          denne.arbeid.type1.blirTil = 'kornSadd';
-          denne.grafikk.lastVenstre.klippPos.y = 128;
-          denne.grafikk.lastHogre.klippPos.y = 128;
-        }
+    },
+    velgFro: (denne:any) => {
+      if(denne.type !== 'samaskin') return;
+      if(denne.arbeid.type1 === null) return;
+      if(denne.arbeid.type1.blirTil === 'kornSadd') {
+        denne.arbeid.type1.blirTil = 'grasSadd';
+        denne.grafikk.lastVenstre.klippPos.y = 141;
+        denne.grafikk.lastHogre.klippPos.y = 141;
+      } else {
+        denne.arbeid.type1.blirTil = 'kornSadd';
+        denne.grafikk.lastVenstre.klippPos.y = 128;
+        denne.grafikk.lastHogre.klippPos.y = 128;
       }
-    ]
-  ]
+    },
+  },
 }
