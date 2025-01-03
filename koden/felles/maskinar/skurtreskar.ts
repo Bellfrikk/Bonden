@@ -88,10 +88,10 @@ const skurtreskar1:SkurtreskarData = {
   butikk: { type: 'kjoretoy', bilde: 'butikkTraktor0', tittel: 'ingen', pris: 20000 },
   funksjonane:{
     doningFlytta: (denne:Skurtreskar) => {
-      animerDekk(denne.grafikk['dekkVB'].animasjonDekk, denne.grafikk['dekkVB'].klippPos, denne.pos.midt);
-      animerDekk(denne.grafikk['dekkHB'].animasjonDekk, denne.grafikk['dekkHB'].klippPos, denne.pos.midt);
-      animerDekk(denne.grafikk['dekkVF'].animasjonDekk, denne.grafikk['dekkVF'].klippPos, denne.pos.midt);
-      animerDekk(denne.grafikk['dekkHF'].animasjonDekk, denne.grafikk['dekkHF'].klippPos, denne.pos.midt);  
+      animerDekk(denne.grafikk.dekkVB.animasjonDekk, denne.grafikk.dekkVB.klippPos, denne.pos.midt);
+      animerDekk(denne.grafikk.dekkHB.animasjonDekk, denne.grafikk.dekkHB.klippPos, denne.pos.midt);
+      animerDekk(denne.grafikk.dekkVF.animasjonDekk, denne.grafikk.dekkVF.klippPos, denne.pos.midt);
+      animerDekk(denne.grafikk.dekkHF.animasjonDekk, denne.grafikk.dekkHF.klippPos, denne.pos.midt);  
     },
     sving: (denne:Skurtreskar) => {
     animerSving( denne.sving.fram,denne.grafikk.dekkVB);
