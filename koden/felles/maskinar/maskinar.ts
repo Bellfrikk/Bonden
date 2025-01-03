@@ -1,12 +1,12 @@
 
-const bonden = 'bonde0';
+const bonden = 'bondeMann0';
 let koblingskaranteneTing:Maskin|null = null;
 let maskinar: Record<string,Maskin> = {};
 let maskinaListe: string[] = [];
 const maskinbilde = document.getElementById('maskinar') as HTMLCanvasElement;
 
 function lagMaskin(klasse:any, modell:any, rute:Posisjon) {
-  const id = modell.type + maskinaListe.filter(ting => ting.includes(modell.type)).length;
+  const id = modell.navn + maskinaListe.filter(ting => ting.includes(modell.navn)).length;
 
   maskinar[id] = new klasse(modell,rute) 
   maskinaListe.push(id);
@@ -83,7 +83,7 @@ function teinAlleMaskinar() {
 //====================================================== ny Posisjon Doning og posisjon + retning redskap======================================================================
 function nyPosisjonDoningOgRedskap() {
   // ny posiajonn doning
-  let fart = hentFart();
+  let fart = hentFart(doning.fart, doning.last);
   doning.pos.midt.fx =  -fart * Math.cos((Math.PI / 180) * doning.retning.tmp);
   doning.pos.midt.fy =  -fart * Math.sin((Math.PI / 180) * doning.retning.tmp);
   doning.pos.midt.tx = doning.pos.midt.x - doning.pos.midt.fx,  
@@ -281,35 +281,35 @@ function aktiverRedskap(framEllerBak:'fram'|'bak') {
 }
 //====================================================== doningBytteSjekk ======================================================================
 /**
- * @param {object} denne det som ein krasjer ein 
+ * @param {object} denne det som ein krasjer i
  * @returns true visst det blir bytte
  */
 function doningBytteSjekk(denne:Kjoretoy) {
-  if( doning.type !== "bonde"){return false;}
-  if ( !koblingskarantene('sjekk',denne)){    //går inn i doning
-    maskinar[bonden].pos.midt.x = 0;
-    maskinar[bonden].pos.midt.y = 0; //fjerner bonde
-    doning = denne;
-    flagg.push('nyDoning');
-    return true;
+  if (doning.type !== "bonde"){ return false;}
+  if (koblingskarantene('sjekk',denne)){ return false;}  
+  maskinar[bonden].pos.midt.x = 0;
+  maskinar[bonden].pos.midt.y = 0; //fjerner bonde
+  doning = denne;//går inn i doning
+  flagg.push('nyDoning');
+  return true;
   }
-  return false;
-}
 
 //====================================================== doningBytte ======================================================================
 function utAvDoning() {
+  if(doning === maskinar[bonden]) return;
   if(doning.redskap.fram !== null) { oppdaterRutePos(doning.redskap.fram)};
   if(doning.redskap.bak  !== null) { oppdaterRutePos(doning.redskap.bak )};
-  if (doning !== maskinar[bonden]) {
-    koblingskarantene('sett',doning);
-    const punkt = doning.pos.dor;
-    maskinar[bonden].pos.midt.x = doning.pos.midt.x +  (punkt.dx * Math.cos((Math.PI / 180) * doning.retning.tmp)) +  (punkt.dy * Math.sin((Math.PI / 180) * doning.retning.tmp));
-    maskinar[bonden].pos.midt.y = doning.pos.midt.y +  (punkt.dx * Math.sin((Math.PI / 180) * doning.retning.tmp)) +  (punkt.dy * Math.cos((Math.PI / 180) * doning.retning.tmp)); 
-    doning = maskinar[bonden] as Kjoretoy;
-    doning.pos.midt.fx = maskinar[bonden].pos.midt.x - doning.pos.midt.x;
-    doning.pos.midt.fy = maskinar[bonden].pos.midt.y - doning.pos.midt.y;
-    flyttKart();
-  }
+  koblingskarantene('sett',doning);
+  //flytt bonden til døra til doningen han går ut av
+  const punkt = doning.pos.dor;
+  maskinar[bonden].pos.midt.x = doning.pos.midt.x +  (punkt.dx * Math.cos((Math.PI / 180) * doning.retning.tmp)) +  (punkt.dy * Math.sin((Math.PI / 180) * doning.retning.tmp));
+  maskinar[bonden].pos.midt.y = doning.pos.midt.y +  (punkt.dx * Math.sin((Math.PI / 180) * doning.retning.tmp)) +  (punkt.dy * Math.cos((Math.PI / 180) * doning.retning.tmp)); 
+  doning = maskinar[bonden] as Kjoretoy;
+  //juster posisjonen til kartet
+  doning.pos.midt.fx = maskinar[bonden].pos.midt.x - doning.pos.midt.x;
+  doning.pos.midt.fy = maskinar[bonden].pos.midt.y - doning.pos.midt.y;
+  flyttKart();
+  
   flagg.push('nyDoning');
 }
 //-----------------------Karantene
@@ -318,8 +318,6 @@ function utAvDoning() {
  * bruk 'sett' til å plassere ting i karantene, 
  * bruk 'sjekk' for å sjekke om ting er i karantene,
  * 'fjerning' blir brukt når doning har flytta seg for å sjå om ting er utafor markin og skal ut av karantene
- * @param {String} funkjson sett/sjekk/fjerning
- * @param {object} denne doning som skal flyttast eller koblast
  * @returns sjekk = true om ting er i karantene
  */
 function koblingskarantene (funkjson:'sett'|'sjekk'|'fjerning', denne:Maskin) {

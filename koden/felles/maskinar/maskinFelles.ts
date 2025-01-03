@@ -8,8 +8,9 @@ const listerMaskin = {
   }
 
 type Maskin = Kjoretoy|Redskap;
-type Kjoretoy = Bonde|Traktor;
-type Redskap = Plog|Samaskin|Tilhengar;//|Slamaskin|TreskeSkjer|BalleMaskin;
+type Kjoretoy = Bonde|Traktor|Skurtreskar;
+type Redskap = Plog|Samaskin|Tilhengar|Slamaskin|Ballemaskin;//|TreskeSkjer
+type FartMaskinMal = { aktiv: number, maks: number, friksjon: number, aks: number, landskap: number, arbeid: number, krasj: number, tyngde:number};
 
 
 
@@ -19,7 +20,7 @@ function velgValgtLast(denneDoningLast:LastMal, nyLastData: EiLast) {
 
 class MaskinMal extends BaseMal{
   redskap: {fram:Redskap|null, bak:Redskap|null};
-  fart: { aktiv: number, maks: number, friksjon: number, aks: number, landskap: number, arbeid: number, krasj: number, tyngde:number};
+  fart: FartMaskinMal;
   arbeid:{
     type:ArbeidsTypar,
     aktiv: boolean;

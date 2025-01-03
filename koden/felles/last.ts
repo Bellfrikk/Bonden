@@ -83,6 +83,7 @@ function fyllDrivstoff(losseDoning:Kjoretoy, mengde:number) {
    * return true visst det er match
    */
   function sjekkOmLossepunktErPaPlass(mottakar:Maskin|Ting, leverar:Maskin|Ting, denneLast:LastTypar) {
+    if(!mottakar.last.laster.denneLast){return false;}
     let mottakPlass = mottakar.last.laster[denneLast].mottak.plass;
     if(mottakPlass !== null && mottakar.last.mottar.includes(denneLast) && leverar.last.laster[denneLast].levering.punkt !== null){
       oppdaterLossePunktPos(leverar, leverar.last.laster[denneLast].levering.punkt);

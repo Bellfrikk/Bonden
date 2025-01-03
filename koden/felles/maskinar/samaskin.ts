@@ -107,7 +107,7 @@ const samaskin0:SamaskinData = {
       }
     },
     velgFro: (denne:any) => {
-      if(denne.type !== 'samaskin') return;
+      if(denne.arbeid.type !== 'samaskin') return;
       if(denne.arbeid.type1 === null) return;
       if(denne.arbeid.type1.blirTil === 'kornSadd') {
         denne.arbeid.type1.blirTil = 'grasSadd';

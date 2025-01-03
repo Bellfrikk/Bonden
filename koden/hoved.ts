@@ -31,7 +31,7 @@ function lagVerden(kart:Kart) {
     lagTing(denne[0],denne[1],denne[2]);
   });
 
-  doning = maskinar.bonde0 as Kjoretoy;
+  doning = maskinar[bonden] as Kjoretoy;
   nyPosisjonDoningOgRedskap()
   oppdaterPeng(0);
   oppdaterKnappar()
@@ -69,7 +69,6 @@ function bevegelse() {
     if (doning.sving.fram !== 'beint' || doning.sving.bak !== 'beint') { flagg.push('sving'); }
     doning.sving.fram = 'beint';
     doning.sving.bak = 'beint';
-    flagg.push('sving');
   }
 
   //-------- flytt doning,
@@ -140,8 +139,9 @@ function flyttKrasjTingen(krasjTingen) {
 }*/
 //====================================================== flagg 
 function sjekkFlagg() {
- let flaggTMP = flagg;
- flagg = [];
+  if (flagg.length === 0) return;
+  let flaggTMP = flagg;
+  flagg = [];
 
   if (flaggTMP.includes('teinMaskinar')) {
     teinAlleMaskinar();
@@ -224,8 +224,8 @@ function aktiverDoningFunksjonane( flagg:string ) {
  * @description Aktiverer eventuelle funksjonar i doning som har dette flagg
  */
 function aktiverDenneFunksjonane(flagg:string, denne:Maskin|Ting, data?:any):void{
-  if(denne.funksjonane.flagg){
-    denne.funksjonane.flagg(denne, data);
+  if(denne.funksjonane[flagg]){
+    denne.funksjonane[flagg](denne, data);
   }
 }
 //===================================================== velgSkjerm

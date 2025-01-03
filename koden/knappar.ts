@@ -106,7 +106,6 @@ function styring() {
         if ((mus[0] > knappar[knappar.liste[k]].v && mus[0] < knappar[knappar.liste[k]].h) && (mus[1] > knappar[knappar.liste[k]].t && mus[1] < knappar[knappar.liste[k]].b)) {
           knappar[knappar.liste[k]].trykkAktivert = trykk;
           console.log(knappar.liste[k]+' aktivert '+ knappar[knappar.liste[k]].trykkAktivert);
-
         }
       }
     }

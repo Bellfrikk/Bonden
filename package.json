@@ -1,0 +1,20 @@
+{
+  "name": "bonden",
+  "version": "1.0.0",
+  "description": "",
+  "main": "babel.config.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bellfrikk/Bonden.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bellfrikk/Bonden/issues"
+  },
+  "homepage": "https://github.com/Bellfrikk/Bonden#readme"
+}

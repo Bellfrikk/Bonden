@@ -1,4 +1,3 @@
-
 class Plog extends MaskinRedskapMal {
   grafikk: {
       karosseri: GrafikkDelBase,
