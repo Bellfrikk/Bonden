@@ -1,4 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sjekkAtFartIkkjeErOverMaks = sjekkAtFartIkkjeErOverMaks;
+exports.sjekkOmFartSkalRundasTilNull = sjekkOmFartSkalRundasTilNull;
+exports.sjekkOmTomForDrivstoff = sjekkOmTomForDrivstoff;
+exports.hentFart = hentFart;
 function sjekkAtFartIkkjeErOverMaks(fart) {
     let toppFart = fart.maks + fart.landskap + fart.arbeid - fart.krasj;
     return (fart.aktiv > toppFart) ? toppFart : -toppFart;

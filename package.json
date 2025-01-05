@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Bellfrikk/Bonden/issues"
   },
-  "homepage": "https://github.com/Bellfrikk/Bonden#readme"
+  "homepage": "https://github.com/Bellfrikk/Bonden#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.14"
+  }
 }
