@@ -2,6 +2,7 @@
 class Skurtreskar extends MaskinKjoretoyMal {
   grafikk: {
     dekkVB: GrafikkDelDekkMedSving,
+ 
     dekkHB: GrafikkDelDekkMedSving,
     dekkVF: GrafikkDelDekk,
     dekkHF: GrafikkDelDekk,
