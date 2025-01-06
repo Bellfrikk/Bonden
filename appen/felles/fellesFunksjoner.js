@@ -37,28 +37,6 @@ function oppdaterFart(hendelse, krasjting) {
         return (doning.fart.krasj >= doning.fart.aktiv + doning.fart.aks) ? true : false; //svarer true visst doning ikkje kan flytte seg
     }
 }
-function hentFart() {
-    //sjekk at farten ikke er over maks
-    let toppFart = doning.fart.maks + doning.fart.landskap + doning.fart.arbeid - doning.fart.krasj;
-    if (doning.fart.aktiv > toppFart) {
-        doning.fart.aktiv = toppFart;
-    }
-    else if (doning.fart.aktiv < -toppFart) {
-        doning.fart.aktiv = -toppFart;
-    }
-    // sett fart til null ved låge verdiar og nullar krasj friksjon
-    if (doning.fart.aktiv <= (doning.fart.friksjon + doning.fart.krasj) && doning.fart.aktiv >= -(doning.fart.friksjon + doning.fart.krasj)) {
-        doning.fart.aktiv = 0;
-        doning.fart.krasj = 0;
-    } // sjekk om tom for bensin
-    if (doning.last.leverer.includes('drivstoff') && doning.last.laster.drivstoff.niva > 0) {
-        return doning.fart.aktiv;
-    }
-    else {
-        return doning.fart.aktiv;
-        console.log('tom for bensin');
-    }
-}
 //====================================================== posisjon ======================================================================
 /**
  * @param {object} denne maskin ellet ting som skal ha ny krasj punkt og rute pos
