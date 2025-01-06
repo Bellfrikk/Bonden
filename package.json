@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Bellfrikk/Bonden#readme",
   "devDependencies": {
-    "@types/jest": "^29.5.14"
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@types/jest": "^29.5.14",
+    "babel-jest": "^29.7.0"
   }
 }

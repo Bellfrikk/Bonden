@@ -13,19 +13,19 @@ test ('sjekk om fart skal rundast til null nå den er under friksjonsveidiane', 
 });
 
 test ('sjekk at fart bli redusert når drivstoffet er tomt', () => {
-  const lastFull = {leverer: ['drivstoff'], mottar:[], laster: {drivstoff: {niva: 10}}};
-  const lastTom = {leverer: ['drivstoff'], mottar:[], laster: {drivstoff: {niva: 0}}};
-  const lastNegativ = {leverer: ['drivstoff'], mottar:[], laster: {drivstoff: {niva: -10}}};
-  const fart = {aktiv: 100, friksjon: 0.1, krasj: 0.1,maks: 100, landskap: 10, arbeid: 5,aks: 0.1, tyngde: 0.1};
-  expect(sjekkOmTomForDrivstoff(fart, lastFull)).toBe(100);
-  expect(sjekkOmTomForDrivstoff(fart, lastTom)).toBe(straffeFartVedTomForDrivstoff);
-  expect(sjekkOmTomForDrivstoff(fart, lastNegativ)).toBe(straffeFartVedTomForDrivstoff);
+  const fartAktiv = 100;
+  const harDrivstoff = 1;
+  const tomForDrivstoff = 0;
+  const negtivDrivstoff = -1;
+  expect(sjekkOmTomForDrivstoff(fartAktiv, harDrivstoff)).toBe(fartAktiv);
+  expect(sjekkOmTomForDrivstoff(fartAktiv, tomForDrivstoff)).toBe(straffeFartVedTomForDrivstoff);
+  expect(sjekkOmTomForDrivstoff(fartAktiv, negtivDrivstoff)).toBe(straffeFartVedTomForDrivstoff);
   });
 
 test ('sjekk at rett fart blir henta', () => {
-  const fartOverMaks = { aktiv:130, maks: 100, landskap: 10, arbeid: 5, friksjon: 0.1, krasj: 0};
-  const fartUnderMaks = { aktiv:30, maks: 100, landskap: 10, arbeid: 5, friksjon: 0.1, krasj: 0};
-  const fartCaNull = { aktiv:0.2, maks: 100, landskap: 0, arbeid: 0, friksjon: 0.1, krasj: 0.3 };
+  const fartOverMaks =  { aktiv:130,aks:0.1,tyngde:1, maks: 100, landskap: 10, arbeid: 5, friksjon: 0.1, krasj: 0};
+  const fartUnderMaks = { aktiv:30, aks:0.1,tyngde:1, maks: 100, landskap: 10, arbeid: 5, friksjon: 0.1, krasj: 0};
+  const fartCaNull =    { aktiv:0.2,aks:0.1,tyngde:1, maks: 100, landskap: 0, arbeid: 0, friksjon: 0.1, krasj: 0.3 };
 
   const lastFull = {leverer: ['drivstoff'], laster: {drivstoff: {niva: 10}}};
   const lastTom = {leverer: ['drivstoff'], laster: {drivstoff: {niva: 0}}};

@@ -54,7 +54,7 @@ const kart1 = {
         [Bygg, tre, { x: 4, y: 1 }],
     ],
     maskinar: [
-        [Bonde, bondeMann, { x: 4, y: 4 }],
+        [Bonde, bondeMann, { x: 5, y: 4 }],
         [Traktor, traktorDexta, { x: 4, y: 6 }],
         [Skurtreskar, skurtreskar1, { x: 4, y: 8 }],
         [Treskeskjer, treskeskjer1, { x: 6, y: 8 }],
