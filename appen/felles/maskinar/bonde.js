@@ -33,9 +33,9 @@ const bondeMann = {
     sving: { fart: 4 },
     arbeid: { type: "ingen", punkt: [], type1: null, type2: null },
     last: { mottar: [], leverer: [], valgtLast: null, laster: {
-            mat: { maks: 5, visNiva: false, lastTilDoning: false,
-                mottak: { plass: 'munn', mengde: 1, evigLager: false },
-                levering: { punkt: '', mengde: 1, evigLager: false } }
+            drivstoff: { maks: 5, visNiva: false, lastTilDoning: false,
+                mottak: { plass: '', mengde: 0, evigLager: false },
+                levering: { punkt: '', mengde: 0, evigLager: true } }
         }
     },
     butikk: { type: 'ingen', bilde: '', tittel: '', pris: 0 },

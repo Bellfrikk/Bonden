@@ -96,7 +96,6 @@ const samaskin0:SamaskinData = {
       }
     },
     froLevering: (denne:any) => {
-      if(denne.type !== 'samaskin') return;
       if(denne.last.laster.fro === null){return}
       if (denne.last.laster.fro.mottak.losserFra !== null && 
         denne.last.laster.fro.mottak.plass !== null && 
@@ -107,7 +106,6 @@ const samaskin0:SamaskinData = {
       }
     },
     velgFro: (denne:any) => {
-      if(denne.arbeid.type !== 'samaskin') return;
       if(denne.arbeid.type1 === null) return;
       if(denne.arbeid.type1.blirTil === 'kornSadd') {
         denne.arbeid.type1.blirTil = 'grasSadd';

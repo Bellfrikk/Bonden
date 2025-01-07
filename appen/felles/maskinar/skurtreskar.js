@@ -15,7 +15,7 @@ class Skurtreskar extends MaskinKjoretoyMal {
 }
 const skurtreskar1 = {
     navn: 'New-Holland-Traditional',
-    type: 'doning',
+    type: 'skurtreskar',
     pos: {
         dor: { dx: -12, dy: 12 },
         framKrok: { dx: 12, dy: 0 },

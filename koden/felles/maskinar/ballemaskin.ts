@@ -112,7 +112,6 @@ const ballemaskin1: BallemaskinData = {
   butikk: { type: 'kjoretoy', bilde: 'butikkTraktor0', tittel: 'ingen', pris: 20000 },
   funksjonane: {
     doningFlytta: (denne:any) => {
-      if(doning.type !== 'ballemaskin') return;
       animerDekk(denne.grafikk['dekkVB'].animasjon.dekk, denne.grafikk['dekkVB'].klippPos, denne.pos.midt);
       animerDekk(denne.grafikk['dekkHB'].animasjon.dekk, denne.grafikk['dekkHB'].klippPos, denne.pos.midt);
       animerDekk(denne.grafikk['dekkVF'].animasjon.dekk, denne.grafikk['dekkVF'].klippPos, denne.pos.midt);
@@ -122,7 +121,6 @@ const ballemaskin1: BallemaskinData = {
     },
     lastErEndra: (denne:any) => {
       //presseBall
-      if(denne.type !== 'ballemaskin') return;
       animerKlipp(denne.grafikk['presseBall'], 1, false)
       oppdaterLastStrAnimasjon(denne, denne.grafikk.presseBall, denne.last.gras);
       if (denne.last.pakkeBall && denne.grafikk.pakkearm.animasjon.retning && denne.last.pakkeBall.niva != 0) {//Pakkearm snurrer visst det er ein pakkeBall
@@ -137,7 +135,6 @@ const ballemaskin1: BallemaskinData = {
     },
     lastAnimasjonLoop: (denne:any) => {
       // Flytte ballar
-      if(doning.type !== 'ballemaskin') return;
       if (doning.fart.aktiv > 0.2) {//Doning må stå stille for å sleppe av ball
         flagg.push('lastAnimasjonLoop')
         return;

@@ -77,7 +77,6 @@ const traktorDexta: TraktorData = {
   funksjonane: {
     doningFlytta:
       (denne:any) => {
-        if(denne.type !== 'traktor') return;
         animerDekk(denne.grafikk['dekkVB'].animasjonDekk, denne.grafikk['dekkVB'].klippPos, denne.pos.midt);
         animerDekk(denne.grafikk['dekkHB'].animasjonDekk, denne.grafikk['dekkHB'].klippPos, denne.pos.midt);
         animerDekk(denne.grafikk['dekkVF'].animasjonDekk, denne.grafikk['dekkVF'].klippPos, denne.pos.midt);
@@ -85,14 +84,12 @@ const traktorDexta: TraktorData = {
       },
     sving:
       (denne:any) => {
-        if(denne.type !== 'traktor') return;
         animerSving( denne.sving.fram,denne.grafikk.dekkVF);
         animerSving( denne.sving.fram,denne.grafikk.dekkHF);
           flagg.push('teinMaskinar');
       },
     drivstoffMottaking: 
     (denne:any) => {
-      if(denne.type !== 'traktor') return
       fyllDrivstoff(denne, denne.last.laster.drivstoff.mottak.mengde)
     }
   }

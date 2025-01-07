@@ -88,7 +88,7 @@ const tilhengarBekkEikeland: TilhengarData = {
 
 //______________________tilhengar2
 const tilhengarFossEikeland:TilhengarData = {
-  navn: 'Foss-Eikelnd-Karmhenger',
+  navn: 'Foss-Eikelnd-Karmhenger',//må stemme med funksjononae
   type: 'tilhengar',
   pos: {
     framKrok: { dx: 33, dy: 0},
@@ -131,7 +131,6 @@ const tilhengarFossEikeland:TilhengarData = {
   butikk: { type: 'redskap', bilde: 'butikkPlog0', tittel: 'MULD 0', pris: 20000 },
   funksjonane:{
     doningFlytta: (denne:any) => {
-      if(denne.type !== 'tilhengar') return;
       animerDekk(denne.grafikk.dekkHB.animasjonDekk, denne.grafikk.dekkHB.klippPos, denne.pos.midt);
       animerDekk(denne.grafikk.dekkVB.animasjonDekk, denne.grafikk.dekkVB.klippPos, denne.pos.midt)
     },

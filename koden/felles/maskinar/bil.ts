@@ -54,7 +54,6 @@ const ferrari:BilData = {
     butikk: { type: 'kjoretoy', bilde: 'butikkFerrarri', tittel: 'Ferrarri', pris: 200000 },
     funksjonane: {
       drivstoffMottaking: (denne:any) => {
-        if(denne.type !== 'doning') return;
         if(denne.last.laster.drivstoff){
           fyllDrivstoff(denne, denne.last.laster.drivstoff.mottak.mengde)
         }

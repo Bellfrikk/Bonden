@@ -1,7 +1,12 @@
 "use strict";
 function sjekkAtFartIkkjeErOverMaks(fart) {
     let toppFart = fart.maks + fart.landskap + fart.arbeid - fart.krasj;
-    return (fart.aktiv > toppFart) ? toppFart : -toppFart;
+    if (fart.aktiv > toppFart)
+        return toppFart;
+    else if (fart.aktiv < -toppFart)
+        return -toppFart;
+    else
+        return fart.aktiv;
 }
 function sjekkOmFartSkalRundasTilNull(fart) {
     // sett fart til null ved låge verdiar og nullar krasj friksjon

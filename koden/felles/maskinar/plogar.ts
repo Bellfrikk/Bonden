@@ -73,9 +73,7 @@ const plogKverneland:PlogData = {
   svingFartVedArbeid:  0.5,
   butikk: { type: 'redskap', bilde: 'butikkPlog0', tittel: 'MULD 0', pris: 20000 },
   funksjonane:{
-    redskapBakAktivert:
-      (denne:any) => {
-        if(denne.type !== 'plog') return;
+    redskapBakAktivert: (denne:any) => {
         denne.grafikk.skjerAktiv.skalVise  = denne.arbeid.aktiv ? true : false;
         denne.grafikk.skjerPassiv.skalVise = denne.arbeid.aktiv ? false : true;
     },

@@ -2,7 +2,6 @@
 class Skurtreskar extends MaskinKjoretoyMal {
   grafikk: {
     dekkVB: GrafikkDelDekkMedSving,
- 
     dekkHB: GrafikkDelDekkMedSving,
     dekkVF: GrafikkDelDekk,
     dekkHF: GrafikkDelDekk,
@@ -37,7 +36,7 @@ interface SkurtreskarData extends MaskinKjoretoyData {
 
 const skurtreskar1:SkurtreskarData = {
   navn: 'New-Holland-Traditional',
-  type: 'doning',
+  type: 'skurtreskar',
   pos: {
     dor: { dx: -12, dy: 12},
     framKrok: { dx: 12, dy: 0},
@@ -87,26 +86,22 @@ const skurtreskar1:SkurtreskarData = {
   butikk: { type: 'kjoretoy', bilde: 'butikkTraktor0', tittel: 'ingen', pris: 20000 },
   funksjonane:{
     doningFlytta: (denne:any) => {
-      if(denne.type !== 'skurtreskar') return;
       animerDekk(denne.grafikk.dekkVB.animasjonDekk, denne.grafikk.dekkVB.klippPos, denne.pos.midt);
       animerDekk(denne.grafikk.dekkHB.animasjonDekk, denne.grafikk.dekkHB.klippPos, denne.pos.midt);
       animerDekk(denne.grafikk.dekkVF.animasjonDekk, denne.grafikk.dekkVF.klippPos, denne.pos.midt);
       animerDekk(denne.grafikk.dekkHF.animasjonDekk, denne.grafikk.dekkHF.klippPos, denne.pos.midt);  
     },
     sving: (denne:any) => {
-      if(denne.type !== 'skurtreskar') return;
     animerSving( denne.sving.fram,denne.grafikk.dekkVB);
     animerSving( denne.sving.fram,denne.grafikk.dekkHB);
     flagg.push('teinMaskinar');
     },
     drivstoffMottaking: (denne:any) => {
-      if(denne.type !== 'skurtreskar') return;
       if(denne.last.laster.drivstoff){
         fyllDrivstoff(denne, denne.last.laster.drivstoff.mottak.mengde)
       }
     },
     kornLevering: (denne:any) => {
-      if(denne.type !== 'skurtreskar') return;
       if(!denne.last.laster.korn){return;}
       if(denne.last.laster.korn.levering.losserTil && denne.last.laster.korn.niva > 0){
         if(denne.grafikk.royr.animasjonRetning.status === denne.grafikk.royr.animasjonRetning.retning){//røyr er heilt ute

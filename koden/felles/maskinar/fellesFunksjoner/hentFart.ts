@@ -1,6 +1,8 @@
 function sjekkAtFartIkkjeErOverMaks (fart:FartMaskinMal):number {
-    let toppFart = fart.maks + fart.landskap + fart.arbeid - fart.krasj;
-    return (fart.aktiv > toppFart) ? toppFart : -toppFart;
+  let toppFart = fart.maks + fart.landskap + fart.arbeid - fart.krasj;
+    if(fart.aktiv > toppFart) return toppFart;
+    else if(fart.aktiv < -toppFart) return -toppFart;
+    else return fart.aktiv;
 }
 
 function sjekkOmFartSkalRundasTilNull (fart:FartMaskinMal){
