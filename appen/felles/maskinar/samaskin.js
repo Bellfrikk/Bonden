@@ -81,8 +81,6 @@ const samaskin0 = {
             }
         },
         froLevering: (denne) => {
-            if (denne.type !== 'samaskin')
-                return;
             if (denne.last.laster.fro === null) {
                 return;
             }
@@ -95,8 +93,6 @@ const samaskin0 = {
             }
         },
         velgFro: (denne) => {
-            if (denne.arbeid.type !== 'samaskin')
-                return;
             if (denne.arbeid.type1 === null)
                 return;
             if (denne.arbeid.type1.blirTil === 'kornSadd') {

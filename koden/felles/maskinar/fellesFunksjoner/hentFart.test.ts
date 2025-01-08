@@ -1,5 +1,5 @@
-import { sjekkAtFartIkkjeErOverMaks, sjekkOmFartSkalRundasTilNull, sjekkOmTomForDrivstoff, hentFart } from '../../../../felles/maskinar/fellesFunksjoner/hentFart';
-
+//import { sjekkAtFartIkkjeErOverMaks, sjekkOmFartSkalRundasTilNull, sjekkOmTomForDrivstoff, hentFart } from '../../../../felles/maskinar/fellesFunksjoner/hentFart.js';
+const hentFartTest = require('./felles/maskinar/fellesFunksjoner/hentFart')
 test ('sjekk at samla fart ikkje er over maks for denne doningen', () => {
   const fart = { aktiv: 100,friksjon:0.1, maks: 100, landskap: 10, arbeid: 5, krasj: 0 ,aks: 0.1, tyngde: 0.1};
   expect(sjekkAtFartIkkjeErOverMaks(fart)).toBe(115);

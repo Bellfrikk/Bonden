@@ -60,8 +60,6 @@ const plogKverneland = {
     butikk: { type: 'redskap', bilde: 'butikkPlog0', tittel: 'MULD 0', pris: 20000 },
     funksjonane: {
         redskapBakAktivert: (denne) => {
-            if (denne.type !== 'plog')
-                return;
             denne.grafikk.skjerAktiv.skalVise = denne.arbeid.aktiv ? true : false;
             denne.grafikk.skjerPassiv.skalVise = denne.arbeid.aktiv ? false : true;
         },

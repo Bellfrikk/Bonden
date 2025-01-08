@@ -65,30 +65,22 @@ const skurtreskar1 = {
     butikk: { type: 'kjoretoy', bilde: 'butikkTraktor0', tittel: 'ingen', pris: 20000 },
     funksjonane: {
         doningFlytta: (denne) => {
-            if (denne.type !== 'skurtreskar')
-                return;
             animerDekk(denne.grafikk.dekkVB.animasjonDekk, denne.grafikk.dekkVB.klippPos, denne.pos.midt);
             animerDekk(denne.grafikk.dekkHB.animasjonDekk, denne.grafikk.dekkHB.klippPos, denne.pos.midt);
             animerDekk(denne.grafikk.dekkVF.animasjonDekk, denne.grafikk.dekkVF.klippPos, denne.pos.midt);
             animerDekk(denne.grafikk.dekkHF.animasjonDekk, denne.grafikk.dekkHF.klippPos, denne.pos.midt);
         },
         sving: (denne) => {
-            if (denne.type !== 'skurtreskar')
-                return;
             animerSving(denne.sving.fram, denne.grafikk.dekkVB);
             animerSving(denne.sving.fram, denne.grafikk.dekkHB);
             flagg.push('teinMaskinar');
         },
         drivstoffMottaking: (denne) => {
-            if (denne.type !== 'skurtreskar')
-                return;
             if (denne.last.laster.drivstoff) {
                 fyllDrivstoff(denne, denne.last.laster.drivstoff.mottak.mengde);
             }
         },
         kornLevering: (denne) => {
-            if (denne.type !== 'skurtreskar')
-                return;
             if (!denne.last.laster.korn) {
                 return;
             }

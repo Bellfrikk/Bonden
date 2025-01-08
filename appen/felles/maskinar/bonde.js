@@ -41,8 +41,6 @@ const bondeMann = {
     butikk: { type: 'ingen', bilde: '', tittel: '', pris: 0 },
     funksjonane: {
         doningFlytta: (denne) => {
-            if (denne.type !== 'bonde')
-                return;
             denne.grafikk.bonden.animasjonBevegelse.flytt += Math.abs(Math.hypot(denne.pos.midt.fx, denne.pos.midt.fy));
             if (denne.grafikk.bonden.animasjonBevegelse.flytt > 13) {
                 denne.grafikk.bonden.klippPos.x = (denne.grafikk.bonden.klippPos.x >= denne.grafikk.bonden.animasjonBevegelse.maksX) ? 0 : denne.grafikk.bonden.klippPos.x + 26;
