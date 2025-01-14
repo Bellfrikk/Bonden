@@ -1,6 +1,7 @@
 "use strict";
 const kart1 = {
     startPeng: 10000,
+    antalRuter: { x: 50, y: 40 },
     storrelseRuter: { x: 50, y: 40 },
     landskap: {
         x0y0: 'eng', x0y1: 'eng', x0y2: 'eng', x0y3: 'eng', x0y4: 'eng', x0y5: 'eng', x0y6: 'eng', x0y7: 'eng', x0y8: 'eng', x0y9: 'eng', x0y10: 'eng', x0y11: 'eng', x0y12: 'eng', x0y13: 'eng', x0y14: 'eng', x0y15: 'eng', x0y16: 'eng', x0y17: 'eng', x0y18: 'eng', x0y19: 'eng', x0y20: 'eng', x0y21: 'eng', x0y22: 'eng', x0y23: 'eng', x0y24: 'eng', x0y25: 'eng', x0y26: 'eng', x0y27: 'eng', x0y28: 'eng', x0y29: 'eng', x0y30: 'eng', x0y31: 'eng', x0y32: 'eng', x0y33: 'eng', x0y34: 'eng', x0y35: 'eng', x0y36: 'eng', x0y37: 'eng', x0y38: 'eng', x0y39: 'eng', x0y40: 'eng', x0y41: 'eng', x0y42: 'eng', x0y43: 'eng', x0y44: 'eng', x0y45: 'eng', x0y46: 'eng', x0y47: 'eng', x0y48: 'eng', x0y49: 'eng',

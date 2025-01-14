@@ -10,15 +10,16 @@ ramme.jorde.width = skjerm.hogre;
 
 
 //====================================================== lage heile landskapet ======================================================================
-function lagLandskap(kart:LandskapTypeData) {
-  kart.landskap.forEach(rute => {
-    let type = kart[y][x] as LandskapType;
+function lagLandskap(kart:LandskapTypeData, antalRuter:{x:number,y:number}) {
+for (let y = 0; y < antalRuter.y; y++) {
+  for (let x = 0; x < antalRuter.x; x++) {
+    let id = 'x' + x + 'y' + y;
+    let type = kart[id] as LandskapType;
     landskap[id] = new Landskap(type, x, y, id);
     if(kart[y][x] === 'jorde') { lagJorde(x,y)}
     if(orginalLandskap[type].krasj !== null) { krasjlisteLandskap.push(kart[y][x])}
-    
-  });
-
+  }
+}
 }
 function lagJorde(x:number,y:number) {
   for (let y2 = 0; y2 < orginalJorde.antallJordeRuter; y2++) {

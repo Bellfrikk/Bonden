@@ -8,11 +8,11 @@ let jordeVekseListe = { typar: ['grasSadd', 'grasVeks', 'grasModent', 'kornSadd'
 ramme.jorde.height = skjerm.botn;
 ramme.jorde.width = skjerm.hogre;
 //====================================================== lage heile landskapet ======================================================================
-function lagLandskap(kart) {
-    for (let y = 0; y < kart.length; y++) {
-        for (let x = 0; x < kart[y].length; x++) {
+function lagLandskap(kart, antalRuter) {
+    for (let y = 0; y < antalRuter.y; y++) {
+        for (let x = 0; x < antalRuter.x; x++) {
             let id = 'x' + x + 'y' + y;
-            let type = kart[y][x];
+            let type = kart[id];
             landskap[id] = new Landskap(type, x, y, id);
             if (kart[y][x] === 'jorde') {
                 lagJorde(x, y);

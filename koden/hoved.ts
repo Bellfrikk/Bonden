@@ -22,7 +22,7 @@ function logginn(){
 }
 function lagVerden(kart:Kart) {
   lagVeksing();//må lagast før landskap
-  lagLandskap(kart.landskap);
+  lagLandskap(kart.landskap, kart.antalRuter);
   oppdaterLandskap();
   kart.maskinar.forEach(denne => {
     lagMaskin(denne[0],denne[1],denne[2]);
