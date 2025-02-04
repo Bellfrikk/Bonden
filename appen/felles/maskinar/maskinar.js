@@ -79,7 +79,9 @@ function teinAlleMaskinar() {
 //====================================================== ny Posisjon Doning og posisjon + retning redskap======================================================================
 function nyPosisjonDoningOgRedskap() {
     // ny posiajonn doning
-    let fart = hentFart(doning.fart, doning.last.laster.drivstoff.niva);
+    console.log('før aktiv ' + doning.fart.aktiv + 'maks: ' + doning.fart.maks + ' fart landskap: ' + doning.fart.landskap + ' arb: ' + doning.fart.arbeid + ' krasj: ' + doning.fart.krasj);
+    let fart = hentFart(doning.type === 'bonde' ? true : false, doning.fart, doning.last.laster.drivstoff.niva);
+    console.log('etter aktiv ' + doning.fart.aktiv + 'maks: ' + doning.fart.maks + ' fart landskap: ' + doning.fart.landskap + ' arb: ' + doning.fart.arbeid + ' krasj: ' + doning.fart.krasj);
     doning.pos.midt.fx = -fart * Math.cos((Math.PI / 180) * doning.retning.tmp);
     doning.pos.midt.fy = -fart * Math.sin((Math.PI / 180) * doning.retning.tmp);
     doning.pos.midt.tx = doning.pos.midt.x - doning.pos.midt.fx,

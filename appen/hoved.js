@@ -1,29 +1,23 @@
 "use strict";
-let flagg = ['doningFlytta', 'tingFlytta'];
-let tid = 0;
-let kart;
-let aktiv = {};
-let krasjTingen;
-let doning;
-let aktivSkjerm = { verden: true, butikk: false };
 function start() {
     settStorrelse();
-    kart = Object.assign({}, logginn());
+    logginn();
+}
+function startNyttSpel() {
+    kart = kart1;
     peng = kart.startPeng;
     lagVerden(kart);
     styring();
     const styringsLoopId = setInterval(styringsloop, 10);
     bildeKontroller();
 }
-function logginn() {
-    //logg inn eller velg nytt kart
-    return kart1;
+function lagNyVerden() {
 }
 function lagVerden(kart) {
     lagVeksing(); //må lagast før landskap
-    lagLandskap(kart.landskap, kart.antalRuter);
+    lagLandskap(kart);
     oppdaterLandskap();
-    kart.maskinar.forEach(denne => {
+    kart.maskinar.forEach((denne) => {
         lagMaskin(denne[0], denne[1], denne[2]);
     });
     kart.ting.forEach((denne) => {
@@ -48,45 +42,45 @@ function styringsloop() {
 function bevegelse() {
     //--------------------------------------------justering av fart
     if (knappar.fram.trykkAktivert) {
-        oppdaterFart('framKnapp');
+        oppdaterFart("framKnapp");
     }
     else if (knappar.bak.trykkAktivert) {
-        oppdaterFart('bakKnapp');
+        oppdaterFart("bakKnapp");
     }
     else if (doning.fart.aktiv !== 0) {
-        oppdaterFart('trill');
+        oppdaterFart("trill");
     }
     //--------------------------------------------oppdater sving
     if (knappar.venstre.trykkAktivert) {
-        doning.sving.fram = 'venstre';
-        doning.sving.bak = 'hogre';
-        flagg.push('sving');
+        doning.sving.fram = "venstre";
+        doning.sving.bak = "hogre";
+        flagg.push("sving");
     }
     else if (knappar.hogre.trykkAktivert) {
-        doning.sving.fram = 'hogre';
-        doning.sving.bak = 'venstre';
-        flagg.push('sving');
+        doning.sving.fram = "hogre";
+        doning.sving.bak = "venstre";
+        flagg.push("sving");
     }
     else {
-        if (doning.sving.fram !== 'beint' || doning.sving.bak !== 'beint') {
-            flagg.push('sving');
+        if (doning.sving.fram !== "beint" || doning.sving.bak !== "beint") {
+            flagg.push("sving");
         }
-        doning.sving.fram = 'beint';
-        doning.sving.bak = 'beint';
+        doning.sving.fram = "beint";
+        doning.sving.bak = "beint";
     }
     //-------- flytt doning,
     if (Math.abs(doning.fart.aktiv) > 0.2) {
-        let framBak = doning.fart.aktiv > 0 ? 'fram' : 'bak';
+        let framBak = doning.fart.aktiv > 0 ? "fram" : "bak";
         let krasjTing;
         lagFlyttePosTilDoning(framBak);
-        if (framBak === 'bak' && krasjITilhengerTest() === "krasj") {
+        if (framBak === "bak" && krasjITilhengerTest() === "krasj") {
             return;
         }
         let svar = krasjtestDoning(doning, framBak);
-        if (svar[0] === 'ok') {
+        if (svar[0] === "ok") {
             flyttDoning();
         }
-        if (svar[0] === 'krasj') {
+        if (svar[0] === "krasj") {
             krasjTingen = svar[1];
             if (doningBytteSjekk(krasjTingen)) {
                 return;
@@ -100,13 +94,12 @@ function bevegelse() {
     }
     else {
         // sjekk om doning kan svinge sjølv om den ikkje går framover
-        if (doning.sving.fart !== 'fart' && doning.sving.fram !== 'beint') {
+        if (doning.sving.fart !== "fart" && doning.sving.fram !== "beint") {
             nyRetningDoning(doning.sving.fram);
-            oppdaterPoisjonar(doning, 'direkte');
-            flagg.push('doningFlytta');
-            flagg.push('sving');
+            oppdaterPoisjonar(doning, "direkte");
+            flagg.push("doningFlytta");
+            flagg.push("sving");
         }
-        ;
     }
 }
 //====================================================== flytting av krasjTing ======================================================================
@@ -148,83 +141,84 @@ function flyttKrasjTingen(krasjTingen) {
     }
   }
 }*/
-//====================================================== flagg 
+//====================================================== flagg
 function sjekkFlagg() {
     if (flagg.length === 0)
         return;
     let flaggTMP = flagg;
     flagg = [];
-    if (flaggTMP.includes('teinMaskinar')) {
+    if (flaggTMP.includes("teinMaskinar")) {
         teinAlleMaskinar();
     }
-    if (flaggTMP.includes('teinTing')) {
+    if (flaggTMP.includes("teinTing")) {
         teinAlleTing();
     }
-    if (flaggTMP.includes('doningFlytta')) { //Doning har fått ny posisjon, ingen krasj
+    if (flaggTMP.includes("doningFlytta")) {
+        //Doning har fått ny posisjon, ingen krasj
         erDoningPaNyRute(doning);
-        koblingskarantene('fjerning', doning);
+        koblingskarantene("fjerning", doning);
         arbeidPaRute();
         sjekkOmLossing();
         flyttKart();
-        aktiverDoningFunksjonane('doningFlytta');
+        aktiverDoningFunksjonane("doningFlytta");
         teinAlleMaskinar();
     }
-    if (flaggTMP.includes('sving')) {
-        aktiverDoningFunksjonane('sving');
+    if (flaggTMP.includes("sving")) {
+        aktiverDoningFunksjonane("sving");
     }
-    if (flaggTMP.includes('nyRute')) {
+    if (flaggTMP.includes("nyRute")) {
         oppdaterRuterTilSjekk(doning);
-        if (doning.last.leverer.includes('drivstoff')) {
+        if (doning.last.leverer.includes("drivstoff")) {
             doning.last.laster.drivstoff.niva--;
         }
-        flagg.push('topplinjeEndra');
+        flagg.push("topplinjeEndra");
     }
-    if (flaggTMP.includes('nyRutetype')) {
+    if (flaggTMP.includes("nyRutetype")) {
         oppdaterRuterTilSjekk(doning);
-        oppdaterFart('landskap');
+        oppdaterFart("landskap");
     }
-    if (flaggTMP.includes('nyDoning')) {
-        oppdaterFart('landskap');
-        oppdaterFart('arbeid');
-        flagg.push('topplinjeEndra');
+    if (flaggTMP.includes("nyDoning")) {
+        oppdaterFart("landskap");
+        oppdaterFart("arbeid");
+        flagg.push("topplinjeEndra");
     }
-    if (flaggTMP.includes('tingFlytta')) {
+    if (flaggTMP.includes("tingFlytta")) {
         teinAlleTing();
     }
-    if (flaggTMP.includes('nyRedskapFram')) {
-        oppdaterFart('arbeid');
-        flagg.push('topplinjeEndra');
+    if (flaggTMP.includes("nyRedskapFram")) {
+        oppdaterFart("arbeid");
+        flagg.push("topplinjeEndra");
     }
-    if (flaggTMP.includes('nyRedskapBak')) {
-        oppdaterFart('arbeid');
-        flagg.push('topplinjeEndra');
+    if (flaggTMP.includes("nyRedskapBak")) {
+        oppdaterFart("arbeid");
+        flagg.push("topplinjeEndra");
     }
-    if (flaggTMP.includes('aktivertRedskapfram')) {
-        oppdaterFart('arbeid');
-        aktiverDoningFunksjonane('redskapFramAktivert');
+    if (flaggTMP.includes("aktivertRedskapfram")) {
+        oppdaterFart("arbeid");
+        aktiverDoningFunksjonane("redskapFramAktivert");
     }
-    if (flaggTMP.includes('aktivertRedskapbak')) {
-        oppdaterFart('arbeid');
-        aktiverDoningFunksjonane('redskapBakAktivert');
+    if (flaggTMP.includes("aktivertRedskapbak")) {
+        oppdaterFart("arbeid");
+        aktiverDoningFunksjonane("redskapBakAktivert");
     }
-    if (flaggTMP.includes('topplinjeEndra')) {
+    if (flaggTMP.includes("topplinjeEndra")) {
         oppdaterTopplinje();
     }
-    if (flaggTMP.includes('kornLevering')) {
-        aktiverDoningFunksjonane('kornLevering');
+    if (flaggTMP.includes("kornLevering")) {
+        aktiverDoningFunksjonane("kornLevering");
     }
     if (flaggTMP.includes("drivstoffMottaking")) {
-        aktiverDoningFunksjonane('drivstoffLevering');
+        aktiverDoningFunksjonane("drivstoffLevering");
     }
-    if (flaggTMP.includes('froLevering')) {
-        aktiverDoningFunksjonane('froLevering');
+    if (flaggTMP.includes("froLevering")) {
+        aktiverDoningFunksjonane("froLevering");
     }
-    if (flaggTMP.includes('lastErEndra')) {
-        flagg.push('topplinjeEndra');
-        aktiverDoningFunksjonane('lastErEndra');
+    if (flaggTMP.includes("lastErEndra")) {
+        flagg.push("topplinjeEndra");
+        aktiverDoningFunksjonane("lastErEndra");
     }
-    if (flaggTMP.includes('lastAnimasjonLoop')) {
-        aktiverDoningFunksjonane('lastAnimasjonLoop');
+    if (flaggTMP.includes("lastAnimasjonLoop")) {
+        aktiverDoningFunksjonane("lastAnimasjonLoop");
     }
 }
 //===================================================== aktiverDoningFunksjonane
@@ -233,11 +227,9 @@ function aktiverDoningFunksjonane(flagg) {
     if (doning.redskap.fram !== null) {
         aktiverDenneFunksjonane(flagg, doning.redskap.fram);
     }
-    ;
     if (doning.redskap.bak !== null) {
         aktiverDenneFunksjonane(flagg, doning.redskap.bak);
     }
-    ;
 }
 /**
  * @description Aktiverer eventuelle funksjonar i doning som har dette flagg
@@ -249,11 +241,11 @@ function aktiverDenneFunksjonane(flagg, denne, data) {
 }
 //===================================================== velgSkjerm
 function velgSkjerm(valgtSkjerm) {
-    if (valgtSkjerm === 'butikk') {
+    if (valgtSkjerm === "butikk") {
         aktivSkjerm.verden = true;
         aktivSkjerm.butikk = false;
     }
-    else if (valgtSkjerm === 'verden') {
+    else if (valgtSkjerm === "verden") {
         aktivSkjerm.butikk = true;
         aktivSkjerm.verden = false;
         oppdaterButikk();
@@ -302,8 +294,12 @@ function settStorrelse() {
     skjerm.bredde = Math.abs(document.body.getBoundingClientRect().width) + 1;
     skjerm.hoyde = Math.abs(document.body.getBoundingClientRect().height) + 1;
     skjerm.hoydeTopplinje = 40;
-    skjerm.hoydeKnappar = (knappar.liste.length * knappar.str) < skjerm.bredde ? knappar.str + knappar.marg : 2 * (knappar.str + knappar.marg);
-    skjerm.hoydeLandskap = skjerm.hoyde - skjerm.hoydeTopplinje - skjerm.hoydeKnappar;
+    skjerm.hoydeKnappar =
+        knappar.liste.length * knappar.str < skjerm.bredde
+            ? knappar.str + knappar.marg
+            : 2 * (knappar.str + knappar.marg);
+    skjerm.hoydeLandskap =
+        skjerm.hoyde - skjerm.hoydeTopplinje - skjerm.hoydeKnappar;
     skjerm.startHoydeKnappar = skjerm.hoyde - skjerm.hoydeKnappar;
     skjerm.hoydeButikk = skjerm.hoyde - skjerm.hoydeTopplinje;
     skjerm.hogre = pixel.ruteLengde * pixel.ruter[0];

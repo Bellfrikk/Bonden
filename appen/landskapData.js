@@ -1,23 +1,16 @@
 "use strict";
 let pixel = { ruter: [50, 40], ruteLengde: 40, jordeLengde: 8, start: { x: 0, y: 0 }, }; //jordelengde må stemme med antall jorder
 const orginalLandskap = {
-    veiHN: { utsnitt: [{ x: 0, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
-    veiOH: { utsnitt: [{ x: 0, y: 0 }], krasj: null, retning: [270], fart: 0, arbeid: null },
-    veiOHN: { utsnitt: [{ x: 80, y: 0 }], krasj: null, retning: [270], fart: 0, arbeid: null },
-    veiON: { utsnitt: [{ x: 120, y: 0 }], krasj: null, retning: [90], fart: 0, arbeid: null },
-    veiVH: { utsnitt: [{ x: 120, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
-    veiVHN: { utsnitt: [{ x: 80, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
-    veiVN: { utsnitt: [{ x: 0, y: 0 }], krasj: null, retning: [90], fart: 0, arbeid: null },
-    veiVO: { utsnitt: [{ x: 0, y: 0 }], krasj: null, retning: [180], fart: 0, arbeid: null },
-    veiVOH: { utsnitt: [{ x: 80, y: 0 }], krasj: null, retning: [180], fart: 0, arbeid: null },
-    veiVOHN: { utsnitt: [{ x: 40, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
-    veiVON: { utsnitt: [{ x: 80, y: 0 }], krasj: null, retning: [90], fart: 0, arbeid: null },
+    veiSving: { utsnitt: [{ x: 0, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
+    veiXkryss: { utsnitt: [{ x: 60, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
+    veiTkryss: { utsnitt: [{ x: 80, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
+    veiBein: { utsnitt: [{ x: 120, y: 0 }], krasj: null, retning: [0], fart: 0, arbeid: null },
     grus: { utsnitt: [{ x: 160, y: 0 }], krasj: null, retning: [0], fart: -0.2, arbeid: null },
     asfalt: { utsnitt: [{ x: 41, y: 80 }], krasj: null, retning: [0], fart: 0, arbeid: null },
     skog: { utsnitt: [{ x: 0, y: 80 }], krasj: { b: 10, f: 10, v: 10, h: 10 }, retning: [90, 180, 270, 360], fart: 0, arbeid: null },
     vatn: { utsnitt: [{ x: 200, y: 0 }], krasj: { b: 0, f: 10, v: 0, h: 0 }, retning: [0], fart: 0, arbeid: null },
-    eng: { utsnitt: [{ x: 0, y: 40 }, { x: 40, y: 40 }, { x: 80, y: 40 }, { x: 120, y: 40 }, { x: 160, y: 40 }, { x: 200, y: 40 }], krasj: null, retning: [0], fart: -2, arbeid: { aktivertAv: ['gravemaskin'] } },
-    jorde: { utsnitt: [{ x: 0, y: 40 }], krasj: null, retning: [0], fart: -2, arbeid: { aktivertAv: null } }
+    eng: { utsnitt: [{ x: 0, y: 40 }, { x: 40, y: 40 }, { x: 80, y: 40 }, { x: 120, y: 40 }, { x: 160, y: 40 }, { x: 200, y: 40 }], krasj: null, retning: [0], fart: -0.2, arbeid: { aktivertAv: ['gravemaskin'] } },
+    jorde: { utsnitt: [{ x: 0, y: 40 }], krasj: null, retning: [0], fart: -0.2, arbeid: { aktivertAv: null } }
 };
 const orginalJorde = {
     vekseintervall: 0.2, //i sekund

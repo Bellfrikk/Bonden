@@ -1,32 +1,40 @@
-function sjekkAtFartIkkjeErOverMaks (fart:FartMaskinMal):number {
-  let toppFart = fart.maks + fart.landskap + fart.arbeid - fart.krasj;
+function sjekkAtFartIkkjeErOverMaks (fart:FartMaskinMal, bonde:boolean):number {
+  console.log('maks aktiv ' + doning.fart.aktiv + 'maks: '+ doning.fart.maks +' fart landskap: '+ doning.fart.landskap +' arb: ' + doning.fart.arbeid +' krasj: ' + doning.fart.krasj);
+
+  let toppFart = bonde ? fart.maks : fart.maks + fart.landskap + fart.arbeid - fart.krasj;
     if(fart.aktiv > toppFart) return toppFart;
     else if(fart.aktiv < -toppFart) return -toppFart;
     else return fart.aktiv;
 }
-module.exports = sjekkAtFartIkkjeErOverMaks;
+//module.exports = sjekkAtFartIkkjeErOverMaks;
 
 function sjekkOmFartSkalRundasTilNull (fart:FartMaskinMal){
    // sett fart til null ved låge verdiar og nullar krasj friksjon
+   console.log('runde aktiv ' + doning.fart.aktiv + 'maks: '+ doning.fart.maks +' fart landskap: '+ doning.fart.landskap +' arb: ' + doning.fart.arbeid +' krasj: ' + doning.fart.krasj);
+
   if (fart.aktiv <= (fart.friksjon + fart.krasj) && fart.aktiv >= -(fart.friksjon + fart.krasj)) {
     return 0;
     fart.krasj = 0;
   } else{
     return fart.aktiv;
   }
-}
-module.exports = sjekkOmFartSkalRundasTilNull;
+    console.log('etter aktiv ' + doning.fart.aktiv + 'maks: '+ doning.fart.maks +' fart landskap: '+ doning.fart.landskap +' arb: ' + doning.fart.arbeid +' krasj: ' + doning.fart.krasj);
 
-function sjekkOmTomForDrivstoff (fartAktiv:number, drivstoffNiva:number):number{
+}
+//module.exports = sjekkOmFartSkalRundasTilNull;
+
+function sjekkOmTomForDrivstoff (fartAktiv:number, drivstoffNiva:number,bonde:boolean):number{
   //returner straffe fart ved tom for drivstoff og aktivfart ikkje allerede er under straffefart
-  return (drivstoffNiva <= 0 && fartAktiv > straffeFartVedTomForDrivstoff) ? straffeFartVedTomForDrivstoff : fartAktiv;
+  if (!bonde && drivstoffNiva <= 0 && fartAktiv > straffeFartVedTomForDrivstoff) return straffeFartVedTomForDrivstoff;
+  if (!bonde && drivstoffNiva <= 0 && fartAktiv < -straffeFartVedTomForDrivstoff) return -straffeFartVedTomForDrivstoff;
+  return fartAktiv;
 }
-module.exports = sjekkOmTomForDrivstoff;
+//module.exports = sjekkOmTomForDrivstoff;
 
-function hentFart (fart:FartMaskinMal, drivstoffNiva:number):number {
-  fart.aktiv = sjekkAtFartIkkjeErOverMaks(fart);
+function hentFart (bonde:boolean, fart:FartMaskinMal, drivstoffNiva:number):number {
+  fart.aktiv = sjekkAtFartIkkjeErOverMaks(fart, bonde);
   fart.aktiv = sjekkOmFartSkalRundasTilNull(fart);
-  fart.aktiv = sjekkOmTomForDrivstoff(fart.aktiv,drivstoffNiva);
+  fart.aktiv = sjekkOmTomForDrivstoff(fart.aktiv,drivstoffNiva, bonde);
   return fart.aktiv;
 }
-module.exports = hentFartTest;
+//module.exports = hentFartTest;

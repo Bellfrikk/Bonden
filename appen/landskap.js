@@ -8,17 +8,17 @@ let jordeVekseListe = { typar: ['grasSadd', 'grasVeks', 'grasModent', 'kornSadd'
 ramme.jorde.height = skjerm.botn;
 ramme.jorde.width = skjerm.hogre;
 //====================================================== lage heile landskapet ======================================================================
-function lagLandskap(kart, antalRuter) {
-    for (let y = 0; y < antalRuter.y; y++) {
-        for (let x = 0; x < antalRuter.x; x++) {
+function lagLandskap(kart) {
+    for (let y = 0; y < kart.antalRuter.y; y++) {
+        for (let x = 0; x < kart.antalRuter.x; x++) {
             let id = 'x' + x + 'y' + y;
-            let type = kart[id];
-            landskap[id] = new Landskap(type, x, y, id);
-            if (kart[y][x] === 'jorde') {
+            let type = kart.landskap[id].sort;
+            landskap[id] = new Landskap(id, kart.landskap[id]);
+            if (type === 'jorde') {
                 lagJorde(x, y);
             }
             if (orginalLandskap[type].krasj !== null) {
-                krasjlisteLandskap.push(kart[y][x]);
+                krasjlisteLandskap.push(id);
             }
         }
     }
@@ -33,19 +33,19 @@ function lagJorde(x, y) {
 }
 //====================================================== nyttLandskap ======================================================================
 class Landskap {
-    constructor(sort, x, y, id) {
-        this.rute = { tilSjekk: [], x: x, y: y };
+    constructor(id, data) {
+        this.rute = { tilSjekk: [], x: data.rutenr.x, y: data.rutenr.y };
         this.type = 'landskap';
-        this.sort = sort;
-        this.pos = { x: x * pixel.ruteLengde, y: y * pixel.ruteLengde };
+        this.sort = data.sort;
+        this.pos = { x: data.rutenr.x * pixel.ruteLengde, y: data.rutenr.y * pixel.ruteLengde };
         this.bredde = pixel.ruteLengde;
         this.hoyde = pixel.ruteLengde;
-        this.utsnitt = orginalLandskap[sort].utsnitt[Math.floor(Math.random() * orginalLandskap[sort].utsnitt.length)];
-        this.retning = orginalLandskap[sort].retning[Math.floor(Math.random() * orginalLandskap[sort].retning.length)];
-        this.fart = orginalLandskap[sort].fart;
-        this.arbeid = orginalLandskap[sort].arbeid;
+        this.utsnitt = orginalLandskap[data.sort].utsnitt[data.utsnitt];
+        this.retning = data.retning;
+        this.fart = orginalLandskap[data.sort].fart;
+        this.arbeid = orginalLandskap[data.sort].arbeid;
         //Legg hindringer i krasj liste og lag hitboks
-        if (orginalLandskap[sort].krasj !== null) {
+        if (orginalLandskap[data.sort].krasj !== null) {
         }
     }
 }

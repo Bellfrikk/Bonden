@@ -6,27 +6,36 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Bonden 4</title>
   <style>
-    body {
-      margin:0px;
-      scroll-behavior: unset;
-      width: 100vw;
-      height:100vh;
-      overflow:hidden;
-    }
-    .lerret{
-      width: 100vw;
-      height:100vh;
-    }
     img, #butikkID{
       display: none;
+    }
+    #verktoyLinje{
+      position: absolute;
+      left: 5px;
+      top: 5px;
+
+    }
+    .knapp{
+      width:9vw;
+      height: 3vw;
+      background-color: darkorange;
+      border-style: double;
+    }
+    .knappValgt{
+      background-color: greenyellow;
+    }
+
+    .lerret{
+      width: 100px;
+      height:100px;
     }
   </style>
 </head>
 
 <body>
-  <div id="verden">
+  <div id="verktoyLinje"></div>
+  <canvas class='lerret' id='lagKartSkjerm'></canvas>
 
-  </div>
   <img id='ferrari' src='bilde/ferrari.png'>
 
   <img id='maskinar' src='bilde/maskinar.png'>
@@ -53,8 +62,10 @@
   <img id='butikkFroSekkGras' src='bilde/butikk/froSekkGras.jpg'>
   <img id='butikkFroSekkKorn' src='bilde/butikk/froSekkKorn.jpg'>
 
-
+  <script defer src="landskapData.js"></script>
+  <script defer src="kart/tmpKart.js"></script>
   <script defer src="lagKart/lagKart.js"></script>
+
 
   <script>
   window.onload = () => {

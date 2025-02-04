@@ -30,6 +30,8 @@ function oppdaterFart(hendelse:oppdaterFartHendelsar, krasjting?:Maskin|Ting) {
     console.log('krasj ' + (krasjting.fart.tyngde / doning.fart.tyngde) + ' - tyngde ' + (doning.fart.tyngde * doning.fart.aktiv));
     return (doning.fart.krasj >= doning.fart.aktiv + doning.fart.aks) ? true : false; //svarer true visst doning ikkje kan flytte seg
   }
+  console.log('oppdater aktiv ' + doning.fart.aktiv + 'maks: '+ doning.fart.maks +' fart landskap: '+ doning.fart.landskap +' arb: ' + doning.fart.arbeid +' krasj: ' + doning.fart.krasj);
+
 }
 
 //====================================================== posisjon ======================================================================
