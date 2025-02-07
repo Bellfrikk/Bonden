@@ -113,13 +113,13 @@ function klikkMus(pos, type, trykk) {
 function sjekkKnappar(mus, trykk) {
     mus[1] -= skjerm.startHoydeKnappar;
     if (aktivSkjerm.verden) {
-        for (let k = 0; k < knappar.liste.length; k++) {
-            if (knappar[knappar.liste[k]].vis === false) {
+        for (let k = 0; k < knappar.aktivListe.length; k++) {
+            if (knappar[knappar.aktivListe[k]].vis === false) {
                 continue;
             } //ikkje sjekk knappar som ikkje er aktive
-            if ((mus[0] > knappar[knappar.liste[k]].v && mus[0] < knappar[knappar.liste[k]].h) && (mus[1] > knappar[knappar.liste[k]].t && mus[1] < knappar[knappar.liste[k]].b)) {
-                knappar[knappar.liste[k]].trykkAktivert = trykk;
-                console.log(knappar.liste[k] + ' aktivert ' + knappar[knappar.liste[k]].trykkAktivert);
+            if ((mus[0] > knappar[knappar.aktivListe[k]].v && mus[0] < knappar[knappar.aktivListe[k]].h) && (mus[1] > knappar[knappar.aktivListe[k]].t && mus[1] < knappar[knappar.aktivListe[k]].b)) {
+                knappar[knappar.aktivListe[k]].trykkAktivert = trykk;
+                console.log(knappar.aktivListe[k] + ' aktivert ' + knappar[knappar.aktivListe[k]].trykkAktivert);
             }
         }
     }
@@ -131,16 +131,11 @@ function sjekkKnappar(mus, trykk) {
     //}
 }
 function teinKnappar() {
-    knappar.utAvDoning.vis = doning.type === 'bonde' ? false : true;
-    knappar.velgFro.vis = (doning.redskap.bak !== null && doning.redskap.bak.arbeid.type === 'samaskin') ? true : false,
-        knappar.koblingRedskapFram.vis = doning.redskap.fram === null ? false : true;
-    knappar.aktiverRedskapFram.vis = doning.redskap.fram === null ? false : true;
-    knappar.koblingRedskapBak.vis = doning.redskap.bak === null ? false : true;
-    knappar.aktiverRedskapBak.vis = doning.redskap.bak === null ? false : true;
+    sjekkOmKnapparSkalVise();
     lerret.knappar.beginPath();
     lerret.knappar.fillStyle = '#000';
     lerret.knappar.fillRect(0, 0, skjerm.bredde, skjerm.startHoydeKnappar);
-    if ((knappar.liste.length * knappar.str) > skjerm.bredde) { //to linjer med knappar
+    if ((knappar.aktivListe.length * knappar.str) > skjerm.bredde) { //to linjer med knappar
         knappar.fram.v = (knappar.marg + knappar.str * 0);
         knappar.bak.v = (knappar.marg + knappar.str * 0);
         knappar.koblingRedskapFram.v = (knappar.marg + knappar.str * 2);
@@ -182,8 +177,8 @@ function teinKnappar() {
         knappar.venstre.t = knappar.marg / 2;
         knappar.hogre.t = knappar.marg / 2;
     }
-    for (let k = 0; k < knappar.liste.length; k++) {
-        let tmpKnapp = knappar[knappar.liste[k]];
+    for (let k = 0; k < knappar.aktivListe.length; k++) {
+        let tmpKnapp = knappar[knappar.aktivListe[k]];
         if (tmpKnapp.vis) {
             tmpKnapp.b = tmpKnapp.t + knappar.str;
             tmpKnapp.h = tmpKnapp.v + knappar.str;
@@ -206,6 +201,48 @@ function endreKnapp(hendelse, knapp) {
         knappar[knapp].visAktiv = false;
     }
 }
+function sjekkOmKnapparSkalVise() {
+    if (aktivSkjerm.verden) {
+        knappar.utAvDoning.vis = doning.type === 'bonde' ? false : true;
+        knappar.velgFro.vis = (doning.redskap.bak !== null && doning.redskap.bak.arbeid.type === 'samaskin') ? true : false,
+            knappar.koblingRedskapFram.vis = doning.redskap.fram === null ? false : true;
+        knappar.aktiverRedskapFram.vis = doning.redskap.fram === null ? false : true;
+        knappar.koblingRedskapBak.vis = doning.redskap.bak === null ? false : true;
+        knappar.aktiverRedskapBak.vis = doning.redskap.bak === null ? false : true;
+        knappar.fram.vis = true;
+        knappar.bak.vis = true;
+        knappar.venstre.vis = true;
+        knappar.hogre.vis = true;
+        knappar.eng.vis = false;
+        knappar.grus.vis = false;
+        knappar.jorde.vis = false;
+        knappar.veiBeint.vis = false;
+        knappar.veiSving.vis = false;
+        knappar.veiTkryss.vis = false;
+        knappar.veiXkryss.vis = false;
+        knappar.vatn.vis = false;
+    }
+    else if (aktivSkjerm.lagNyVerden) {
+        knappar.utAvDoning.vis = false;
+        knappar.velgFro.vis = false;
+        knappar.koblingRedskapFram.vis = false;
+        knappar.aktiverRedskapFram.vis = false;
+        knappar.koblingRedskapBak.vis = false;
+        knappar.aktiverRedskapBak.vis = false;
+        knappar.fram.vis = false;
+        knappar.bak.vis = false;
+        knappar.venstre.vis = false;
+        knappar.hogre.vis = false;
+        knappar.eng.vis = true;
+        knappar.grus.vis = true;
+        knappar.jorde.vis = true;
+        knappar.veiBeint.vis = true;
+        knappar.veiSving.vis = true;
+        knappar.veiTkryss.vis = true;
+        knappar.veiXkryss.vis = true;
+        knappar.vatn.vis = true;
+    }
+}
 //-------------------Knapp data
 let knappar = {
     str: 50,
@@ -214,7 +251,27 @@ let knappar = {
     marg: 10,
     ikonStr: 39,
     etasjer: 0,
-    liste: [
+    aktivListe: [
+        "fram",
+        "bak",
+        "utAvDoning",
+        "velgFro",
+        "aktiverRedskapFram",
+        "koblingRedskapFram",
+        "koblingRedskapBak",
+        "aktiverRedskapBak",
+        "venstre",
+        "hogre",
+        "eng",
+        "grus",
+        "jorde",
+        "veiBeint",
+        "veiSving",
+        "veiTkryss",
+        "veiXkryss",
+        "vatn",
+    ],
+    spelListe: [
         "fram",
         "bak",
         "utAvDoning",
@@ -226,8 +283,18 @@ let knappar = {
         "venstre",
         "hogre",
     ],
+    lagVerdenListe: [
+        "eng",
+        "grus",
+        "jorde",
+        "veiBeint",
+        "veiSving",
+        "veiTkryss",
+        "veiXkryss",
+        "vatn",
+    ],
     fram: {
-        vis: true,
+        vis: false,
         visAktiv: true,
         trykkAktivert: false,
         plasseringSide: "venstreOppe",
@@ -239,7 +306,7 @@ let knappar = {
         b: 0,
     },
     bak: {
-        vis: true,
+        vis: false,
         visAktiv: true,
         trykkAktivert: false,
         plasseringSide: "venstreNere",
@@ -311,7 +378,7 @@ let knappar = {
         b: 0,
     },
     venstre: {
-        vis: true,
+        vis: false,
         visAktiv: true,
         trykkAktivert: false,
         plasseringSide: "hogreNere",
@@ -323,7 +390,7 @@ let knappar = {
         b: 0,
     },
     hogre: {
-        vis: true,
+        vis: false,
         visAktiv: true,
         trykkAktivert: false,
         plasseringSide: "hogreNere",
@@ -341,6 +408,102 @@ let knappar = {
         plasseringSide: "venstreOppe",
         plasseringNr: 7,
         ikonNr: 12,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    eng: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 0,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    grus: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 1,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    jorde: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 2,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    veiBeint: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 3,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    veiSving: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 4,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    veiTkryss: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 5,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    veiXkryss: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 6,
+        ikonNr: 5,
+        v: 0,
+        t: 0,
+        h: 0,
+        b: 0,
+    },
+    vatn: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        plasseringSide: "venstreOppe",
+        plasseringNr: 7,
+        ikonNr: 5,
         v: 0,
         t: 0,
         h: 0,

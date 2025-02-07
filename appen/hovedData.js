@@ -5,7 +5,7 @@ let kart;
 let aktiv = {};
 let krasjTingen;
 let doning;
-let aktivSkjerm = { verden: true, butikk: false };
+let aktivSkjerm = { verden: true, butikk: false, lagNyVerden: false };
 let skjerm = {
     bredde: 0,
     hoyde: 0,
@@ -47,7 +47,7 @@ function settStorrelse(){
   skjerm.bredde = Math.abs(document.body.getBoundingClientRect().width) + 1;
   skjerm.hoyde = Math.abs(document.body.getBoundingClientRect().height) + 1;
   skjerm.hoydeTopplinje = 40;
-  skjerm.hoydeKnappar = (knappar.liste.length * knappar.str) < skjerm.bredde ? knappar.str + knappar.marg : 2 * (knappar.str + knappar.marg);
+  skjerm.hoydeKnappar = (knappar.aktivListe.length * knappar.str) < skjerm.bredde ? knappar.str + knappar.marg : 2 * (knappar.str + knappar.marg);
   skjerm.hoydeLandskap = skjerm.hoyde - skjerm.hoydeTopplinje - skjerm.hoydeKnappar;
   skjerm.startHoydeKnappar = skjerm.hoyde - skjerm.hoydeKnappar;
   skjerm.hoydeButikk = skjerm.hoyde - skjerm.hoydeTopplinje;

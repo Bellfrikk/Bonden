@@ -3,6 +3,7 @@ function start() {
   logginn();
 }
 function startNyttSpel() {
+  flagg.push('spelVerdenAktivert');
   kart = kart1;
   peng = kart.startPeng;
   lagVerden(kart);
@@ -12,7 +13,14 @@ function startNyttSpel() {
 }
 
 function lagNyVerden(){
-  
+  flagg.push('lagNyVerdenAktivert');
+
+  kart = kart1;
+  peng = kart.startPeng;
+  lagVerden(kart);
+  styring();
+  const styringsLoopId = setInterval(styringsloop, 10);
+  bildeKontroller();
 }
 
 function lagVerden(kart: Kart) {
@@ -221,6 +229,19 @@ function sjekkFlagg() {
   if (flaggTMP.includes("lastAnimasjonLoop")) {
     aktiverDoningFunksjonane("lastAnimasjonLoop");
   }
+  if (flaggTMP.includes("spelVerdenAktivert")) {
+    aktivSkjerm.verden = true;
+    aktivSkjerm.butikk = false;
+    aktivSkjerm.lagNyVerden = false;
+    oppdaterKnappar()
+  }
+  if (flaggTMP.includes("lagNyVerdenAktivert")) {
+    aktivSkjerm.verden = false;
+    aktivSkjerm.butikk = false;
+    aktivSkjerm.lagNyVerden = true;
+    oppdaterKnappar()
+  }
+
 }
 //===================================================== aktiverDoningFunksjonane
 function aktiverDoningFunksjonane(flagg: string) {
@@ -259,7 +280,7 @@ function velgSkjerm(valgtSkjerm: "butikk" | "verden") {
 //------------------------------------------BILDE KONTROLLER
 
 function bildeKontroller() {
-  if (aktivSkjerm.verden) {
+  if (aktivSkjerm.verden || aktivSkjerm.lagNyVerden) {
     ramme.skjerm.width = ramme.skjerm.offsetWidth;
     ramme.skjerm.height = ramme.skjerm.offsetHeight;
 
@@ -354,7 +375,7 @@ function settStorrelse() {
   skjerm.hoyde = Math.abs(document.body.getBoundingClientRect().height) + 1;
   skjerm.hoydeTopplinje = 40;
   skjerm.hoydeKnappar =
-    knappar.liste.length * knappar.str < skjerm.bredde
+    knappar.aktivListe.length * knappar.str < skjerm.bredde
       ? knappar.str + knappar.marg
       : 2 * (knappar.str + knappar.marg);
   skjerm.hoydeLandskap =

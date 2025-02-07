@@ -32,7 +32,7 @@ function logginn() {
   loggInnVindu.appendChild(passordInput);
 
   const loggInnKnapp = document.createElement('button');
-  loggInnKnapp.innerText = 'Logg Inn';
+  loggInnKnapp.innerText = 'Last inn spel';
   loggInnKnapp.style.margin = '10px';
   loggInnKnapp.addEventListener('click', () => {
     // Implementer innloggingslogikk her
@@ -41,12 +41,21 @@ function logginn() {
   });
 
   const nyttSpelKnapp = document.createElement('button');
-  nyttSpelKnapp.innerText = 'Start Nytt Spill';
+  nyttSpelKnapp.innerText = 'Start Nytt Spel';
   nyttSpelKnapp.style.margin = '10px';
   nyttSpelKnapp.addEventListener('click', () => {
     document.body.removeChild(loggInnVindu);
     startNyttSpel();
   });
+  const lagNyVerdenKnapp = document.createElement('button');
+  lagNyVerdenKnapp.innerText = 'Lag Ny Verden';
+  lagNyVerdenKnapp.style.margin = '10px';
+  lagNyVerdenKnapp.addEventListener('click', () => {
+    document.body.removeChild(loggInnVindu);
+    lagNyVerden();
+  });
   loggInnVindu.appendChild(loggInnKnapp);
   loggInnVindu.appendChild(nyttSpelKnapp);
+  loggInnVindu.appendChild(lagNyVerdenKnapp);
+
 }

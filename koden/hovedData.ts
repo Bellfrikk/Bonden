@@ -4,7 +4,7 @@ let kart: Kart;
 let aktiv = {};
 let krasjTingen: Maskin | Ting | "ok";
 let doning: Kjoretoy;
-let aktivSkjerm = { verden: true, butikk: false };
+let aktivSkjerm = { verden: true, butikk: false ,lagNyVerden:false};
 interface Rammer {
   skjerm: HTMLCanvasElement;
   topplinje: HTMLCanvasElement;
@@ -25,7 +25,7 @@ interface Lerret {
   ting: CanvasRenderingContext2D;
   butikk: CanvasRenderingContext2D;
 }
-type Flagg = "nyRutetype"| "animasjon"| "teinMaskinar"| "teinTing"| "doningFlytta"| "sving"| "nyRute"| "nyRuteinterface"| "nyDoning"| "tingFlytta"| "nyRedskapFram"| "nyRedskapBak"| "aktivertRedskapfram"| "aktivertRedskapbak"| "topplinjeEndra"| "kornLevering"| "drivstoffMottaking"| "froLevering"| "lastErEndra"| "lastAnimasjonLoop";
+type Flagg = "spelVerdenAktivert"|"lagNyVerdenAktivert"|"nyRutetype"| "animasjon"| "teinMaskinar"| "teinTing"| "doningFlytta"| "sving"| "nyRute"| "nyRuteinterface"| "nyDoning"| "tingFlytta"| "nyRedskapFram"| "nyRedskapBak"| "aktivertRedskapfram"| "aktivertRedskapbak"| "topplinjeEndra"| "kornLevering"| "drivstoffMottaking"| "froLevering"| "lastErEndra"| "lastAnimasjonLoop";
 
 
 let skjerm = {
@@ -72,7 +72,7 @@ function settStorrelse(){
   skjerm.bredde = Math.abs(document.body.getBoundingClientRect().width) + 1;
   skjerm.hoyde = Math.abs(document.body.getBoundingClientRect().height) + 1;
   skjerm.hoydeTopplinje = 40;
-  skjerm.hoydeKnappar = (knappar.liste.length * knappar.str) < skjerm.bredde ? knappar.str + knappar.marg : 2 * (knappar.str + knappar.marg);
+  skjerm.hoydeKnappar = (knappar.aktivListe.length * knappar.str) < skjerm.bredde ? knappar.str + knappar.marg : 2 * (knappar.str + knappar.marg);
   skjerm.hoydeLandskap = skjerm.hoyde - skjerm.hoydeTopplinje - skjerm.hoydeKnappar;
   skjerm.startHoydeKnappar = skjerm.hoyde - skjerm.hoydeKnappar;
   skjerm.hoydeButikk = skjerm.hoyde - skjerm.hoydeTopplinje;
