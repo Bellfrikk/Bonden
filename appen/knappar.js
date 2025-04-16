@@ -1,198 +1,219 @@
 "use strict";
-ramme.knappar.height = skjerm.hoydeKnappar;
-ramme.knappar.width = skjerm.bredde;
+//Lag ikon på nivå 3 knappar
+//lag veg ting funksjon
+//lag infoboks
+//lag kjøp funksjon
+//lag bygg funksjon
+let knapparBilde = document.getElementById('knappar');
+oppdaterKnappar();
 function oppdaterKnappar() {
     ramme.knappar.height = skjerm.hoydeKnappar;
     ramme.knappar.width = skjerm.bredde;
-    teinKnappar();
 }
-function sjekkOmKnapparErAktivert() {
-    //-------------------andre knappar aktivering ---------------
-    if (knappar.utAvDoning.vis && knappar.utAvDoning.trykkAktivert) {
-        utAvDoning();
-        knappar.utAvDoning.trykkAktivert = false;
+// Lag knappar
+function lagKnappar() {
+    lagKnappRad('styringModus');
+    lagKnappRad('butikkModus');
+    lagKnappRad('verdenModus');
+    lagKnappRad('landskap');
+    lagKnappRad('jorde');
+    lagKnappRad('vei');
+    lagKnappRad('maskinarModus');
+    lagKnappRad('traktor');
+    lagKnappRad('skurtreskar');
+    lagKnappRad('plog');
+    lagKnappRad('samaskin');
+    lagKnappRad('slamaskin');
+    lagKnappRad('ballemaskin');
+    lagKnappRad('balleklype');
+    lagKnappRad('tilhengar');
+    lagKnappRad('anna');
+    lagKnappRad('tingModus');
+    lagKnappRad('bygg');
+    lagKnappRad('fro');
+    lagKnappRad('gjodsel');
+    knappModus.knappLinje.styringModus.forEach(knapp => lagKnapp(knapp, 'styringModus'));
+    knappModus.knappLinje.butikkModus.forEach(knapp => lagKnapp(knapp, 'butikkModus'));
+    knappModus.knappLinje.verdenModus.forEach(knapp => lagKnapp(knapp, 'verdenModus'));
+    knappModus.knappLinje.maskinarModus.forEach(knapp => lagKnapp(knapp, 'maskinarModus'));
+    knappModus.knappLinje.tingModus.forEach(knapp => lagKnapp(knapp, 'tingModus'));
+    listerLandskap.jorde.forEach(denne => laginfovindu(denne, jordeBilde, orginalJorde[denne].butikk));
+}
+function lagKnappRad(id) {
+    let knappeRamme = document.createElement('div');
+    knappeRamme.id = id;
+    knappeRamme.style.position = 'absolute';
+    knappeRamme.style.bottom = '0px';
+    knappeRamme.style.width = '100vw';
+    knappeRamme.style.height = knapparData.ikonStr + 'px';
+    knappeRamme.style.zIndex = '5';
+    knappeRamme.style.display = 'flex';
+    knappeRamme.style.justifyContent = 'left';
+    if (aktivKnappModus !== id) {
+        knappeRamme.style.display = 'none';
+        knappeRamme.style.zIndex = '0';
     }
-    else if (knappar.koblingRedskapFram.vis && knappar.koblingRedskapFram.trykkAktivert) {
-        knappar.koblingRedskapFram.trykkAktivert = false;
-        redskapKobling('fram');
+    document.body.appendChild(knappeRamme);
+}
+function lagKnapp(knapp, ramme) {
+    let knappeRamme = document.getElementById(ramme);
+    let nyKnapp = document.createElement('button');
+    nyKnapp.id = knapp;
+    if (knapparBilde) {
+        nyKnapp.style.backgroundImage = `url(${knapparBilde.src})`;
     }
-    else if (knappar.koblingRedskapBak.vis && knappar.koblingRedskapBak.trykkAktivert) {
-        knappar.koblingRedskapBak.trykkAktivert = false;
-        redskapKobling('bak');
+    nyKnapp.style.backgroundRepeat = 'no-repeat';
+    nyKnapp.style.height = knapparData.ikonStr + 'px';
+    nyKnapp.style.width = knapparData.ikonStr + 'px';
+    if (knapp === 'venstre' || knapp === 'hogre')
+        nyKnapp.style.justifyItems = 'right';
+    nyKnapp.style.backgroundPositionX = '-' + (knappar[knapp].ikonNr * knapparData.ikonStr) + 'px';
+    if (knappeRamme)
+        knappeRamme.appendChild(nyKnapp);
+    leggtilTrykkOgSleppHandling(nyKnapp, knappar[knapp].handling.trykk, knappar[knapp].handling.slepp);
+}
+function laginfovindu(denne, denneBilde, denneTekst) {
+    let infovindu = document.createElement('div');
+    infovindu.id = denne;
+    infovindu.style.position = 'absolute';
+    infovindu.style.bottom = skjerm.hoydeKnappar + 'px';
+    infovindu.style.width = '100vw';
+    infovindu.style.height = knapparData.ikonStr + 'px';
+    infovindu.style.display = 'flex';
+    infovindu.style.justifyContent = 'left';
+    // infovindu.style.display = 'none';
+    // infovindu.style.zIndex = '0';
+    document.body.appendChild(infovindu);
+    //infobilde
+    let bilde = document.createElement('img');
+    if (denneBilde) {
+        bilde.src = denneBilde.src;
     }
-    else if (knappar.aktiverRedskapFram.vis && knappar.aktiverRedskapFram.trykkAktivert) {
-        knappar.aktiverRedskapFram.trykkAktivert = false;
-        aktiverRedskap('fram');
+    bilde.style.height = knapparData.infovinduStr + 'px';
+    bilde.style.width = knapparData.infovinduStr + 'px';
+    if (infovindu)
+        infovindu.appendChild(bilde);
+    //info tekstboks
+    let tekstBoks = document.createElement('div');
+    infovindu.style.height = 'auto';
+    infovindu.style.width = '100%';
+    infovindu.style.display = 'flex';
+    infovindu.style.flexDirection = 'column';
+    infovindu.style.justifyContent = 'left';
+    // infovindu.style.display = 'none';
+    //overskrift
+    let tekst = document.createElement('p');
+    tekst.innerHTML = '<b>${denneTekst.oversktift}</b><br>${denneTekst.underskrift}<br>${denneTekst.info}<br>Pris: ${denneTekst.underskrift}';
+    // infovindu.appendChild(infovindu);
+    //Kjøp knapp
+    document.body.appendChild(infovindu);
+    //  leggtilTrykkOgSleppHandling(nyKnapp,knappar[knapp].handling.trykk,knappar[knapp].handling.slepp);
+}
+function endreKnappModus(nyModus) {
+    oppdaterKnappLinje('none');
+    aktivKnappModus = nyModus;
+    oppdaterKnappLinje('');
+}
+function oppdaterKnappLinje(nyStatus) {
+    let linje = document.getElementById(aktivKnappModus);
+    if (linje)
+        linje.style.display = nyStatus;
+}
+function visFjernKnapp(knapp, vis) {
+    knappar[knapp].vis = vis;
+    document.getElementById(knapp).style.display = vis ? '' : 'none';
+}
+// Knapp styring--------------------------------------------------------------------------------------------
+function sjekkEinKnapp(knapp) {
+    if (knapp.vis && knapp.trykkAktivert) {
+        knapp.trykkAktivert = false;
+        return true;
     }
-    else if (knappar.aktiverRedskapBak.vis && knappar.aktiverRedskapBak.trykkAktivert) {
-        knappar.aktiverRedskapBak.trykkAktivert = false;
-        aktiverRedskap('bak');
-    }
-    else if (knappar.velgFro.vis && knappar.velgFro.trykkAktivert) {
-        knappar.velgFro.trykkAktivert = false;
-        if (doning.redskap.bak !== null) {
-            oppdaterValgtLast(doning.redskap.bak, 'velgFro');
-        }
-    }
+    return false;
 }
 // 𝘀𝘁𝘆𝗿𝗶𝗻𝗴​⁡ tastatur
 function styring() {
     document.addEventListener('keydown', function (knapp) {
         knapp.preventDefault();
         if (knapp.key === 'ArrowUp' || knapp.key === 'w') {
-            knappar.fram.trykkAktivert = true;
+            pilTrykk('fram');
+            pilSlepp('bak');
             knappar.bak.trykkAktivert = false;
         }
         else if (knapp.key === 'ArrowDown' || knapp.key === 's') {
-            knappar.bak.trykkAktivert = true;
+            pilTrykk('bak');
+            pilSlepp('fram');
             knappar.fram.trykkAktivert = false;
         }
         else if (knapp.key === 'ArrowLeft' || knapp.key === 'a') {
-            knappar.venstre.trykkAktivert = true;
+            pilTrykk('venstre');
+            pilSlepp('hogre');
             knappar.hogre.trykkAktivert = false;
         }
         else if (knapp.key === 'ArrowRight' || knapp.key === 'd') {
-            knappar.hogre.trykkAktivert = true;
+            pilTrykk('hogre');
+            pilSlepp('venstre');
             knappar.venstre.trykkAktivert = false;
         }
         else if (knapp.key === 'f') {
-            knappar.koblingRedskapFram.trykkAktivert = true;
+            pilTrykk('koblingRedskapFram');
         }
         else if (knapp.key === 'r') {
-            knappar.koblingRedskapBak.trykkAktivert = true;
+            pilTrykk('koblingRedskapBak');
         }
         else if (knapp.key === 'g') {
-            knappar.aktiverRedskapFram.trykkAktivert = true;
+            pilTrykk('aktiverRedskapFram');
         }
         else if (knapp.key === 't') {
-            knappar.aktiverRedskapBak.trykkAktivert = true;
+            pilTrykk('aktiverRedskapBak');
         }
         else if (knapp.key === 'e') {
-            knappar.utAvDoning.trykkAktivert = true;
+            pilTrykk('utAvDoning');
         }
         flagg.push('animasjon');
     });
     document.addEventListener('keyup', function tastSlepp(knapp) {
         knapp.preventDefault();
-        if (knapp.key === 'ArrowUp' || knapp.key === 'w') {
-            knappar.fram.trykkAktivert = false;
-        }
-        else if (knapp.key === 'ArrowDown' || knapp.key === 's') {
-            knappar.bak.trykkAktivert = false;
-        }
-        else if (knapp.key === 'ArrowLeft' || knapp.key === 'a') {
-            knappar.venstre.trykkAktivert = false;
-        }
-        else if (knapp.key === 'ArrowRight' || knapp.key === 'd') {
-            knappar.hogre.trykkAktivert = false;
-        }
+        if (knapp.key === 'ArrowUp' || knapp.key === 'w')
+            pilSlepp('fram');
+        else if (knapp.key === 'ArrowDown' || knapp.key === 's')
+            pilSlepp('bak');
+        else if (knapp.key === 'ArrowLeft' || knapp.key === 'a')
+            pilSlepp('venstre');
+        else if (knapp.key === 'ArrowRight' || knapp.key === 'd')
+            pilSlepp('hogre');
         flagg.push('animasjon');
     });
-    ramme.skjerm.addEventListener("touchstart", (e) => { e.preventDefault(); klikkMus(e, 'touch', true); }, false);
-    ramme.skjerm.addEventListener("touchend", (e) => { e.preventDefault(); klikkMus(e, 'touch', false); }, false);
-    ramme.skjerm.addEventListener("mousedown", (e) => { e.preventDefault(); klikkMus(e, 'mus', true); }, false);
-    ramme.skjerm.addEventListener("mouseup", (e) => { e.preventDefault(); klikkMus(e, 'mus', false); }, false);
-    ramme.skjerm.addEventListener("mouseleave", (e) => { e.preventDefault(); klikkMus(e, 'mus', false); }, false);
 }
-//--------------------------------------KNAPPAR------------------------------------
-function klikkMus(pos, type, trykk) {
-    if (type === 'mus') {
-        sjekkKnappar([pos.clientX, pos.clientY], trykk);
-    }
-    else {
-        //let tmpTouch = [...pos.touches];
-        //for(let a=0; a<tmpTouch.length;a++) {
-        //  sjekkKnappar( [pos.touches[a].clientX, pos.touches[a].clientY] , trykk);
-        //}
-        let tmpTouch = [...pos.changedTouches];
-        for (let a = 0; a < tmpTouch.length; a++) {
-            sjekkKnappar([pos.changedTouches[a].clientX, pos.changedTouches[a].clientY], trykk);
-        }
-    }
+function velgFro() { if (doning.redskap.bak !== null) {
+    oppdaterValgtLast(doning.redskap.bak, 'velgFro');
+} }
+function aktiverKnapp(knapp) {
+    console.log('aktiver ' + knapp);
 }
-function sjekkKnappar(mus, trykk) {
-    mus[1] -= skjerm.startHoydeKnappar;
-    if (aktivSkjerm.verden) {
-        for (let k = 0; k < knappar.aktivListe.length; k++) {
-            if (knappar[knappar.aktivListe[k]].vis === false) {
-                continue;
-            } //ikkje sjekk knappar som ikkje er aktive
-            if ((mus[0] > knappar[knappar.aktivListe[k]].v && mus[0] < knappar[knappar.aktivListe[k]].h) && (mus[1] > knappar[knappar.aktivListe[k]].t && mus[1] < knappar[knappar.aktivListe[k]].b)) {
-                knappar[knappar.aktivListe[k]].trykkAktivert = trykk;
-                console.log(knappar.aktivListe[k] + ' aktivert ' + knappar[knappar.aktivListe[k]].trykkAktivert);
-            }
-        }
-    }
-    // else if (aktivSkjerm.butikk) {
-    //  for (let k = 0; k < butikkKnappar.length; k++) {
-    //    if ((mus[0] > butikkKnappar[k].v && mus[0] < butikkKnappar[k].h) && (mus[1] > butikkKnappar[k].t && mus[1] < butikkKnappar[k].b)) {
-    //    }
-    //  }
-    //}
+function pilTrykk(knapp) {
+    console.log('trykk ' + knapp);
+    knappar[knapp].trykkAktivert = true;
+    if (knapp === 'fram')
+        pilSlepp('bak');
+    if (knapp === 'bak')
+        pilSlepp('fram');
+    if (knapp === 'venstre')
+        pilSlepp('hogre');
+    if (knapp === 'hogre')
+        pilSlepp('venstre');
 }
-function teinKnappar() {
-    sjekkOmKnapparSkalVise();
-    lerret.knappar.beginPath();
-    lerret.knappar.fillStyle = '#000';
-    lerret.knappar.fillRect(0, 0, skjerm.bredde, skjerm.startHoydeKnappar);
-    if ((knappar.aktivListe.length * knappar.str) > skjerm.bredde) { //to linjer med knappar
-        knappar.fram.v = (knappar.marg + knappar.str * 0);
-        knappar.bak.v = (knappar.marg + knappar.str * 0);
-        knappar.koblingRedskapFram.v = (knappar.marg + knappar.str * 2);
-        knappar.aktiverRedskapFram.v = (knappar.marg + knappar.str * 1);
-        knappar.utAvDoning.v = (knappar.marg + knappar.str * 3);
-        knappar.velgFro.v = (knappar.marg + knappar.str * 4);
-        knappar.koblingRedskapBak.v = skjerm.bredde - (knappar.marg + knappar.str * 2);
-        knappar.aktiverRedskapBak.v = skjerm.bredde - (knappar.marg + knappar.str * 1);
-        knappar.venstre.v = skjerm.bredde - (knappar.marg + knappar.str * 2);
-        knappar.hogre.v = skjerm.bredde - (knappar.marg + knappar.str * 1);
-        knappar.fram.t = knappar.marg / 2;
-        knappar.bak.t = knappar.marg / 2 + knappar.str;
-        knappar.koblingRedskapFram.t = knappar.marg / 2;
-        knappar.aktiverRedskapFram.t = knappar.marg / 2;
-        knappar.utAvDoning.t = knappar.marg / 2;
-        knappar.koblingRedskapBak.t = knappar.marg / 2;
-        knappar.aktiverRedskapBak.t = knappar.marg / 2;
-        knappar.venstre.t = knappar.marg / 2 + knappar.str;
-        knappar.hogre.t = knappar.marg / 2 + knappar.str;
-    }
-    else { //1 linje med knappar
-        knappar.fram.v = (knappar.marg + knappar.str * 0);
-        knappar.bak.v = (knappar.marg + knappar.str * 1);
-        knappar.utAvDoning.v = (knappar.marg + knappar.str * 2);
-        knappar.aktiverRedskapFram.v = (knappar.marg + knappar.str * 3);
-        knappar.koblingRedskapFram.v = (knappar.marg + knappar.str * 4);
-        knappar.koblingRedskapBak.v = (knappar.marg + knappar.str * 5);
-        knappar.aktiverRedskapBak.v = (knappar.marg + knappar.str * 6);
-        knappar.velgFro.v = (knappar.marg + knappar.str * 7);
-        knappar.venstre.v = skjerm.bredde - ((knappar.marg + knappar.str) * 2);
-        knappar.hogre.v = skjerm.bredde - ((knappar.marg + knappar.str) * 1);
-        knappar.fram.t = knappar.marg / 2;
-        knappar.bak.t = knappar.marg / 2;
-        knappar.koblingRedskapFram.t = knappar.marg / 2;
-        knappar.aktiverRedskapFram.t = knappar.marg / 2;
-        knappar.utAvDoning.t = knappar.marg / 2;
-        knappar.koblingRedskapBak.t = knappar.marg / 2;
-        knappar.aktiverRedskapBak.t = knappar.marg / 2;
-        knappar.venstre.t = knappar.marg / 2;
-        knappar.hogre.t = knappar.marg / 2;
-    }
-    for (let k = 0; k < knappar.aktivListe.length; k++) {
-        let tmpKnapp = knappar[knappar.aktivListe[k]];
-        if (tmpKnapp.vis) {
-            tmpKnapp.b = tmpKnapp.t + knappar.str;
-            tmpKnapp.h = tmpKnapp.v + knappar.str;
-            lerret.knappar.drawImage(document.getElementById('knappar'), tmpKnapp.ikonNr * knappar.ikonStr, 0, knappar.ikonStr, knappar.ikonStr, tmpKnapp.v, tmpKnapp.t, knappar.str, knappar.str);
-        }
-    }
+function pilSlepp(knapp) {
+    console.log('trykk ' + knapp);
+    knappar[knapp].trykkAktivert = false;
 }
 //====================================================== knapp ======================================================================
 function endreKnapp(hendelse, knapp) {
     if (hendelse === "vis") {
-        knappar[knapp].vis = true;
+        visFjernKnapp(knapp, true);
     }
     else if (hendelse === "fjern") {
-        knappar[knapp].vis = false;
+        visFjernKnapp(knapp, false);
     }
     else if (hendelse === "visAktiv") {
         knappar[knapp].visAktiv = true;
@@ -201,312 +222,401 @@ function endreKnapp(hendelse, knapp) {
         knappar[knapp].visAktiv = false;
     }
 }
-function sjekkOmKnapparSkalVise() {
-    if (aktivSkjerm.verden) {
-        knappar.utAvDoning.vis = doning.type === 'bonde' ? false : true;
-        knappar.velgFro.vis = (doning.redskap.bak !== null && doning.redskap.bak.arbeid.type === 'samaskin') ? true : false,
-            knappar.koblingRedskapFram.vis = doning.redskap.fram === null ? false : true;
-        knappar.aktiverRedskapFram.vis = doning.redskap.fram === null ? false : true;
-        knappar.koblingRedskapBak.vis = doning.redskap.bak === null ? false : true;
-        knappar.aktiverRedskapBak.vis = doning.redskap.bak === null ? false : true;
-        knappar.fram.vis = true;
-        knappar.bak.vis = true;
-        knappar.venstre.vis = true;
-        knappar.hogre.vis = true;
-        knappar.eng.vis = false;
-        knappar.grus.vis = false;
-        knappar.jorde.vis = false;
-        knappar.veiBeint.vis = false;
-        knappar.veiSving.vis = false;
-        knappar.veiTkryss.vis = false;
-        knappar.veiXkryss.vis = false;
-        knappar.vatn.vis = false;
-    }
-    else if (aktivSkjerm.lagNyVerden) {
-        knappar.utAvDoning.vis = false;
-        knappar.velgFro.vis = false;
-        knappar.koblingRedskapFram.vis = false;
-        knappar.aktiverRedskapFram.vis = false;
-        knappar.koblingRedskapBak.vis = false;
-        knappar.aktiverRedskapBak.vis = false;
-        knappar.fram.vis = false;
-        knappar.bak.vis = false;
-        knappar.venstre.vis = false;
-        knappar.hogre.vis = false;
-        knappar.eng.vis = true;
-        knappar.grus.vis = true;
-        knappar.jorde.vis = true;
-        knappar.veiBeint.vis = true;
-        knappar.veiSving.vis = true;
-        knappar.veiTkryss.vis = true;
-        knappar.veiXkryss.vis = true;
-        knappar.vatn.vis = true;
-    }
-}
 //-------------------Knapp data
-let knappar = {
+let knapparData = {
     str: 50,
     min: 50,
     maks: 80,
     marg: 10,
-    ikonStr: 39,
-    etasjer: 0,
-    aktivListe: [
-        "fram",
-        "bak",
-        "utAvDoning",
-        "velgFro",
-        "aktiverRedskapFram",
-        "koblingRedskapFram",
-        "koblingRedskapBak",
-        "aktiverRedskapBak",
-        "venstre",
-        "hogre",
-        "eng",
-        "grus",
-        "jorde",
-        "veiBeint",
-        "veiSving",
-        "veiTkryss",
-        "veiXkryss",
-        "vatn",
-    ],
-    spelListe: [
-        "fram",
-        "bak",
-        "utAvDoning",
-        "velgFro",
-        "aktiverRedskapFram",
-        "koblingRedskapFram",
-        "koblingRedskapBak",
-        "aktiverRedskapBak",
-        "venstre",
-        "hogre",
-    ],
-    lagVerdenListe: [
-        "eng",
-        "grus",
-        "jorde",
-        "veiBeint",
-        "veiSving",
-        "veiTkryss",
-        "veiXkryss",
-        "vatn",
-    ],
+    ikonStr: 40,
+    infovinduStr: 80,
+};
+//const knappLinjeKnappar:KnapparTypar[] = ['styring','butikk','landskap','jorde','vei','traktor','skurtreskar','plog','samaskin','slamaskin','ballemaskin','balleklype','fro','gjodsel'];
+let knappModus = {
+    knappLinje: {
+        styringModus: ['fram', 'bak', 'utAvDoning', 'butikk', 'venstre', 'hogre'],
+        butikkModus: ['styring', 'verden', 'maskinar', 'ting'],
+        verdenModus: ['butikk', 'landskap', 'jorde', 'vei'],
+        maskinarModus: ['butikk', 'traktor', 'skurtreskar', 'plog', 'samaskin', 'slamaskin', 'ballemaskin', 'balleklype', 'tilhengar', 'anna'],
+        tingModus: ['butikk', 'bygg', 'fro', 'gjodsel']
+    },
+};
+let aktivKnappModus = 'styringModus';
+let knappar = {
     fram: {
         vis: false,
         visAktiv: true,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 1,
         ikonNr: 1,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => pilTrykk('fram'),
+            slepp: () => pilSlepp('fram'),
+        }
     },
     bak: {
         vis: false,
         visAktiv: true,
         trykkAktivert: false,
-        plasseringSide: "venstreNere",
-        plasseringNr: 2,
         ikonNr: 0,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => pilTrykk('bak'),
+            slepp: () => pilSlepp('bak'),
+        }
     },
     utAvDoning: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "midtNere",
-        plasseringNr: 3,
         ikonNr: 4,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => utAvDoning(),
+            slepp: null,
+        }
     },
-    aktiverRedskapFram: {
+    butikk: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 2,
-        ikonNr: 7,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 16,
+        handling: {
+            trykk: () => endreKnappModus('butikkModus'),
+            slepp: null,
+        }
     },
     koblingRedskapFram: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 3,
         ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => redskapKobling('fram'),
+            slepp: null,
+        }
+    },
+    aktiverRedskapFram: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 7,
+        handling: {
+            trykk: () => aktiverRedskap('fram'),
+            slepp: null,
+        }
     },
     koblingRedskapBak: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "hogreOppe",
-        plasseringNr: 2,
         ikonNr: 6,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => redskapKobling('bak'),
+            slepp: null,
+        }
     },
     aktiverRedskapBak: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "hogreOppe",
-        plasseringNr: 1,
         ikonNr: 7,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
-    },
-    venstre: {
-        vis: false,
-        visAktiv: true,
-        trykkAktivert: false,
-        plasseringSide: "hogreNere",
-        plasseringNr: 2,
-        ikonNr: 2,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
-    },
-    hogre: {
-        vis: false,
-        visAktiv: true,
-        trykkAktivert: false,
-        plasseringSide: "hogreNere",
-        plasseringNr: 1,
-        ikonNr: 3,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => aktiverRedskap('bak'),
+            slepp: null,
+        }
     },
     velgFro: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 7,
         ikonNr: 12,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        handling: {
+            trykk: () => velgFro(),
+            slepp: null,
+        }
     },
-    eng: {
+    venstre: {
+        vis: false,
+        visAktiv: true,
+        trykkAktivert: false,
+        ikonNr: 2,
+        handling: {
+            trykk: () => pilTrykk('venstre'),
+            slepp: () => pilSlepp('venstre'),
+        }
+    },
+    hogre: {
+        vis: false,
+        visAktiv: true,
+        trykkAktivert: false,
+        ikonNr: 3,
+        handling: {
+            trykk: () => pilTrykk('hogre'),
+            slepp: () => pilSlepp('hogre'),
+        }
+    },
+    //menyknappar
+    styring: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 0,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 13,
+        handling: {
+            trykk: () => endreKnappModus('styringModus'),
+            slepp: null,
+        }
     },
-    grus: {
+    verden: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 1,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 13,
+        handling: {
+            trykk: () => endreKnappModus('verdenModus'),
+            slepp: null,
+        }
+    },
+    maskinar: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 17,
+        handling: {
+            trykk: () => endreKnappModus('maskinarModus'),
+            slepp: null,
+        }
+    },
+    ting: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 16,
+        handling: {
+            trykk: () => endreKnappModus('tingModus'),
+            slepp: null,
+        }
+    },
+    //Landskap undermeny
+    landskap: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 13,
+        handling: {
+            trykk: () => endreKnappModus('landskap'),
+            slepp: null,
+        }
     },
     jorde: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 2,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 15,
+        handling: {
+            trykk: () => endreKnappModus('jorde'),
+            slepp: null,
+        }
     },
-    veiBeint: {
+    vei: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 3,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 14,
+        handling: {
+            trykk: () => endreKnappModus('vei'),
+            slepp: null,
+        }
     },
-    veiSving: {
+    //Landskap ting
+    eng: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 4,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 11,
+        handling: {
+            trykk: () => aktiverKnapp('eng'),
+            slepp: null,
+        }
     },
-    veiTkryss: {
+    grus: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 5,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
-    },
-    veiXkryss: {
-        vis: false,
-        visAktiv: false,
-        trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 6,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 11,
+        handling: {
+            trykk: () => aktiverKnapp('grus'),
+            slepp: null,
+        }
     },
     vatn: {
         vis: false,
         visAktiv: false,
         trykkAktivert: false,
-        plasseringSide: "venstreOppe",
-        plasseringNr: 7,
-        ikonNr: 5,
-        v: 0,
-        t: 0,
-        h: 0,
-        b: 0,
+        ikonNr: 12,
+        handling: {
+            trykk: () => aktiverKnapp('vatn'),
+            slepp: null,
+        }
     },
+    //Vei ting
+    veiBeint: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => aktiverKnapp('veiBeint'),
+            slepp: null,
+        }
+    },
+    veiSving: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => aktiverKnapp('veiSving'),
+            slepp: null,
+        }
+    },
+    veiTkryss: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => aktiverKnapp('veiTkryss'),
+            slepp: null,
+        }
+    },
+    veiXkryss: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => aktiverKnapp('veiXkryss'),
+            slepp: null,
+        }
+    },
+    //Maskinar undermeny
+    traktor: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('traktor'),
+            slepp: null,
+        }
+    },
+    skurtreskar: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('skurtreskar'),
+            slepp: null,
+        }
+    },
+    plog: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('plog'),
+            slepp: null,
+        }
+    },
+    samaskin: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('samaskin'),
+            slepp: null,
+        }
+    },
+    slamaskin: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('slamaskin'),
+            slepp: null,
+        }
+    },
+    ballemaskin: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('ballemaskin'),
+            slepp: null,
+        }
+    },
+    tilhengar: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('tilhengar'),
+            slepp: null,
+        }
+    },
+    balleklype: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('balleklype'),
+            slepp: null,
+        }
+    },
+    anna: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 12,
+        handling: {
+            trykk: () => endreKnappModus('anna'),
+            slepp: null,
+        }
+    },
+    //ting undermeny
+    bygg: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 16,
+        handling: {
+            trykk: () => endreKnappModus('bygg'),
+            slepp: null,
+        }
+    },
+    fro: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 5,
+        handling: {
+            trykk: () => endreKnappModus('fro'),
+            slepp: null,
+        }
+    },
+    gjodsel: {
+        vis: false,
+        visAktiv: false,
+        trykkAktivert: false,
+        ikonNr: 3,
+        handling: {
+            trykk: () => endreKnappModus('gjodsel'),
+            slepp: null,
+        }
+    }
 };

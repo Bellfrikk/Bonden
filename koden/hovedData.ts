@@ -1,10 +1,10 @@
 let flagg: Flagg[] = ["doningFlytta", "tingFlytta"];
 let tid = 0;
+let pause:boolean = false;
 let kart: Kart;
 let aktiv = {};
 let krasjTingen: Maskin | Ting | "ok";
 let doning: Kjoretoy;
-let aktivSkjerm = { verden: true, butikk: false ,lagNyVerden:false};
 interface Rammer {
   skjerm: HTMLCanvasElement;
   topplinje: HTMLCanvasElement;
@@ -25,7 +25,7 @@ interface Lerret {
   ting: CanvasRenderingContext2D;
   butikk: CanvasRenderingContext2D;
 }
-type Flagg = "spelVerdenAktivert"|"lagNyVerdenAktivert"|"nyRutetype"| "animasjon"| "teinMaskinar"| "teinTing"| "doningFlytta"| "sving"| "nyRute"| "nyRuteinterface"| "nyDoning"| "tingFlytta"| "nyRedskapFram"| "nyRedskapBak"| "aktivertRedskapfram"| "aktivertRedskapbak"| "topplinjeEndra"| "kornLevering"| "drivstoffMottaking"| "froLevering"| "lastErEndra"| "lastAnimasjonLoop";
+type Flagg = "nyRutetype"| "animasjon"| "teinMaskinar"| "teinTing"| "doningFlytta"| "sving"| "nyRute"| "nyRuteinterface"| "nyDoning"| "tingFlytta"| "nyRedskapFram"| "nyRedskapBak"| "aktivertRedskapfram"| "aktivertRedskapbak"| "topplinjeEndra"| "kornLevering"| "drivstoffMottaking"| "froLevering"| "lastErEndra"| "lastAnimasjonLoop";
 
 
 let skjerm = {
@@ -67,16 +67,4 @@ let zoom = 1;
 const koblingsKaranteneMargin = 30;
 const pris = { drivstoff: 1, korn: -2 };
 let peng = 10000;
-/*
-function settStorrelse(){
-  skjerm.bredde = Math.abs(document.body.getBoundingClientRect().width) + 1;
-  skjerm.hoyde = Math.abs(document.body.getBoundingClientRect().height) + 1;
-  skjerm.hoydeTopplinje = 40;
-  skjerm.hoydeKnappar = (knappar.aktivListe.length * knappar.str) < skjerm.bredde ? knappar.str + knappar.marg : 2 * (knappar.str + knappar.marg);
-  skjerm.hoydeLandskap = skjerm.hoyde - skjerm.hoydeTopplinje - skjerm.hoydeKnappar;
-  skjerm.startHoydeKnappar = skjerm.hoyde - skjerm.hoydeKnappar;
-  skjerm.hoydeButikk = skjerm.hoyde - skjerm.hoydeTopplinje;
-  skjerm.hogre = pixel.ruteLengde * pixel.ruter[0];
-  skjerm.botn = pixel.ruteLengde * pixel.ruter[1];
-  }
-  */
+

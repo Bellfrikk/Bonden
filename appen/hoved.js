@@ -1,10 +1,11 @@
 "use strict";
 function start() {
     settStorrelse();
-    logginn();
+    startNyttSpel();
+    // logginn();
 }
 function startNyttSpel() {
-    flagg.push('spelVerdenAktivert');
+    lagKnappar();
     kart = kart1;
     peng = kart.startPeng;
     lagVerden(kart);
@@ -12,14 +13,8 @@ function startNyttSpel() {
     const styringsLoopId = setInterval(styringsloop, 10);
     bildeKontroller();
 }
-function lagNyVerden() {
-    flagg.push('lagNyVerdenAktivert');
-    kart = kart1;
-    peng = kart.startPeng;
-    lagVerden(kart);
-    styring();
-    const styringsLoopId = setInterval(styringsloop, 10);
-    bildeKontroller();
+function lagKart() {
+    startNyttSpel();
 }
 function lagVerden(kart) {
     lagVeksing(); //må lagast før landskap
@@ -39,13 +34,10 @@ function lagVerden(kart) {
 }
 //====================================================== system lokke
 function styringsloop() {
-    if (aktivSkjerm.verden) {
+    if (!pause)
         bevegelse();
-        sjekkOmKnapparErAktivert();
-        oppdaterKnappar();
-        sjekkFlagg();
-        // autoLossing()
-    }
+    oppdaterKnappar();
+    sjekkFlagg();
 }
 function bevegelse() {
     //--------------------------------------------justering av fart
@@ -90,7 +82,7 @@ function bevegelse() {
         }
         if (svar[0] === "krasj") {
             krasjTingen = svar[1];
-            if (doningBytteSjekk(krasjTingen)) {
+            if (krasjTingen instanceof MaskinKjoretoyMal && doningBytteSjekk(krasjTingen)) {
                 return;
             } //sjekk om bonde skal gå inn i doning
             if (redskapKoblingSjekk(krasjTingen)) {
@@ -228,18 +220,6 @@ function sjekkFlagg() {
     if (flaggTMP.includes("lastAnimasjonLoop")) {
         aktiverDoningFunksjonane("lastAnimasjonLoop");
     }
-    if (flaggTMP.includes("spelVerdenAktivert")) {
-        aktivSkjerm.verden = true;
-        aktivSkjerm.butikk = false;
-        aktivSkjerm.lagNyVerden = false;
-        oppdaterKnappar();
-    }
-    if (flaggTMP.includes("lagNyVerdenAktivert")) {
-        aktivSkjerm.verden = false;
-        aktivSkjerm.butikk = false;
-        aktivSkjerm.lagNyVerden = true;
-        oppdaterKnappar();
-    }
 }
 //===================================================== aktiverDoningFunksjonane
 function aktiverDoningFunksjonane(flagg) {
@@ -259,44 +239,16 @@ function aktiverDenneFunksjonane(flagg, denne, data) {
         denne.funksjonane[flagg](denne, data);
     }
 }
-//===================================================== velgSkjerm
-function velgSkjerm(valgtSkjerm) {
-    if (valgtSkjerm === "butikk") {
-        aktivSkjerm.verden = true;
-        aktivSkjerm.butikk = false;
-    }
-    else if (valgtSkjerm === "verden") {
-        aktivSkjerm.butikk = true;
-        aktivSkjerm.verden = false;
-        oppdaterButikk();
-    }
-}
 //------------------------------------------BILDE KONTROLLER
 function bildeKontroller() {
-    if (aktivSkjerm.verden || aktivSkjerm.lagNyVerden) {
-        ramme.skjerm.width = ramme.skjerm.offsetWidth;
-        ramme.skjerm.height = ramme.skjerm.offsetHeight;
-        lerret.skjerm.drawImage(ramme.topplinje, 0, 0, skjerm.bredde, skjerm.hoydeTopplinje, 0, 0, skjerm.bredde, skjerm.hoydeTopplinje);
-        lerret.skjerm.drawImage(ramme.landskap, pixel.start.x, pixel.start.y, skjerm.bredde / zoom, skjerm.hoydeLandskap / zoom, 0, skjerm.hoydeTopplinje, skjerm.bredde, skjerm.hoydeLandskap);
-        lerret.skjerm.drawImage(ramme.ting, pixel.start.x, pixel.start.y, skjerm.bredde / zoom, skjerm.hoydeLandskap / zoom, 0, skjerm.hoydeTopplinje, skjerm.bredde, skjerm.hoydeLandskap);
-        lerret.skjerm.drawImage(ramme.maskinar, pixel.start.x, pixel.start.y, skjerm.bredde / zoom, skjerm.hoydeLandskap / zoom, 0, skjerm.hoydeTopplinje, skjerm.bredde, skjerm.hoydeLandskap);
-        lerret.skjerm.drawImage(ramme.knappar, 0, 0, skjerm.bredde, skjerm.hoydeKnappar, 0, skjerm.startHoydeKnappar, skjerm.bredde, skjerm.hoydeKnappar);
-    }
-    else if (aktivSkjerm.butikk) {
-    }
+    ramme.skjerm.width = ramme.skjerm.offsetWidth;
+    ramme.skjerm.height = ramme.skjerm.offsetHeight;
+    lerret.skjerm.drawImage(ramme.topplinje, 0, 0, skjerm.bredde, skjerm.hoydeTopplinje, 0, 0, skjerm.bredde, skjerm.hoydeTopplinje);
+    lerret.skjerm.drawImage(ramme.landskap, pixel.start.x, pixel.start.y, skjerm.bredde / zoom, skjerm.hoydeLandskap / zoom, 0, skjerm.hoydeTopplinje, skjerm.bredde, skjerm.hoydeLandskap);
+    lerret.skjerm.drawImage(ramme.ting, pixel.start.x, pixel.start.y, skjerm.bredde / zoom, skjerm.hoydeLandskap / zoom, 0, skjerm.hoydeTopplinje, skjerm.bredde, skjerm.hoydeLandskap);
+    lerret.skjerm.drawImage(ramme.maskinar, pixel.start.x, pixel.start.y, skjerm.bredde / zoom, skjerm.hoydeLandskap / zoom, 0, skjerm.hoydeTopplinje, skjerm.bredde, skjerm.hoydeLandskap);
+    lerret.skjerm.drawImage(ramme.knappar, 0, 0, skjerm.bredde, skjerm.hoydeKnappar, 0, skjerm.startHoydeKnappar, skjerm.bredde, skjerm.hoydeKnappar);
     requestAnimationFrame(bildeKontroller);
-}
-//====================================================== Zoom ======================================================================
-//-------vassLoddRett--------returnerer 0 eller 90 basert på retning variabel
-function vassLoddRett(retning) {
-    if ((retning >= 0 && retning < 45) ||
-        (retning > 135 && retning < 225) ||
-        (retning > 315 && retning <= 360)) {
-        return 0;
-    }
-    else {
-        return 90;
-    }
 }
 //====================================================== lerretStorleik ======================================================================
 /*
@@ -314,12 +266,11 @@ function settStorrelse() {
     skjerm.bredde = Math.abs(document.body.getBoundingClientRect().width) + 1;
     skjerm.hoyde = Math.abs(document.body.getBoundingClientRect().height) + 1;
     skjerm.hoydeTopplinje = 40;
-    skjerm.hoydeKnappar =
-        knappar.aktivListe.length * knappar.str < skjerm.bredde
-            ? knappar.str + knappar.marg
-            : 2 * (knappar.str + knappar.marg);
-    skjerm.hoydeLandskap =
-        skjerm.hoyde - skjerm.hoydeTopplinje - skjerm.hoydeKnappar;
+    skjerm.hoydeKnappar = knapparData.str; // + knapparData.marg;
+    // knapparData.aktivListe.length * knapparData.str < skjerm.bredde
+    //   ? knapparData.str + knapparData.marg
+    //   : 2 * (knapparData.str + knapparData.marg);
+    skjerm.hoydeLandskap = skjerm.hoyde - skjerm.hoydeTopplinje;
     skjerm.startHoydeKnappar = skjerm.hoyde - skjerm.hoydeKnappar;
     skjerm.hoydeButikk = skjerm.hoyde - skjerm.hoydeTopplinje;
     skjerm.hogre = pixel.ruteLengde * pixel.ruter[0];

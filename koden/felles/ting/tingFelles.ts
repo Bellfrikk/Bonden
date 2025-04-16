@@ -11,7 +11,11 @@ class TingMal extends BaseMal{
 interface TingDataMal extends BaseMalData {
 fart: { krasj: number, friksjon: number, tyngde: number };
 }
-
+const listerTing = {
+  fro:['fro'],
+  gjodsel:[''],
+  bygg:['butikkBygg','bensinstasjon','kornSilo','tre']
+}
 const orginalFro = {
   korn: { navn: 'korn', blirTil: 'kornSadd' },
   gras: { navn: 'gras', blirTil: 'grasSadd' },

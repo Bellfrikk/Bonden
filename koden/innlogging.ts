@@ -40,22 +40,14 @@ function logginn() {
     startNyttSpel();
   });
 
-  const nyttSpelKnapp = document.createElement('button');
-  nyttSpelKnapp.innerText = 'Start Nytt Spel';
-  nyttSpelKnapp.style.margin = '10px';
-  nyttSpelKnapp.addEventListener('click', () => {
+  const lagKartKnapp = document.createElement('button');
+  lagKartKnapp.innerText = 'Lag kart';
+  lagKartKnapp.style.margin = '10px';
+  lagKartKnapp.addEventListener('click', () => {
     document.body.removeChild(loggInnVindu);
-    startNyttSpel();
-  });
-  const lagNyVerdenKnapp = document.createElement('button');
-  lagNyVerdenKnapp.innerText = 'Lag Ny Verden';
-  lagNyVerdenKnapp.style.margin = '10px';
-  lagNyVerdenKnapp.addEventListener('click', () => {
-    document.body.removeChild(loggInnVindu);
-    lagNyVerden();
+    lagKart();
   });
   loggInnVindu.appendChild(loggInnKnapp);
-  loggInnVindu.appendChild(nyttSpelKnapp);
-  loggInnVindu.appendChild(lagNyVerdenKnapp);
+  loggInnVindu.appendChild(lagKartKnapp);
 
 }

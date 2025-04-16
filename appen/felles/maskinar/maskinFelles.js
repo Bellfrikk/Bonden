@@ -3,8 +3,15 @@ const straffeFartVedTomForDrivstoff = 0.3;
 const hengerFesteMargin = 5;
 const maksTilhengerSving = 50;
 const listerMaskin = {
-    butikkList: ['samaskin0', 'tilhengar1', 'tilhengar2', 'plog5', 'slamaskin3bak', 'slamaskin3fram', 'treskeSkjer1', 'ballemaskin1'],
-    doninger: ['traktor0', 'skurtreskar1', 'ferrari'],
+    traktor: ['traktor0'],
+    skurtreskar: ['skurtreskar1', 'treskeSkjer1'],
+    plog: ['plog5'],
+    samaskin: ['samaskin0'],
+    slamaskin: ['slamaskin3bak', 'slamaskin3fram'],
+    ballemaskin: ['ballemaskin1'],
+    balleklype: [],
+    tilhengar: ['tilhengar1', 'tilhengar2'],
+    anna: ['ferrari'],
 };
 function velgValgtLast(denneDoningLast, nyLastData) {
     denneDoningLast.valgtLast = nyLastData;

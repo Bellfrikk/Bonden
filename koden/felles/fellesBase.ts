@@ -1,3 +1,10 @@
+type ButikkInfo = {
+  overskrift:string;
+  underskrift:string;
+  info:string;
+  pris:number;
+}
+
 type ArbeidsPunktMal = { x: number, y: number, type: 'type1'|'type2' };
 type ArbeidsTypeMal = { blirTil: JordeVeksType|JordeIkkjeVeksType, last: { type: LastTypar|null, mengde: number } };
 type LastMal = { valgtLast:null|EiLast, mottar:LastTypar[], leverer:LastTypar[], laster: Record<string,EiLast> }
@@ -72,7 +79,7 @@ function lagKrasjSider(data: string[][], krasjPunkt: KrasjPunkt): PosisjonMal[][
 }
 
 type EinFunksjon = (denne: Maskin|Ting, data:any) => void;
-
+type Typar = Maskin|Ting
 
 
 class BaseMal {
@@ -90,7 +97,7 @@ class BaseMal {
   krasj: KrasjMal;
   last:LastMal;
   funksjonane: Record<string, null|EinFunksjon>;
-  butikk: { type:'ingen'|'kjoretoy'|'redskap'|'ting', bilde: string, tittel: string, pris: number }
+  butikk: ButikkInfo;
 
   constructor (ny:BaseMalData, rute:Posisjon){
     this.navn = ny.navn;

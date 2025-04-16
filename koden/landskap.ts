@@ -1,5 +1,5 @@
 const landskapBilde = document.getElementById('landskap')! as HTMLCanvasElement;
-const jordeBilde = document.getElementById('jorde')! as HTMLCanvasElement;
+const jordeBilde = document.getElementById('jorde')! as HTMLImageElement;
 let krasjlisteLandskap:string[] = [];
 let landskap:Record<string,Landskap> = { };
 let jorde:Record<string,JordeVeks|JordeIkkjeVeks> = { };

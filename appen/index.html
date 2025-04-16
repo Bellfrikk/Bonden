@@ -18,7 +18,7 @@
       height:100vh;
     }
     img, #butikkID{
-      display: none;
+      /* display: none; */
     }
   </style>
 </head>
@@ -29,11 +29,10 @@
 
   <img id='maskinar' src='bilde/maskinar.png'>
   <img id='landskap' src='bilde/landskap.png'>
-  <img id='knappar' src='bilde/ikon/knappar.png'>
+  <img id='knappar' src='bilde/knappar.png'>
   <img id='bildeTing' src='bilde/ting.png'>
   <img id='jorde' src='bilde/jorde.png'>
 
-  <!--knappar-->
   <!--ikon-->
   <img id='ikonPeng' src='bilde/ikon/peng.png'>
   <img id='ikonDrivstoff' src='bilde/ikon/drivstoff.png'>
@@ -80,15 +79,16 @@
 
   <script defer src="kart/kart1.js"></script>
 
-  <!--<script defer src="butikk.js"></script>-->
+  <script defer src="butikk.js"></script>
   <script defer src="landskapData.js"></script>
   <script defer src="hovedData.js"></script>
   <script defer src="innlogging.js"></script>
   <script defer src="landskap.js"></script>
   <script defer src="toppLinje.js"></script>
-  <script defer src="hoved.js"></script>
   <script defer src="knappar.js"></script>
-
+  <script defer src="hoved.js"></script>
+<!--utilities-->
+  <script defer src="utilities/lagTrykkOgEllerSleppFunksjonTilKnapp.js"></script>
 
   <script>
   window.onload = () => {
