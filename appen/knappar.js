@@ -10,15 +10,32 @@ function oppdaterKnappar() {
     ramme.knappar.height = skjerm.hoydeKnappar;
     ramme.knappar.width = skjerm.bredde;
 }
-// Lag knappar
 function lagKnappar() {
+    // LAG rammer til menyane som kan visas/skulast
+    //hovedmenyar
+    //normale knapper for styring og butikkmeny
     lagKnappRad('styringModus');
+    knappModus.knappLinje.styringModus.forEach(knapp => lagKnapp(knapp, 'styringModus'));
+    //Hovedmeny butikk 
     lagKnappRad('butikkModus');
+    knappModus.knappLinje.butikkModus.forEach(knapp => lagKnapp(knapp, 'butikkModus'));
+    //undermenyar
+    //undermeny for å redigere landskap
     lagKnappRad('verdenModus');
+    knappModus.knappLinje.verdenModus.forEach(knapp => lagKnapp(knapp, 'verdenModus'));
+    //undermeny for å kjøpe maskinar
+    lagKnappRad('maskinarModus');
+    knappModus.knappLinje.maskinarModus.forEach(knapp => lagKnapp(knapp, 'maskinarModus'));
+    //undermeny for å kjøpe bygg og frø osv
+    lagKnappRad('tingModus');
+    knappModus.knappLinje.tingModus.forEach(knapp => lagKnapp(knapp, 'tingModus'));
+    //under under menyar
+    // meny under verdenmodus
     lagKnappRad('landskap');
     lagKnappRad('jorde');
+    //listerLandskap.jorde.forEach( denne => laginfovindu(denne, jordeBilde, orginalJorde[denne as JordeIkkjeVeksType|JordeVeksType].butikk))
     lagKnappRad('vei');
-    lagKnappRad('maskinarModus');
+    //meny under  maskinarmodus
     lagKnappRad('traktor');
     lagKnappRad('skurtreskar');
     lagKnappRad('plog');
@@ -28,16 +45,11 @@ function lagKnappar() {
     lagKnappRad('balleklype');
     lagKnappRad('tilhengar');
     lagKnappRad('anna');
-    lagKnappRad('tingModus');
+    //meny under tingModus
     lagKnappRad('bygg');
     lagKnappRad('fro');
     lagKnappRad('gjodsel');
-    knappModus.knappLinje.styringModus.forEach(knapp => lagKnapp(knapp, 'styringModus'));
-    knappModus.knappLinje.butikkModus.forEach(knapp => lagKnapp(knapp, 'butikkModus'));
-    knappModus.knappLinje.verdenModus.forEach(knapp => lagKnapp(knapp, 'verdenModus'));
-    knappModus.knappLinje.maskinarModus.forEach(knapp => lagKnapp(knapp, 'maskinarModus'));
-    knappModus.knappLinje.tingModus.forEach(knapp => lagKnapp(knapp, 'tingModus'));
-    listerLandskap.jorde.forEach(denne => laginfovindu(denne, jordeBilde, orginalJorde[denne].butikk));
+    //LAG knappane i knapperadene
 }
 function lagKnappRad(id) {
     let knappeRamme = document.createElement('div');
@@ -72,42 +84,43 @@ function lagKnapp(knapp, ramme) {
         knappeRamme.appendChild(nyKnapp);
     leggtilTrykkOgSleppHandling(nyKnapp, knappar[knapp].handling.trykk, knappar[knapp].handling.slepp);
 }
+//eit vindu rett over knappane med bilde til venstre og info til høgre
 function laginfovindu(denne, denneBilde, denneTekst) {
+    var _a;
     let infovindu = document.createElement('div');
     infovindu.id = denne;
     infovindu.style.position = 'absolute';
     infovindu.style.bottom = skjerm.hoydeKnappar + 'px';
     infovindu.style.width = '100vw';
-    infovindu.style.height = knapparData.ikonStr + 'px';
+    infovindu.style.height = knapparData.infovinduStr + 'px';
     infovindu.style.display = 'flex';
     infovindu.style.justifyContent = 'left';
-    // infovindu.style.display = 'none';
-    // infovindu.style.zIndex = '0';
-    document.body.appendChild(infovindu);
-    //infobilde
-    let bilde = document.createElement('img');
+    infovindu.style.background = 'blue';
+    // bildevisning med utsnitt fra spritesheet
+    let bilde = document.createElement('div');
     if (denneBilde) {
-        bilde.src = denneBilde.src;
+        let utsnitt = orginalJorde[denne].utsnitt[0];
+        bilde.style.backgroundImage = `url(${denneBilde.src})`;
+        bilde.style.height = knapparData.infovinduStr + 'px';
+        bilde.style.width = knapparData.infovinduStr + 'px';
+        bilde.style.backgroundRepeat = 'no-repeat';
+        bilde.style.backgroundPosition = `-${utsnitt.x}px -${utsnitt.y}px`;
+        bilde.style.backgroundSize = `${knapparData.infovinduStr}px ${knapparData.infovinduStr}px`;
     }
-    bilde.style.height = knapparData.infovinduStr + 'px';
-    bilde.style.width = knapparData.infovinduStr + 'px';
-    if (infovindu)
-        infovindu.appendChild(bilde);
-    //info tekstboks
+    infovindu.appendChild(bilde);
+    // tekstboks
     let tekstBoks = document.createElement('div');
-    infovindu.style.height = 'auto';
-    infovindu.style.width = '100%';
-    infovindu.style.display = 'flex';
-    infovindu.style.flexDirection = 'column';
-    infovindu.style.justifyContent = 'left';
-    // infovindu.style.display = 'none';
-    //overskrift
+    tekstBoks.style.width = '100%';
+    tekstBoks.style.display = 'flex';
+    tekstBoks.style.flexDirection = 'column';
+    tekstBoks.style.alignItems = 'flex-start';
+    // tekst
     let tekst = document.createElement('p');
-    tekst.innerHTML = '<b>${denneTekst.oversktift}</b><br>${denneTekst.underskrift}<br>${denneTekst.info}<br>Pris: ${denneTekst.underskrift}';
-    // infovindu.appendChild(infovindu);
-    //Kjøp knapp
+    tekst.innerHTML = `<b>${denneTekst.overskrift}</b><br>${denneTekst.underskrift}<br>${denneTekst.info}<br>Pris: ${(_a = denneTekst.pris) !== null && _a !== void 0 ? _a : denneTekst.underskrift}`;
+    tekstBoks.appendChild(tekst);
+    infovindu.appendChild(tekstBoks);
     document.body.appendChild(infovindu);
-    //  leggtilTrykkOgSleppHandling(nyKnapp,knappar[knapp].handling.trykk,knappar[knapp].handling.slepp);
+    infovindu.style.display = 'none'; // skjul infovinduet til det blir aktivert
 }
 function endreKnappModus(nyModus) {
     oppdaterKnappLinje('none');
@@ -229,7 +242,7 @@ let knapparData = {
     maks: 80,
     marg: 10,
     ikonStr: 40,
-    infovinduStr: 80,
+    infovinduStr: 150,
 };
 //const knappLinjeKnappar:KnapparTypar[] = ['styring','butikk','landskap','jorde','vei','traktor','skurtreskar','plog','samaskin','slamaskin','ballemaskin','balleklype','fro','gjodsel'];
 let knappModus = {

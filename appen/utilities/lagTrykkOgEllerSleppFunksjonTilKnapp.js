@@ -2,8 +2,8 @@
 /**
  * Legger til eventlitener for trykk og/eller slepp på en knapp.
  * @param {HTMLElement} ting - Knappen som skal ha eventlitener.
- * @param {Function} trykkFunksjon - Funksjon som skal kjøres når knappen trykkes.
- * @param {Function} sleppFunksjon - Funksjon som skal kjøres når knappen slippes.
+ * @param {Function} trykkFunksjon - Funksjon som skal kjøras ved trykk.
+ * @param {Function} sleppFunksjon - Funksjon som skal kjøras ved slepp.
  * @returns {void} - Returnerer ingenting.
  */
 function leggtilTrykkOgSleppHandling(ting, trykkFunksjon, sleppFunksjon) {

@@ -36,18 +36,29 @@ function oppdaterKnappar () {
 function lagKnappar(){
   // LAG rammer til menyane som kan visas/skulast
   //hovedmenyar
-  lagKnappRad('styringModus');//normale knapper for styring og butikkmeny
-  lagKnappRad('butikkModus');//Hovedmeny butikk
+  //normale knapper for styring og butikkmeny
+  lagKnappRad('styringModus');
+  knappModus.knappLinje.styringModus.forEach(  knapp => lagKnapp(knapp as KnapparTypar, 'styringModus'));
+  //Hovedmeny butikk 
+  lagKnappRad('butikkModus');
+  knappModus.knappLinje.butikkModus.forEach(   knapp => lagKnapp(knapp as KnapparTypar, 'butikkModus'));
 
   //undermenyar
-  lagKnappRad('verdenModus');//undermeny for å redigere landskap
-  lagKnappRad('maskinarModus');//undermeny for å kjøpe maskinar
-  lagKnappRad('tingModus');//undermeny for å kjøpe bygg og frø osv
+  //undermeny for å redigere landskap
+  lagKnappRad('verdenModus');
+  knappModus.knappLinje.verdenModus.forEach(   knapp => lagKnapp(knapp as KnapparTypar, 'verdenModus'));
+  //undermeny for å kjøpe maskinar
+  lagKnappRad('maskinarModus');
+  knappModus.knappLinje.maskinarModus.forEach( knapp => lagKnapp(knapp as KnapparTypar, 'maskinarModus'));
+  //undermeny for å kjøpe bygg og frø osv
+  lagKnappRad('tingModus');
+  knappModus.knappLinje.tingModus.forEach(     knapp => lagKnapp(knapp as KnapparTypar, 'tingModus'));
 
   //under under menyar
     // meny under verdenmodus
     lagKnappRad('landskap');
     lagKnappRad('jorde');
+    //listerLandskap.jorde.forEach( denne => laginfovindu(denne, jordeBilde, orginalJorde[denne as JordeIkkjeVeksType|JordeVeksType].butikk))
     lagKnappRad('vei');
     //meny under  maskinarmodus
     lagKnappRad('traktor');
@@ -65,13 +76,7 @@ function lagKnappar(){
     lagKnappRad('gjodsel');
 
 //LAG knappane i knapperadene
-  knappModus.knappLinje.styringModus.forEach(  knapp => lagKnapp(knapp as KnapparTypar, 'styringModus'));
-  knappModus.knappLinje.butikkModus.forEach(   knapp => lagKnapp(knapp as KnapparTypar, 'butikkModus'));
-  knappModus.knappLinje.verdenModus.forEach(   knapp => lagKnapp(knapp as KnapparTypar, 'verdenModus'));
-  knappModus.knappLinje.maskinarModus.forEach( knapp => lagKnapp(knapp as KnapparTypar, 'maskinarModus'));
-  knappModus.knappLinje.tingModus.forEach(     knapp => lagKnapp(knapp as KnapparTypar, 'tingModus'));
 
-  listerLandskap.jorde.forEach( denne => laginfovindu(denne, jordeBilde, orginalJorde[denne as JordeIkkjeVeksType|JordeVeksType].butikk))
 
 }
 
@@ -107,45 +112,47 @@ function lagKnapp (knapp:KnapparTypar, ramme:string){
   }
 
   //eit vindu rett over knappane med bilde til venstre og info til høgre
-function laginfovindu ( denne:string, denneBilde: HTMLImageElement, denneTekst:ButikkInfo){
-
-  let infovindu = document.createElement('div');
-  infovindu.id = denne;
-  infovindu.style.position = 'absolute';
-  infovindu.style.bottom = skjerm.hoydeKnappar + 'px';
-  infovindu.style.width = '100vw';
-  infovindu.style.height = knapparData.ikonStr + 'px';
-  infovindu.style.display = 'flex';
-  infovindu.style.justifyContent = 'left';
- // infovindu.style.display = 'none';
- // infovindu.style.zIndex = '0';
-  //infobilde
-  let bilde = document.createElement('img');
-  if (denneBilde) {bilde.src = denneBilde.src;}
-  bilde.style.height = knapparData.infovinduStr +'px';
-  bilde.style.width = knapparData.infovinduStr +'px';
-  if(infovindu)infovindu.appendChild(bilde);
-  //info tekstboks
-  let tekstBoks = document.createElement('div');
-  tekstBoks.style.height = 'auto';
-  tekstBoks.style.width = '100%';
-  tekstBoks.style.display = 'flex';
-  tekstBoks.style.flexDirection = 'column';
-  tekstBoks.style.justifyContent = 'left';
-  tekstBoks.style.background = 'yellow';
-  if(infovindu)infovindu.appendChild(tekstBoks);
-  //overskrift
-  let tekst = document.createElement('p');
-  tekst.innerText = 'Hei på dei';
-  //tekst.innerHTML = '<b>${denneTekst.oversktift}</b><br>${denneTekst.underskrift}<br>${denneTekst.info}<br>Pris: ${denneTekst.underskrift}';
-  tekstBoks.appendChild(tekst);
-  //Kjøp knapp
-
-  document.body.appendChild(infovindu);
-
-//  leggtilTrykkOgSleppHandling(nyKnapp,knappar[knapp].handling.trykk,knappar[knapp].handling.slepp);
-}
-
+  function laginfovindu(denne: string, denneBilde: HTMLImageElement, denneTekst: ButikkInfo) {
+    let infovindu = document.createElement('div');
+    infovindu.id = denne;
+    infovindu.style.position = 'absolute';
+    infovindu.style.bottom = skjerm.hoydeKnappar + 'px';
+    infovindu.style.width = '100vw';
+    infovindu.style.height = knapparData.infovinduStr + 'px';
+    infovindu.style.display = 'flex';
+    infovindu.style.justifyContent = 'left';
+    infovindu.style.background = 'blue';
+  
+    // bildevisning med utsnitt fra spritesheet
+    let bilde = document.createElement('div');
+    if (denneBilde) {
+      let utsnitt = orginalJorde[denne as JordeIkkjeVeksType | JordeVeksType].utsnitt[0];
+      bilde.style.backgroundImage = `url(${denneBilde.src})`;
+      bilde.style.height = knapparData.infovinduStr + 'px';
+      bilde.style.width = knapparData.infovinduStr + 'px';
+      bilde.style.backgroundRepeat = 'no-repeat';
+      bilde.style.backgroundPosition = `-${utsnitt.x}px -${utsnitt.y}px`;
+      bilde.style.backgroundSize = `${knapparData.infovinduStr}px ${knapparData.infovinduStr}px`;
+    }
+    infovindu.appendChild(bilde);
+  
+    // tekstboks
+    let tekstBoks = document.createElement('div');
+    tekstBoks.style.width = '100%';
+    tekstBoks.style.display = 'flex';
+    tekstBoks.style.flexDirection = 'column';
+    tekstBoks.style.alignItems = 'flex-start';
+  
+    // tekst
+    let tekst = document.createElement('p');
+    tekst.innerHTML = `<b>${denneTekst.overskrift}</b><br>${denneTekst.underskrift}<br>${denneTekst.info}<br>Pris: ${denneTekst.pris ?? denneTekst.underskrift}`;
+    tekstBoks.appendChild(tekst);
+    infovindu.appendChild(tekstBoks);
+  
+    document.body.appendChild(infovindu);
+    infovindu.style.display = 'none'; // skjul infovinduet til det blir aktivert
+  }
+  
 
 function endreKnappModus (nyModus:KnappModuser){
   oppdaterKnappLinje('none');
@@ -259,7 +266,7 @@ let knapparData:Record<string,number> = {
   maks: 80,
   marg: 10,
   ikonStr: 40,
-  infovinduStr: 80,
+  infovinduStr: 150,
 }
 
 type KnappModuser = 'styringModus'|'butikkModus'|'verdenModus'|'maskinarModus'|'tingModus'|'landskap'|'jorde'|'vei'|'traktor'|'skurtreskar'|'plog'|'samaskin'|'slamaskin'|'ballemaskin'|'tilhengar'|'balleklype'|'fro'|'gjodsel'|'anna'|'bygg';
